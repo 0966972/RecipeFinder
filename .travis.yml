@@ -1,1 +1,11 @@
 language: java
+
+addons:
+  sonarcloud:
+    organization: "hrrecipefinder"
+    token:
+      secure: "Ft+GByvo7bN1JTdZ5/9unl/hHfC+1vKX8LeywrTa+6/OMO/L1/H6ktrvO7jbyZUzAp+LIhuAVdwCpLmZXpTMuc4zw8ezCh2Mx88oLfmd/GvLSVzoRVisMiNgsa88A06Kmfq+uJbuWTycMrf55QmFuWQfrqguL3YRr0jzxOiGwEm1DL42qh8JWcvjuR8LKg+JLTblxUkjATo/n6z/2+retNwLQsG0DY1tD8KU5ItOOB/gzP/fTjYdGI5Ur//fciEUzAxzSOeYiy4+NqHlCvet5KZUyx/gAAovH+2u/C0mXDS9CNDQY6Vt4B+ltDem0C13CCpjEV+d5RLYisP3wts5+CvOKcnmacGz+ipbjA3wsFZCM0Xr8Fl8eJQcvACvk4uY3OgYUdY7tSB3dILuVlpdE8HKx31G0uTFmNKm8NPLQV2yL7a+exe6pYl+ZCyOJaH7djMZpPcbao9m/4wGo3Kk7QrJDNBdX4dIiK6SaU/BOxLHmUuLRpi7aEMiGG7LV+Cx0KhL5e7j7ZNxJNjEKs5kuSqcVohHapwFgZW2THMovZ8K8Fyufh9Y84HE/1uoDDdTYKHxk/4cx9lHt2EBIILNZv37yT0YwyT7N/i4h6VC1nd7BuieZWdugA0RXrSMfXePBuwqqw1bxBsUXpmLn8O0/yPG+xsyR95Z+ji8BGSzWck="
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=HRRecipeFinder_RecipeFinder
