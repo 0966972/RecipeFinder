@@ -1,10 +1,13 @@
 package nl.hr.recipefinder.model.dto;
 
 import nl.hr.recipefinder.security.Role;
-
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+@Getter
+@Setter
 public class UserDto {
   private String username;
 
@@ -13,29 +16,4 @@ public class UserDto {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
-  }
 }
