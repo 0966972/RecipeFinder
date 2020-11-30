@@ -62,18 +62,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http)
     throws Exception {
     http
+      .headers().frameOptions().disable()
+      .and()
       .csrf()
       .disable()
       .cors()
       .and()
       .authorizeRequests()
       .antMatchers("/index.html", "/", "/home", "/login", "/users", "/admin").permitAll()
-      .antMatchers("/swagger-ui", "/h2-console").permitAll()
+      .antMatchers("/swagger-ui", "/h2-console/**").permitAll()
       .antMatchers("/user").permitAll()
       //.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
       .anyRequest().authenticated()
       .and()
       .sessionManagement()
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
   }
 }
