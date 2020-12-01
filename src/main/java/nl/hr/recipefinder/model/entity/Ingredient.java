@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Ingredient extends BaseEntity {
-  private String naam;
+  private String name;
   @ManyToMany(mappedBy = "ingredients")
   private Set<Recipe> Recipes = new HashSet<>();
 //    https://www.baeldung.com/hibernate-many-to-many
