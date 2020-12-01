@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,6 @@ public class Recipe extends BaseEntity {
   private String name;
   private String desription;
   private String instructions;
-  @ManyToMany
+  @OneToMany
   private List<Picture> pictures;
 }
