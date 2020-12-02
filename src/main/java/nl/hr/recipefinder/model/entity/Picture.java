@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 public class Picture extends BaseEntity {
   private String name;
   private Byte[] content;
-  @ManyToOne
-  @JoinColumn(name = "recipe_id", nullable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "recipe_id")
   private Recipe recipe;
 }
