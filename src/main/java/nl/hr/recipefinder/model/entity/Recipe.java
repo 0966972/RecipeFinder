@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 public class Recipe extends BaseEntity {
   private String name;
-  private String desription;
+  private String description;
   private String instructions;
 
   @ManyToMany(cascade = {CascadeType.ALL})
