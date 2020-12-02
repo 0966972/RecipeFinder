@@ -22,6 +22,7 @@ public class Recipe extends BaseEntity {
   )
   Set<Ingredient> ingredients = new HashSet<>();
 
-  @OneToMany(mappedBy = "recipe")
-  private Set<Picture> pictures;
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "recipe_id")
+  private Set<Picture> pictures = new HashSet<>();
 }
