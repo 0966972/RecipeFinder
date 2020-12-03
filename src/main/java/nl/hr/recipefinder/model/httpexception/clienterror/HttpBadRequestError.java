@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 // 400
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class HttpBadRequestError extends RuntimeException{
+public class HttpBadRequestError extends RuntimeException {
 }

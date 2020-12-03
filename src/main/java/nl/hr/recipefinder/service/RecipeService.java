@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @Service
 public class RecipeService {
-  private RecipeRepository recipeRepository;
+  private final RecipeRepository recipeRepository;
 
   public RecipeService(RecipeRepository recipeRepository) {
     this.recipeRepository = recipeRepository;
   }
 
-  public List<Recipe> findAll(){
+  public List<Recipe> findAll() {
     return recipeRepository.findAll();
   }
 
@@ -23,7 +23,7 @@ public class RecipeService {
     return recipeRepository.findById(id);
   }
 
-  public void save(Recipe recipe){
+  public void save(Recipe recipe) {
     recipeRepository.save(recipe);
   }
 }

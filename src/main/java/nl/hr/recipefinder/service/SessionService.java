@@ -17,12 +17,12 @@ public class SessionService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-      User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findUserByUsername(username);
 
-      if (user == null){
-        throw new UsernameNotFoundException(String.format("No user  with username: %s was found", username));
-      }
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user  with username: %s was found", username));
+        }
 
-      return new UserDetailsAdapter(user);
+        return new UserDetailsAdapter(user);
     }
 }

@@ -13,19 +13,18 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
-  allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
+        allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/recipe")
 public class RecipeController {
 
-  private RecipeService recipeService;
+    private final RecipeService recipeService;
+    final ModelMapper modelMapper;
 
-  @Autowired
-  ModelMapper modelMapper;
-
-  @Autowired
-  public RecipeController(RecipeService recipeService) {
-    this.recipeService = recipeService;
-  }
+    @Autowired
+    public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
+        this.recipeService = recipeService;
+        this.modelMapper = modelMapper;
+    }
 
   @GetMapping()
   public List<RecipeDto> all()
