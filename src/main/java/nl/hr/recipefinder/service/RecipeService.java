@@ -15,8 +15,13 @@ public class RecipeService {
     this.recipeRepository = recipeRepository;
   }
 
-  public List<Recipe> findAll() {
+  public List<Recipe> getRecipes() {
     return recipeRepository.findAll();
+  }
+
+
+  public List<Recipe> findRecipesByName(String name) {
+    return recipeRepository.findByNameContainingIgnoreCase(name);
   }
 
   public Optional<Recipe> findById(Long id) {

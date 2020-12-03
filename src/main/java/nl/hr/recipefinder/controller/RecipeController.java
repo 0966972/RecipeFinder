@@ -7,41 +7,39 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
-        allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
+  allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/recipe")
 public class RecipeController {
 
-    private final RecipeService recipeService;
-    final ModelMapper modelMapper;
+  private final RecipeService recipeService;
+  final ModelMapper modelMapper;
 
-    @Autowired
-    public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
-        this.recipeService = recipeService;
-        this.modelMapper = modelMapper;
-    }
+  @Autowired
+  public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
+    this.recipeService = recipeService;
+    this.modelMapper = modelMapper;
+  }
 
   @GetMapping()
-  public List<RecipeDto> all()
-  {
-    List<Recipe> listRecipe = recipeService.findAll();
-    List<RecipeDto> listRecipeDto = new ArrayList<RecipeDto>();
-    for(int i = 0; i < listRecipe.size(); i++){
-      listRecipeDto.add(modelMapper.map(listRecipe.get(i), RecipeDto.class));
-    }
-    return listRecipeDto;
+  public List<Recipe> getRecipes() {
+    return recipeService.getRecipes();
+  }
+
+
+  @GetMapping("/{name}")
+  public List<Recipe> findRecipesByName(@PathVariable String name) {
+    return recipeService.findRecipesByName(name);
   }
 
   @GetMapping("/{id}")
   public RecipeDto Recipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    RecipeDto dto = modelMapper.map(recipe, RecipeDto.class);
-    return dto;
+    return modelMapper.map(recipe, RecipeDto.class);
   }
 
   @PostMapping()

@@ -58,7 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers("/admin/**", "/swagger-ui/**", "h2-console/**").hasRole(Role.ADMIN.name())
       .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**").permitAll()
-
       .anyRequest().authenticated()
       .and()
       .csrf().ignoringAntMatchers("/user/**", "/recipe/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
