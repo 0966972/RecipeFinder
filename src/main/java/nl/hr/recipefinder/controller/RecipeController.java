@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.service.RecipeService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;≥
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
@@ -26,14 +28,22 @@ public class RecipeController {
   }
 
   @GetMapping()
-  public List<Recipe> getRecipes() {
-    return recipeService.getRecipes();
+  public List<ListedRecipeDto> getRecipes() {
+    List<Recipe> recipes = recipeService.getRecipes();
+
+    return recipes.stream()
+      .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+      .collect(Collectors.toList());
   }
 
 
   @GetMapping("/{name}")
-  public List<Recipe> findRecipesByName(@PathVariable String name) {
-    return recipeService.findRecipesByName(name);
+  public List<ListedRecipeDto> findRecipesByName(@PathVariable String name) {
+    List<Recipe> recipes = recipeService.findRecipesByName(name);
+
+    return recipes.stream()
+      .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+      .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
@@ -46,7 +56,6 @@ public class RecipeController {
   public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
     recipeService.save(mappedRecipe);
-//    return mappedRecipe.toString();
     return true;
   }
 }
