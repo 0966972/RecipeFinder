@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin(origins = "*",
+@CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/session")
 public class SessionController {

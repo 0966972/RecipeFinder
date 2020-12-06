@@ -4,9 +4,9 @@ import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.UserRequestDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpException.clientError.HttpConflictError;
-import nl.hr.recipefinder.model.httpException.clientError.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpException.serverError.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RecipeFinderApplication.class})
-public class UserControllerTests {
+class UserControllerTests {
 
   @Autowired
   @InjectMocks
@@ -45,12 +45,12 @@ public class UserControllerTests {
   ModelMapper modelMapper;
 
   @BeforeEach
-  public void setup() throws Exception {
+  void setup() throws Exception {
     MockitoAnnotations.initMocks(this);
   }
 
   @Test
-  public void getUser_whenResourceNonExistent_thenReturnsNotFound() {
+  void getUser_whenResourceNonExistent_thenReturnsNotFound() {
     // arrange
     long input = 5000;
     Mockito.when(userService.findUserById(input)).thenReturn(Optional.empty());
@@ -67,7 +67,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void getUser_whenResourceExists_thenReturnsUser() {
+  void getUser_whenResourceExists_thenReturnsUser() {
     // arrange
     long input = 0;
     Optional<User> expectedOptional = Optional.of(new User("a", "b", Role.USER));
@@ -85,7 +85,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void getUsers_whenResourceExists_thenReturnsUsers() {
+  void getUsers_whenResourceExists_thenReturnsUsers() {
     // arrange
     long id0 = 0;
     long id1 = 1;
@@ -116,7 +116,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void getUsers_whenResourceNonExistent_thenReturnsEmptyList() {
+  void getUsers_whenResourceNonExistent_thenReturnsEmptyList() {
     // arrange
     List<User> users = new ArrayList<>();
     Mockito.when(userService.findAll()).thenReturn(users);
@@ -131,7 +131,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void getUsers_whenRepositoryUnavailable_thenThrowsInternalServerError() {
+  void getUsers_whenRepositoryUnavailable_thenThrowsInternalServerError() {
     // arrange
     Mockito.when(userService.findAll()).thenThrow(new RuntimeException());
     try {
@@ -145,7 +145,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void createUser_whenUsernameAlreadyTaken_thenThrowsConflictError() {
+  void createUser_whenUsernameAlreadyTaken_thenThrowsConflictError() {
     // arrange
     User duplicateUser = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
@@ -163,7 +163,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void createUser_whenRepositoryUnavailable_thenThrowsInternalServerError() {
+  void createUser_whenRepositoryUnavailable_thenThrowsInternalServerError() {
     // arrange
     User duplicateUser = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
@@ -181,7 +181,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void createUser_whenUserIsSaved_thenReturnsOKNewUser() {
+  void createUser_whenUserIsSaved_thenReturnsOKNewUser() {
     // arrange
     User user = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
@@ -198,7 +198,7 @@ public class UserControllerTests {
   }
 
   @Test
-  public void createUser_whenNoUserRoleIsProvided_thenSetsRole() {
+  void createUser_whenNoUserRoleIsProvided_thenSetsRole() {
     // arrange
     User user = new User("a", "a", null);
     User userForSaving = new User("a", "a", Role.USER);

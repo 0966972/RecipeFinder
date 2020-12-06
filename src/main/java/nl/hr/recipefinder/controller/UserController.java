@@ -3,12 +3,13 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.model.dto.UserRequestDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpException.clientError.HttpConflictError;
-import nl.hr.recipefinder.model.httpException.clientError.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpException.serverError.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*",
+@CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/user")
 public class UserController {
@@ -54,7 +55,7 @@ public class UserController {
   public ResponseEntity<List<UserResponseDto>> getUsers() {
     try {
       List<User> users = userService.findAll();
-      List<UserResponseDto> userDtos = new ArrayList<UserResponseDto>();
+      List<UserResponseDto> userDtos = new ArrayList<>();
       for (int i = 0; i < users.size(); i++) {
         userDtos.add(modelMapper.map(users.get(i), UserResponseDto.class));
       }
@@ -74,10 +75,9 @@ public class UserController {
       userService.save(mappedUser);
 
       return new ResponseEntity<>(mappedUser, HttpStatus.CREATED);
-    } catch (Exception e) {
-      if (e instanceof DataIntegrityViolationException) {
-        throw new HttpConflictError();
-      }
+    } catch (DataIntegrityViolationException e) {
+      throw new HttpConflictError();
+    } catch (DataAccessException e) {
       throw new HttpInternalServerError();
     }
   }
