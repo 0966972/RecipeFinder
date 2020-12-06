@@ -19,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -168,7 +169,7 @@ class UserControllerTests {
     User duplicateUser = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(duplicateUser);
-    doThrow(RuntimeException.class).when(userService).save(duplicateUser);
+    doThrow(HttpInternalServerError.class).when(userService).save(duplicateUser);
     try {
       // act
       userController.createUser(userDto);
