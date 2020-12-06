@@ -38,9 +38,10 @@ public class RecipeController {
     return listRecipeDto;
   }
   @PostMapping()
-  public String createRecipe(@RequestBody RecipeDto recipedto) {
+  public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
     recipeService.save(mappedRecipe);
-    return mappedRecipe.toString();
+//    return mappedRecipe.toString();
+    return true;
   }
 }

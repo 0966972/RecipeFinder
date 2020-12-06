@@ -18,8 +18,10 @@
 
 <h1>Add Recipe</h1>
 <form name="CreateRipe" (ngSubmit)="f.form.valid && CreateRecipe()" #f="ngForm" novalidate>
+
   <div class="container_recipevalues">
     <div class="formfields">
+
       <label for="name">Title:</label>
       <input type="text" name="Name" [(ngModel)]="model.name" #name="ngModel" required/>
       <div *ngIf="f.submitted && !name.valid">Title is required</div>

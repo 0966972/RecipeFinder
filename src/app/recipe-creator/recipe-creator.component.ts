@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -30,9 +31,17 @@ export class RecipeCreatorComponent implements OnInit {
       description: this.model.description,
       instructions: this.model.instructions
     };
-    this.http.post(url, postData).toPromise().then(data => {
-      console.log(data)
+
+    this.http.post<Observable<boolean>>(url, postData).subscribe(isValid => {
+      if (isValid) {
+        console.log(postData);
+        this.router.navigate(['']);
+      } else {
+        alert("User creation failed.")
+      }
+
     });
+
   }
 
 }
