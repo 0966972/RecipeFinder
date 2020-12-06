@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 @Component({
@@ -10,30 +10,38 @@ import {Observable} from "rxjs";
 
 export class RegisterComponent implements OnInit {
 
-  model: any = {};
+  credentials = {username: '', password: ''};
   loading: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    sessionStorage.setItem('token', '');
   }
 
   register() {
-    let url = 'http://localhost:8080/users';
-    this.http.post<Observable<boolean>>(url, {
-      username: this.model.username,
-      password: this.model.password
-    }).subscribe(isValid => {
-      if (isValid) {
-        sessionStorage.setItem('token', btoa(this.model.username + ':' + this.model.password));
-        this.router.navigate(['']);
+    let url = 'http://localhost:8080/user';
+    let token: string = '' + sessionStorage.getItem('token');
+    let body
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+
+    this.http.post<Observable<Object>>(url, {
+      username: this.credentials.username,
+      password: this.credentials.password
+    }).subscribe(() => {
+      sessionStorage.setItem('token', btoa(this.credentials.username + ':' + this.credentials.password));
+      this.router.navigate(['']);
+    }, error => {
+      if (error.status == 409) {
+        alert("Een gebruiker met deze naam bestaat al.")
       } else {
-        alert("User creation failed.")
+        alert("Er ging iets mis, probeer het later nog eens.")
       }
     });
   }
