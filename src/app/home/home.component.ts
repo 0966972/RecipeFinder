@@ -1,23 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {Router} from "@angular/router";
+import {ListedRecipe} from '../model/listed-recipe';
+import {ListedRecipeService} from '../service/listed-recipe.service';
 
 @Component({
-  selector: 'home',
-  templateUrl: './home.component.html'
+    selector: 'home',
+    templateUrl: './home.component.html'
 })
 
 export class HomeComponent implements OnInit {
 
-  title = 'RecipeFinder';
+    recipes: ListedRecipe[];
 
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
-  }
+    constructor(private recipeService: ListedRecipeService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.recipeService.findAll().subscribe(data => {
+            this.recipes = data;
+        });
+    }
 }
