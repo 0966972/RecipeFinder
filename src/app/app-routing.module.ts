@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import {ProfileComponent} from "./profile/profile.component";
 import {RegisterComponent} from "./register/register.component";
 import {AdminComponent} from "./admin/admin.component";
+import {RecipeCreatorComponent} from "./recipe-creator/recipe-creator.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'admin', component: AdminComponent },
+  { path: 'recipe-creator', component: RecipeCreatorComponent },
   { path: '**', redirectTo: '' }
 ];
 
