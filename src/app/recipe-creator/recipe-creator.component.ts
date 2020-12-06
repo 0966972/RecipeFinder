@@ -26,11 +26,16 @@ export class RecipeCreatorComponent implements OnInit {
 
   CreateRecipe() {
     let url = 'http://localhost:8080/recipe';
+    let pictures = [{
+      name : this.model.pictures
+    }]
     let postData = {
       name: this.model.name,
       description: this.model.description,
-      instructions: this.model.instructions
+      instructions: this.model.instructions,
+      pictures
     };
+
 
     this.http.post<Observable<boolean>>(url, postData).subscribe(isValid => {
       if (isValid) {
