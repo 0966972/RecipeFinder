@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 
 
@@ -52,8 +52,10 @@ export class RecipeDetailsComponent implements OnInit {
     });
   }
 
-  ngOnInit() { this.routeSub = this.route.params.subscribe(params => {
-    this.id = params['id'];
-  });
-  this.showRecipe()}
+  ngOnInit() {
+    this.routeSub = this.route.params.subscribe(params => {
+      this.id = params['id'];
+    });
+    this.showRecipe()
+  }
 }

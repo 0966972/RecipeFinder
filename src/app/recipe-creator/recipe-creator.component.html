@@ -35,10 +35,10 @@
       <br>
       <label for="instructions">Instructions:</label>
       <input type="text" name="Name" [(ngModel)]="model.instructions" #name="ngModel" required/>
-<!--      <br>-->
-<!--      <br>-->
-<!--      <label for="photos">Photos:</label>-->
-<!--      <input type="file" name="photo"[(ngModel)]="model.pictures" #name="ngModel" required/>-->
+      <!-- <br>-->
+      <!-- <br>-->
+      <!-- <label for="photos">Photos:</label>-->
+      <!-- <input type="file" name="photo"[(ngModel)]="model.pictures" #name="ngModel" required/>-->
 
       <br>
       <br>
@@ -66,12 +66,14 @@
   * {
     font-family: Roboto;
   }
+
   html,
   body {
     background-image: url('assets/image/background.jpg');
     height: 100vh;
   }
-  .container_recipevalues{
+
+  .container_recipevalues {
     background-color: white;
   }
 
@@ -79,9 +81,12 @@
   #title, h1, h3, h5 {
     font-family: Pacifico;
   }
-  input{box-sizing:border-box}
-  .formfields
-  {
+
+  input {
+    box-sizing: border-box
+  }
+
+  .formfields {
     width: 100%;
     margin: 8px 0;
     padding: 16px 20px;
@@ -90,14 +95,17 @@
 
 
   }
-  label{
+
+  label {
     float: left;
   }
-  input{
+
+  input {
     float: right;
     width: 100%;
   }
-  .container_recipevalues{
+
+  .container_recipevalues {
     margin-top: 5px;
     border-radius: 5px;
     border: 1px solid lightgray;

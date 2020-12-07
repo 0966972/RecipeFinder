@@ -14,10 +14,12 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'admin', component: AdminComponent},
-  {path: 'recipe', children: [
-      { path: ':id', component: RecipeDetailsComponent }
-    ]},
-  { path: 'recipe-creator', component: RecipeCreatorComponent},
+  {
+    path: 'recipe', children: [
+      {path: ':id', component: RecipeDetailsComponent}
+    ]
+  },
+  {path: 'recipe-creator', component: RecipeCreatorComponent},
   {path: '**', redirectTo: ''}
 ];
 

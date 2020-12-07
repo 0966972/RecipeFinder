@@ -14,7 +14,7 @@
     <!-- <div class="col-6">-->
     <!-- <input class="form-control" placeholder="Ingredienten">-->
     <!-- </div>-->
-     <div class="col-6">
+    <div class="col-6">
       <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput" (change)="searchInputChanged()">
     </div>
   </div>
@@ -26,7 +26,7 @@
     <div class="col-9">
       <h5>{{ recipe.name }}</h5>
       <p>{{ recipe.description }}<br/>
-<!--         Simon Besseling | Voor {{ recipe.servings }} personen | 18 Ingredienten<br/>-->
+        <!-- Simon Besseling | Voor {{ recipe.servings }} personen | 18 Ingredienten<br/>-->
         <!--<i class="fa fa-star" style="color:gold;"></i>-->
         <!--<i class="fa fa-star" style="color:gold;"></i>-->
         <!--<i class="fa fa-star" style="color:gold;"></i>-->
@@ -36,18 +36,18 @@
     </div>
     <hr/>
   </div>
-  <hr />
+  <hr/>
 </div>
 </body>
 <style>
   @font-face {
     font-family: Pacifico;
-    src: url('Pacifico-Regular.ttf');
+    src: url('assets/font/Pacifico-Regular.ttf') format("truetype");
   }
 
   @font-face {
     font-family: Roboto;
-    src: url('Roboto-Regular.ttf');
+    src: url('assets/font/Roboto-Regular.ttf') format("truetype");
   }
 
   body {
@@ -57,15 +57,15 @@
     width: 100vw;
   }
 
-  *{
+  * {
     font-family: Roboto;
   }
 
-  h3, h5{
+  h3, h5 {
     font-family: Pacifico;
   }
 
-  a{
+  a {
     color: inherit;
   }
 </style>
