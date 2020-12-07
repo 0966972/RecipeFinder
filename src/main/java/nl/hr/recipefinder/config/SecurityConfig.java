@@ -1,62 +1,53 @@
 package nl.hr.recipefinder.config;
 
+import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
+
 import nl.hr.recipefinder.security.Role;
-//import nl.hr.recipefinder.service.UserDetailService;
-import nl.hr.recipefinder.service.UserDetailService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import nl.hr.recipefinder.service.SessionService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserDetailService userDetailService;
+  private final SessionService sessionService;
 
   @Bean
   protected AuthenticationProvider authenticationProvider(PasswordEncoder encoder) {
-      DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-      provider.setPasswordEncoder(encoder);
-      provider.setUserDetailsService(userDetailService);
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setPasswordEncoder(encoder);
+    provider.setUserDetailsService(sessionService);
 
-      return provider;
-  }
-
-  @Bean
-  protected PasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder();
+    return provider;
   }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) {
-      assert auth != null;
-      auth.authenticationProvider(authenticationProvider(passwordEncoder()));
+    assert auth != null;
+    auth.authenticationProvider(authenticationProvider(passwordEncoder()));
   }
 
-//  @Override
-//  protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-//      auth.inMemoryAuthentication()
-//            .withUser("user1").password(passwordEncoder().encode("minor")).roles("USER")
-//            .and()
-//            .withUser("user2").password(passwordEncoder().encode("minor")).roles("USER")
-//            .and()
-//            .withUser("admin1").password(passwordEncoder().encode("minor")).roles("ADMIN")
-//            .and()
-//            .withUser("admin2").password(passwordEncoder().encode("minor")).roles("ADMIN");
-//  }
+  @Bean
+  protected PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
   @Override
   protected void configure(HttpSecurity http)
@@ -64,19 +55,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
       .headers().frameOptions().disable()
       .and()
-      .csrf()
-      .disable()
-      .cors()
+      .cors().configurationSource(corsConfigurationSource())
+      .and()
+      .httpBasic()
       .and()
       .authorizeRequests()
-      .antMatchers("/index.html", "/", "/home", "/login", "/users", "/admin").permitAll()
-      .antMatchers("/swagger-ui", "/h2-console/**").permitAll()
-      .antMatchers("/user").permitAll()
-      //.antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+      .antMatchers("/admin/**", "/swagger-ui/**", "h2-console/**").hasRole(Role.ADMIN.name())
+      .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**").permitAll()
       .anyRequest().authenticated()
       .and()
-      .sessionManagement()
-      .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+      .csrf().ignoringAntMatchers("/user").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+  }
 
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    final CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(ImmutableList.of("*"));
+    configuration.setAllowedMethods(ImmutableList.of("HEAD",
+      "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    configuration.setAllowedHeaders(ImmutableList.of("*"));
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 }

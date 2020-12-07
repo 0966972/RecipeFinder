@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RecipeFinder</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<nav class="navbar navbar-light bg-light">
+  <a id="title" class="navbar-brand" routerLink="/">RecipeFinder</a>
+  <nav class="nav navbar-nav navbar-center" *ngIf="isAdmin">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/admin"><b>ADMIN</b></a>
+      </li>
+    </ul>
+  </nav>
+  <nav class="nav navbar-nav navbar-right">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" *ngIf="isLoggedIn">
+        <a routerLink="/profile"><b>{{username}}</b></a>
+        <a> | </a>
+        <a routerLink="/" (click)="logout()"><b>UITLOGGEN</b></a>
+      </li>
+      <li class="nav-item" *ngIf="!isLoggedIn">
+        <a routerLink="/login"><b>INLOGGEN</b></a>
+        <a> | </a>
+        <a routerLink="/register"><b>INSCHRIJVEN</b></a>
+      </li>
+    </ul>
+  </nav>
+</nav>
+<style>
+
+  @font-face {
+    font-family: Pacifico;
+    src: url('assets/font/Pacifico-Regular.ttf') format("truetype");
+  }
+
+  @font-face {
+    font-family: Roboto;
+    src: url('assets/font/Roboto-Regular.ttf') format("truetype");
+  }
+
+  * {
+    font-family: Roboto,serif;
+  }
+
+  #title {
+    font-family: Pacifico, serif;
+  }
+
+  h3, h5 {
+    font-family: Pacifico, serif;
+  }
+
+  .navbar {
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .2);
+    position: fixed;
+    width: 100%;
+  }
+
+  a {
+    color: inherit;
+  }
+
+</style>
 <router-outlet></router-outlet>
+
+
