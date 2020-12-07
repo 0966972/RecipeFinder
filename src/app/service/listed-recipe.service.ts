@@ -15,4 +15,9 @@ export class ListedRecipeService {
   public findAll(): Observable<ListedRecipe[]> {
     return this.http.get<ListedRecipe[]>(this.recipesUrl);
   }
+
+  public search(searchInput): Observable<ListedRecipe[]> {
+    let url = 'http://localhost:8080/recipe/search/' + searchInput;
+    return this.http.get<ListedRecipe[]>(url);
+  }
 }

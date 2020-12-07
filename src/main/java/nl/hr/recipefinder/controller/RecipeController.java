@@ -38,9 +38,9 @@ public class RecipeController {
   }
 
 
-  @GetMapping("/{name}/{description}")
-  public List<ListedRecipeDto> findRecipesByName(@PathVariable String name, @PathVariable String description) {
-    List<Recipe> recipes = recipeService.findRecipesByNameAndDescription(name, description);
+  @GetMapping("/search/{searchInput}")
+  public List<ListedRecipeDto> searchRecipes(@PathVariable String searchInput) {
+    List<Recipe> recipes = recipeService.findRecipesByNameAndDescription(searchInput, searchInput);
 
     return recipes.stream()
       .map((it) -> modelMapper.map(it, ListedRecipeDto.class))

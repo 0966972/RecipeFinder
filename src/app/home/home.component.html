@@ -4,11 +4,11 @@
     <!-- <div class="col-6">-->
     <!-- <input class="form-control" placeholder="Ingredienten">-->
     <!-- </div>-->
-    <!--        <div class="col-6">-->
-    <!--            <input class="form-control" placeholder="Naam & beschrijving">-->
-    <!--        </div>-->
+     <div class="col-6">
+      <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput" (change)="searchInputChanged()">
+    </div>
   </div>
-  <hr>
+  <hr/>
   <div *ngFor="let recipe of recipes" (click)="openRecipe(recipe.id)" class="row">
     <!--        <div class="col-3">-->
     <!--            <img src="background.jpg" width="250px">-->
@@ -24,5 +24,6 @@
         <!--<i class="fa fa-star" style="color:gray;"></i>-->
       </p>
     </div>
+    <hr/>
   </div>
 </div>

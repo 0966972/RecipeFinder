@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 export class HomeComponent implements OnInit {
 
   recipes: ListedRecipe[];
+  searchInput: ''
 
   constructor(
     private recipeService: ListedRecipeService,
@@ -26,5 +27,11 @@ export class HomeComponent implements OnInit {
 
   openRecipe(id: number) {
     this.router.navigate(['recipe/' + id])
+  }
+
+  searchInputChanged() {
+    this.recipeService.search(this.searchInput).subscribe(data => {
+      this.recipes = data;
+    });
   }
 }
