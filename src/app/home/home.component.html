@@ -9,7 +9,7 @@
     <!--        </div>-->
   </div>
   <hr>
-  <div *ngFor="let recipe of recipes" class="row">
+  <div *ngFor="let recipe of recipes" (click)="openRecipe(recipe.id)" class="row">
     <!--        <div class="col-3">-->
     <!--            <img src="background.jpg" width="250px">-->
     <!--        </div>-->

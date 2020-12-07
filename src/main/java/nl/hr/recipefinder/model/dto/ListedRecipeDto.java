@@ -10,6 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class ListedRecipeDto {
+  private Long id;
   private String name;
 
   private String description;
