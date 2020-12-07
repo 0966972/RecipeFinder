@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class RecipeFinderApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(RecipeFinderApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(RecipeFinderApplication.class, args);
+    }
 }
 
 

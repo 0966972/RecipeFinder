@@ -1,13 +1,14 @@
 package nl.hr.recipefinder.model.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nl.hr.recipefinder.security.Role;
-import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 
 @Data
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class User extends BaseEntity {
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
 
     private String password;

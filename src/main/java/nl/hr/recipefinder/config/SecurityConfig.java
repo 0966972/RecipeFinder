@@ -2,13 +2,10 @@ package nl.hr.recipefinder.config;
 
 import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
-
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.SessionService;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -50,8 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http)
-    throws Exception {
+  protected void configure(HttpSecurity http) throws Exception {
     http
       .headers().frameOptions().disable()
       .and()
@@ -62,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers("/admin/**", "/swagger-ui/**", "h2-console/**").hasRole(Role.ADMIN.name())
       .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**").permitAll()
+
       .anyRequest().authenticated()
       .and()
       .csrf().ignoringAntMatchers("/user/**", "/recipe/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());

@@ -1,6 +1,8 @@
 package nl.hr.recipefinder.model.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.hr.recipefinder.security.Role;
 
 import javax.persistence.EnumType;
@@ -10,10 +12,10 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
-  private long id;
-  private String username;
+    private long id;
+    private String username;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }
