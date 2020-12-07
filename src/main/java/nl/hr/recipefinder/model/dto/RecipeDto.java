@@ -5,7 +5,6 @@ import lombok.Setter;
 import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.model.entity.Picture;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +14,7 @@ public class RecipeDto {
   private String name;
   private String description;
   private String instructions;
+  private Integer servings;
 
   private Set<Ingredient> ingredients = new HashSet<>();
 

@@ -1,9 +1,7 @@
 package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.UserDto;
 import nl.hr.recipefinder.model.entity.Recipe;
-import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
@@ -39,6 +37,14 @@ public class RecipeController {
     }
     return listRecipeDto;
   }
+
+  @GetMapping("/{id}")
+  public RecipeDto Recipe(@PathVariable("id") Long id) {
+    Optional<Recipe> recipe = recipeService.findById(id);
+    RecipeDto dto = modelMapper.map(recipe, RecipeDto.class);
+    return dto;
+  }
+
   @PostMapping()
   public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);

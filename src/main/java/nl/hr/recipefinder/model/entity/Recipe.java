@@ -14,6 +14,7 @@ public class Recipe extends BaseEntity {
   private String name;
   private String description;
   private String instructions;
+  private Integer servings;
 
   @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable(

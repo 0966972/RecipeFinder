@@ -11,10 +11,11 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from "./register/register.component";
 import { AdminComponent } from "./admin/admin.component";
+import { RecipeDetailsComponent } from "./recipe-details/recipe-details.component";
 import { RecipeCreatorComponent } from './recipe-creator/recipe-creator.component';
 import {AuthService} from "./service/auth.service";
 import {RouterModule} from "@angular/router";
- 
+
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
 
@@ -34,15 +35,15 @@ export class XhrInterceptor implements HttpInterceptor {
     ProfileComponent,
     RegisterComponent,
     AdminComponent,
-    RecipeCreatorComponent
+    RecipeDetailsComponent,
+    RecipeCreatorComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    RouterModule
-
+    RouterModule,
   ],
   providers: [AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true}],
   bootstrap: [AppComponent]
