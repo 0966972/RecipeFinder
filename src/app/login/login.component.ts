@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../service/auth.service";
@@ -24,9 +24,5 @@ export class LoginComponent {
       }
     });
   }
-
-//   ngOnInit() {
-//     sessionStorage.setItem('token', '');
-//   }
 
 }

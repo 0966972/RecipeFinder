@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SessionService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findUserByUsername(username);
+  @Override
+  public UserDetails loadUserByUsername(String username) {
+    User user = userRepository.findUserByUsername(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("No user  with username: %s was found", username));
-        }
-
-        return new UserDetailsAdapter(user);
+    if (user == null) {
+      throw new UsernameNotFoundException(String.format("No user  with username: %s was found", username));
     }
+
+    return new UserDetailsAdapter(user);
+  }
 }

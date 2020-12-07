@@ -7,17 +7,17 @@ import java.util.Collection;
 import java.util.Collections;
 
 public enum Role {
-    USER(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))),
-    ADMIN(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+  USER(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))),
+  ADMIN(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
 
-    private final Collection<GrantedAuthority> authorities;
+  private final Collection<GrantedAuthority> authorities;
 
-    Role(Collection<GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
+  Role(Collection<GrantedAuthority> authorities) {
+    this.authorities = authorities;
+  }
 
-    public Collection<GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+  public Collection<GrantedAuthority> getAuthorities() {
+    return authorities;
+  }
 
 }

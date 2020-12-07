@@ -12,10 +12,10 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
-    private long id;
-    private String username;
+  private long id;
+  private String username;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
 }

@@ -23,63 +23,63 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
-        allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
+  allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-    private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
+  private final UserService userService;
+  private final ModelMapper modelMapper;
+  private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder;
+  @Autowired
+  public UserController(UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    this.userService = userService;
+    this.modelMapper = modelMapper;
+    this.passwordEncoder = passwordEncoder;
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+    try {
+      Optional<User> foundUser = userService.findUserById(id);
+
+      if (foundUser.isPresent())
+        return ResponseEntity.ok(modelMapper.map(foundUser.get(), UserResponseDto.class));
+
+      throw new HttpNotFoundError();
+    } catch (Exception e) {
+      throw new HttpNotFoundError();
     }
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
-        try {
-            Optional<User> foundUser = userService.findUserById(id);
-
-            if (foundUser.isPresent())
-                return ResponseEntity.ok(modelMapper.map(foundUser.get(), UserResponseDto.class));
-
-            throw new HttpNotFoundError();
-        } catch (Exception e) {
-            throw new HttpNotFoundError();
-        }
+  @GetMapping()
+  public ResponseEntity<List<UserResponseDto>> getUsers() {
+    try {
+      List<User> users = userService.findAll();
+      List<UserResponseDto> userDTOs = new ArrayList<>();
+      for (User user : users) {
+        userDTOs.add(modelMapper.map(user, UserResponseDto.class));
+      }
+      return new ResponseEntity<>(userDTOs, HttpStatus.OK);
+    } catch (Exception e) {
+      throw new HttpInternalServerError();
     }
+  }
 
-    @GetMapping()
-    public ResponseEntity<List<UserResponseDto>> getUsers() {
-        try {
-            List<User> users = userService.findAll();
-            List<UserResponseDto> userDTOs = new ArrayList<>();
-            for (User user : users) {
-                userDTOs.add(modelMapper.map(user, UserResponseDto.class));
-            }
-            return new ResponseEntity<>(userDTOs, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new HttpInternalServerError();
-        }
+  @PostMapping()
+  public ResponseEntity<User> createUser(@RequestBody UserRequestDto userRequestDto) {
+    User mappedUser = modelMapper.map(userRequestDto, User.class);
+    try {
+      if (mappedUser.getRole() == null) mappedUser.setRole(Role.USER);
+
+      mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
+      userService.save(mappedUser);
+
+      return new ResponseEntity<>(mappedUser, HttpStatus.CREATED);
+    } catch (DataIntegrityViolationException e) {
+      throw new HttpConflictError();
+    } catch (DataAccessException e) {
+      throw new HttpInternalServerError();
     }
-
-    @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody UserRequestDto userRequestDto) {
-        User mappedUser = modelMapper.map(userRequestDto, User.class);
-        try {
-            if (mappedUser.getRole() == null) mappedUser.setRole(Role.USER);
-
-            mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
-            userService.save(mappedUser);
-
-            return new ResponseEntity<>(mappedUser, HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException e) {
-            throw new HttpConflictError();
-        } catch (DataAccessException e) {
-            throw new HttpInternalServerError();
-        }
-    }
+  }
 }

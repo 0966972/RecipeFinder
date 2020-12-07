@@ -4,17 +4,17 @@ import {AppRoutingModule} from './app-routing.module';
 import {FormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 
-
-import { HomeComponent } from './home/home.component';
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { ProfileComponent } from './profile/profile.component';
-import { RegisterComponent } from "./register/register.component";
-import { AdminComponent } from "./admin/admin.component";
-import { RecipeDetailsComponent } from "./recipe-details/recipe-details.component";
-import { RecipeCreatorComponent } from './recipe-creator/recipe-creator.component';
+import {HomeComponent} from './home/home.component';
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
+import {ProfileComponent} from './profile/profile.component';
+import {RegisterComponent} from "./register/register.component";
+import {AdminComponent} from "./admin/admin.component";
+import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component";
+import {RecipeCreatorComponent} from './recipe-creator/recipe-creator.component';
 import {AuthService} from "./service/auth.service";
 import {RouterModule} from "@angular/router";
+import {ListedRecipeService} from "./service/listed-recipe.service";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -45,7 +45,10 @@ export class XhrInterceptor implements HttpInterceptor {
     HttpClientModule,
     RouterModule,
   ],
-  providers: [AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true}],
+  providers: [
+    ListedRecipeService,
+    AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

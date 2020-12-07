@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {ListedRecipe} from '../model/listed-recipe';
+import {ListedRecipeService} from '../service/listed-recipe.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -10,14 +10,28 @@ import {Router} from "@angular/router";
 
 export class HomeComponent implements OnInit {
 
-  title = 'RecipeFinder';
+  recipes: ListedRecipe[];
+  searchInput: ''
 
   constructor(
-    private http: HttpClient,
-    private router: Router
+    private recipeService: ListedRecipeService,
+    private router: Router,
   ) {
   }
 
   ngOnInit() {
+    this.recipeService.findAll().subscribe(data => {
+      this.recipes = data;
+    });
+  }
+
+  openRecipe(id: number) {
+    this.router.navigate(['recipe/' + id])
+  }
+
+  searchInputChanged() {
+    this.recipeService.search(this.searchInput).subscribe(data => {
+      this.recipes = data;
+    });
   }
 }

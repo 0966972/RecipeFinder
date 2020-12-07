@@ -12,7 +12,9 @@ import java.util.Set;
 @Setter
 public class Recipe extends BaseEntity {
   private String name;
+  @Column(columnDefinition = "TEXT")
   private String description;
+  @Column(columnDefinition = "TEXT")
   private String instructions;
   private Integer servings;
 
