@@ -13,42 +13,43 @@ export class ProfileComponent implements OnInit {
   model: any = {};
   loading: any;
 
-  id: bigint;
-  userName: string;
-  role: string;
+  user = {
+    id: 0,
+    username: '',
+    role: '',
+  }
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    let url = 'http://localhost:8080/user';
-    let token : string = sessionStorage.getItem('token');
+    let url = 'http://localhost:8080/session/login';
+    let token: string = sessionStorage.getItem('token');
     if (token != null && token != '') {
       let headers: HttpHeaders = new HttpHeaders({
         'Authorization': 'Basic ' + token
       });
 
 
-      let options = { headers: headers };
-      this.http.get<Observable<Object>>(url, options).
-      subscribe(principal => {
-          this.userName = principal['username'];
-          this.id = principal['id'];
-          this.role = principal['role'];
+      let options = {headers: headers};
+      this.http.get<Observable<Object>>(url, options).subscribe(response => {
+          this.user.username = response['name'];
+          this.user.id = response['principal']['user']['id'];
+          this.user.role = response['principal']['user']['role'];
         },
         error => {
-          if(error.status == 401)
-            alert('Unauthorized, unable to retrieve user info.');
+          if (error.status == 401)
+            alert('U bent niet geautoriseerd om deze pagina te bekijken.');
           this.router.navigate(['']);
         }
       );
-    }
-    else{
+    } else {
       this.router.navigate(['/login']);
-      alert('Please login to view your profile.');
+      alert('U dient ingelogd te zijn om uw profiel te bekijken.');
     }
   }
 }

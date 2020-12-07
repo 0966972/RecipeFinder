@@ -9,51 +9,53 @@ import {Observable} from "rxjs";
 })
 
 export class AdminComponent implements OnInit {
-
-  model: any = {};
   loading: any;
+  isAdmin = false;
 
-  id: bigint;
-  userName: string;
-  role: string;
+  user = {
+    id: 0,
+    username: '',
+    role: '',
+  }
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient
-  ) { }
+  ) {
+  }
+
+  get isContentVisible(): boolean {
+    return this.isAdmin;
+  }
 
   ngOnInit() {
-    let url = 'http://localhost:8080/user';
-    let token : string = sessionStorage.getItem('token');
-    if (token != null && token != '') {
-      let headers: HttpHeaders = new HttpHeaders({
-        'Authorization': 'Basic ' + token
-      });
+    let token: string = sessionStorage.getItem('token');
+    let url = 'http://localhost:8080/session/login';
+    let headers: HttpHeaders = new HttpHeaders({
+      'Authorization': 'Basic ' + token
+    });
 
+    let options = {headers: headers};
+    this.http.get<Observable<Object>>(url, options).subscribe(response => {
+        this.user.username = response['name'];
+        this.user.id = response['principal']['user']['id'];
+        this.user.role = response['principal']['user']['role'];
 
-      let options = { headers: headers };
-      this.http.get<Observable<Object>>(url, options).
-      subscribe(principal => {
-          this.userName = principal['username'];
-          this.id = principal['id'];
-          this.role = principal['role'];
-
-          if (this.role == "USER"){
-            this.router.navigate(['']);
-            alert('Please login as an admin to view this page.');
-          }
-        },
-        error => {
-          if(error.status == 401)
-            alert('Unauthorized, unable to retrieve user info.');
+        if (this.user.role == "USER") {
+          alert('U bent niet geautoriseerd om deze pagina te bekijken.');
           this.router.navigate(['']);
+          this.isAdmin = false;
         }
-      );
-    }
-    else{
-      this.router.navigate(['/login']);
-      alert('Please login as an admin to view this page.');
-    }
+        this.isAdmin = true;
+      },
+      error => {
+        if (error.status == 401) {
+          alert('U bent niet geautoriseerd om deze pagina te bekijken.');
+          this.router.navigate(['']);
+          this.isAdmin = false;
+        }
+      }
+    );
   }
 }
