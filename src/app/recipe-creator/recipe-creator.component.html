@@ -17,7 +17,7 @@
 </nav>
 
 <h1>Add Recipe</h1>
-<form name="CreateRipe" (ngSubmit)="f.form.valid && CreateRecipe()" #f="ngForm" novalidate>
+<form name="CreateRipe" (ngSubmit)="f.form.valid && CreateRecipe()" #f="ngForm" novalidate>ø
 
   <div class="container_recipevalues">
     <div class="formfields">
@@ -50,79 +50,31 @@
   </div>
 </form>
 
-<!--  <h3>Geurige Kappertjes, Romige Whiskeysaus etc...</h3>-->
-<!--  <div class="cont">-->
-<!--    <img src="recipe.jpg"width="1140px">-->
-<!--    <div class="top-text-block">-->
-<!--      <b>Toevoegen aan lijst | Gebruiker Rapporteren</b>-->
-<!--    </div>-->
-<!--    <div class="bottom-text-block">-->
-<!--      <b>Simon Besseling | Voor 5 personen | 18 Ingredienten-->
-<!--        <span style="float: right">-->
-<!--                        <i class="fa fa-star" style="color:gold;"></i>-->
-<!--                        <i class="fa fa-star" style="color:gold;"></i>-->
-<!--                        <i class="fa fa-star" style="color:gold;"></i>-->
-<!--                        <i class="fa fa-star" style="color:gold;"></i>-->
-<!--                        <i class="fa fa-star" style="color:gray;"></i>-->
-<!--                      </span>-->
-<!--      </b>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="row">-->
-<!--    <div class="col-4">-->
-<!--      <h5>Ingredienten</h5>-->
-<!--      <ul>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--        <li>Ingredient</li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--    <div class="col-8">-->
-<!--      <h5>Bereidingswijze</h5>-->
-<!--      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
-<!--      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <h5>Reviews</h5>-->
-<!--  <hr style="margin-top: 0px;" />-->
-<!--  <div class="row">-->
-<!--    <div class="col-3">-->
-<!--      <img src="recipe.jpg" width="250px">-->
-<!--    </div>-->
-<!--    <div class="col-9">-->
-<!--      <h5>Afschuwelijk</h5>-->
-<!--      <p>Echt niet te koken <br />-->
-<!--        Simon Besseling | 2 recepten<br />-->
-<!--        <i class="fa fa-star" style="color:gold;"></i>-->
-<!--        <i class="fa fa-star" style="color:gray;"></i>-->
-<!--        <i class="fa fa-star" style="color:gray;"></i>-->
-<!--        <i class="fa fa-star" style="color:gray;"></i>-->
-<!--        <i class="fa fa-star" style="color:gray;"></i>-->
-<!--      </p>-->
-<!--    </div>-->
-<!--  </div>-->
 
 </body>
 <style>
   @font-face {
     font-family: Pacifico;
-    src: url('Pacifico-Regular.ttf');
+    src: url('assets/font/Pacifico-Regular.ttf') format("truetype");
   }
 
   @font-face {
     font-family: Roboto;
-    src: url('Roboto-Regular.ttf');
+    src: url('assets/font/Roboto-Regular.ttf') format("truetype");
   }
 
   * {
     font-family: Roboto;
   }
+  html,
+  body {
+    background-image: url('assets/image/background.jpg');    
+    height: 100vh;
+  }
+  .container_recipevalues{
+    background-color: white;
+  }
+  
 
   #title, h1, h3, h5 {
     font-family: Pacifico;
@@ -134,7 +86,7 @@
     margin: 8px 0;
     padding: 16px 20px;
     border-radius: 5px;
-    border: 1px solid gray;
+    border: 0px solid gray;
 
 
   }
