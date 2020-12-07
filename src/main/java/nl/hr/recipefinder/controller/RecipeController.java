@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
@@ -36,6 +37,14 @@ public class RecipeController {
     }
     return listRecipeDto;
   }
+
+  @GetMapping("/{id}")
+  public RecipeDto Recipe(@PathVariable("id") Long id) {
+    Optional<Recipe> recipe = recipeService.findById(id);
+    RecipeDto dto = modelMapper.map(recipe, RecipeDto.class);
+    return dto;
+  }
+
   @PostMapping()
   public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
