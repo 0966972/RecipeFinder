@@ -3,18 +3,27 @@ package nl.hr.recipefinder.model.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 public class Recipe extends BaseEntity {
   private String name;
-  private String desription;
+  private String description;
   private String instructions;
-  @OneToMany
-  private List<Picture> pictures;
+
+  @ManyToMany(cascade = {CascadeType.ALL})
+  @JoinTable(
+    name = "Recipe_Ingredient",
+    joinColumns = {@JoinColumn(name = "recipe_id")},
+    inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
+  )
+  Set<Ingredient> ingredients = new HashSet<>();
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "recipe_id")
+  private Set<Picture> pictures = new HashSet<>();
 }
