@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;≥
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "localhost:4200",
@@ -26,6 +26,7 @@ public class RecipeController {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
   }
+
 
   @GetMapping()
   public List<ListedRecipeDto> getRecipes() {

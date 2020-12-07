@@ -1,4 +1,4 @@
 export class ListedRecipe {
-    name: String
-    description: String
+  name: String
+  description: String
 }

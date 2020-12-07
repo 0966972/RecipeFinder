@@ -1,28 +1,28 @@
 <div class="container">
-    <h5>Filter recepten</h5>
-    <div class="row">
-        <!-- <div class="col-6">-->
-        <!-- <input class="form-control" placeholder="Ingredienten">-->
-        <!-- </div>-->
-<!--        <div class="col-6">-->
-<!--            <input class="form-control" placeholder="Naam & beschrijving">-->
-<!--        </div>-->
+  <h5>Filter recepten</h5>
+  <div class="row">
+    <!-- <div class="col-6">-->
+    <!-- <input class="form-control" placeholder="Ingredienten">-->
+    <!-- </div>-->
+    <!--        <div class="col-6">-->
+    <!--            <input class="form-control" placeholder="Naam & beschrijving">-->
+    <!--        </div>-->
+  </div>
+  <hr>
+  <div *ngFor="let recipe of recipes" class="row">
+    <!--        <div class="col-3">-->
+    <!--            <img src="background.jpg" width="250px">-->
+    <!--        </div>-->
+    <div class="col-9">
+      <h5>{{ recipe.name }}</h5>
+      <p>{{ recipe.description }}<br/>
+        <!-- Simon Besseling | Voor 5 personen | 18 Ingredienten<br/>-->
+        <!--<i class="fa fa-star" style="color:gold;"></i>-->
+        <!--<i class="fa fa-star" style="color:gold;"></i>-->
+        <!--<i class="fa fa-star" style="color:gold;"></i>-->
+        <!--<i class="fa fa-star" style="color:gold;"></i>-->
+        <!--<i class="fa fa-star" style="color:gray;"></i>-->
+      </p>
     </div>
-    <hr>
-    <div *ngFor="let recipe of recipes" class="row">
-<!--        <div class="col-3">-->
-<!--            <img src="background.jpg" width="250px">-->
-<!--        </div>-->
-        <div class="col-9">
-            <h5>{{ recipe.name }}</h5>
-            <p>{{ recipe.description }}<br/>
-                <!-- Simon Besseling | Voor 5 personen | 18 Ingredienten<br/>-->
-                <!--<i class="fa fa-star" style="color:gold;"></i>-->
-                <!--<i class="fa fa-star" style="color:gold;"></i>-->
-                <!--<i class="fa fa-star" style="color:gold;"></i>-->
-                <!--<i class="fa fa-star" style="color:gold;"></i>-->
-                <!--<i class="fa fa-star" style="color:gray;"></i>-->
-            </p>
-        </div>
-    </div>
+  </div>
 </div>

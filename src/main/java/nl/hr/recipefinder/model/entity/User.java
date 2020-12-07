@@ -17,13 +17,13 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 public class User extends BaseEntity {
 
-    @Column(unique = true)
-    private String username;
+  @Column(unique = true)
+  private String username;
 
-    private String password;
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
 }
 

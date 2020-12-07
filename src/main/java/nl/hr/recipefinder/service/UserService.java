@@ -11,30 +11,30 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  @Autowired
+  public UserService(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    public User findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
-    }
+  public User findUserByUsername(String username) {
+    return userRepository.findUserByUsername(username);
+  }
 
-    public User findUserByUsernameAndPassword(String username, String password) {
-        return userRepository.findUserByUsernameAndPassword(username, password);
-    }
+  public User findUserByUsernameAndPassword(String username, String password) {
+    return userRepository.findUserByUsernameAndPassword(username, password);
+  }
 
-    public Optional<User> findUserById(Long id) {
-        return userRepository.findById(id);
-    }
+  public Optional<User> findUserById(Long id) {
+    return userRepository.findById(id);
+  }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
+  public List<User> findAll() {
+    return userRepository.findAll();
+  }
 
-    public void save(User user) {
-        userRepository.save(user);
-    }
+  public void save(User user) {
+    userRepository.save(user);
+  }
 }

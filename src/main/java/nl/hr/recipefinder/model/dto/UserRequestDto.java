@@ -12,9 +12,9 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequestDto {
-    private String username;
-    private String password;
+  private String username;
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+  @Enumerated(EnumType.STRING)
+  private Role role;
 }

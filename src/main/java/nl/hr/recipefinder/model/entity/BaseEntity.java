@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public @Data
 class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @CreationTimestamp
-    private LocalDateTime createdOn;
+  @CreationTimestamp
+  private LocalDateTime createdOn;
 
-    @UpdateTimestamp
-    private LocalDateTime lastModifiedOn;
+  @UpdateTimestamp
+  private LocalDateTime lastModifiedOn;
 }
