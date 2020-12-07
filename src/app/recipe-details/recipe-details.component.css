@@ -21,6 +21,10 @@
   width: 1140px;
 }
 
+.container{
+  padding-top: 80px;
+}
+
 .top-text-block {
   padding: 10px;
   position: absolute;

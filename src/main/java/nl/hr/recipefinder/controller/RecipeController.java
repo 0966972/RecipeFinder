@@ -50,7 +50,7 @@ public class RecipeController {
   @GetMapping("/{id}")
   public RecipeDto Recipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    return modelMapper.map(recipe, RecipeDto.class);
+    return modelMapper.map(recipe.get(), RecipeDto.class);
   }
 
   @PostMapping()
