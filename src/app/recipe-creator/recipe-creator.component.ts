@@ -26,15 +26,15 @@ export class RecipeCreatorComponent implements OnInit {
 
   CreateRecipe() {
     let url = 'http://localhost:8080/recipe';
-    let pictures = [{
-      name : this.model.pictures,
-      content : this.model.pictures.binaryType
-    }]
+    // let pictures = [{
+    //   name : this.model.pictures,
+    //   content : this.model.pictures.binaryType
+    // }]
     let postData = {
       name: this.model.name,
       description: this.model.description,
-      instructions: this.model.instructions,
-      pictures
+      instructions: this.model.instructions
+      // pictures
     };
 
 
