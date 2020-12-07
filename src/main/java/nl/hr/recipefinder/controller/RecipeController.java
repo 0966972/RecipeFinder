@@ -1,9 +1,7 @@
 package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.UserDto;
 import nl.hr.recipefinder.model.entity.Recipe;
-import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})

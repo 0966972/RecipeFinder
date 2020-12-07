@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 @Component({
@@ -30,15 +30,16 @@ export class RecipeCreatorComponent implements OnInit {
     //   name : this.model.pictures,
     //   content : this.model.pictures.binaryType
     // }]
+    let token: string = '' + sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
     let postData = {
       name: this.model.name,
       description: this.model.description,
       instructions: this.model.instructions
-      // pictures
     };
-
-
-    this.http.post<Observable<boolean>>(url, postData).subscribe(isValid => {
+    this.http.post<Observable<boolean>>(url, postData, {headers: headers}).subscribe(isValid => {
       if (isValid) {
         console.log(postData);
         this.router.navigate(['']);

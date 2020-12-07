@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**").permitAll()
       .anyRequest().authenticated()
       .and()
-      .csrf().ignoringAntMatchers("/user").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+      .csrf().ignoringAntMatchers("/user/**", "/recipe/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
   }
 
   @Bean

@@ -18,6 +18,13 @@
       </li>
     </ul>
   </nav>
+  <nav class="nav navbar-nav navbar-center" *ngIf="isLoggedIn">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/recipe-creator"><b>Nieuw Recept</b></a>
+      </li>
+    </ul>
+  </nav>
   <nav class="nav navbar-nav navbar-right">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" *ngIf="isLoggedIn">
