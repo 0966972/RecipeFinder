@@ -186,12 +186,14 @@ class UserControllerTests {
     User user = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
+    Mockito.when(userService.save(user)).thenReturn(user);
 
     // act
     ResponseEntity<User> result = userController.createUser(userDto);
+    User resultUser = result.getBody();
 
     // assert
-    assertThat(result.getBody()).isInstanceOf(User.class);
+    assertThat(resultUser).isInstanceOf(User.class);
 
     verify(userService, times(1)).save(user);
     verify(modelMapper, times(1)).map(userDto, User.class);
@@ -204,12 +206,15 @@ class UserControllerTests {
     User userForSaving = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", null);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
+    Mockito.when(userService.save(user)).thenReturn(user);
 
     // act
     ResponseEntity<User> result = userController.createUser(userDto);
+    User resultUser = result.getBody();
+    Role resultUserRole = resultUser.getRole();
 
     // assert
-    assertThat(result.getBody().getRole()).isEqualTo(Role.USER);
+    assertThat(resultUserRole).isEqualTo(Role.USER);
 
     verify(modelMapper, times(1)).map(userDto, User.class);
   }
