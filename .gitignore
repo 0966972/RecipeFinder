@@ -77,3 +77,8 @@ testem.log
 .DS_Store
 Thumbs.db
 node/node_modules/
+
+
+# Other
+*.mv.db
+*.trace.db
