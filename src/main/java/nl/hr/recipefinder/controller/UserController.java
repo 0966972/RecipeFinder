@@ -73,9 +73,9 @@ public class UserController {
       if (mappedUser.getRole() == null) mappedUser.setRole(Role.USER);
 
       mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
-      userService.save(mappedUser);
+      User savedUser = userService.save(mappedUser);
 
-      return new ResponseEntity<>(mappedUser, HttpStatus.CREATED);
+      return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
       throw new HttpConflictError();
     } catch (DataAccessException e) {

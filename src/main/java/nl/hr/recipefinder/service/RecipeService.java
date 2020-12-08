@@ -29,7 +29,7 @@ public class RecipeService {
     return recipeRepository.findById(id);
   }
 
-  public void save(Recipe recipe) {
-    recipeRepository.save(recipe);
+  public Recipe save(Recipe recipe) {
+    return recipeRepository.save(recipe);
   }
 }
