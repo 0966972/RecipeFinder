@@ -22,13 +22,8 @@ public class Recipe extends BaseEntity {
   private String instructions;
   private Integer servings;
 
-  @ManyToMany(cascade = {CascadeType.ALL})
-  @JoinTable(
-    name = "Recipe_Ingredient",
-    joinColumns = {@JoinColumn(name = "recipe_id")},
-    inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
-  )
-  List<Ingredient> ingredients = new ArrayList<>();
+  @OneToMany(mappedBy = "recipe")
+  private Set<RecipeIngredient> ingredients = new HashSet<>();
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
