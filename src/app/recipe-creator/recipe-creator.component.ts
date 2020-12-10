@@ -23,6 +23,23 @@ export class RecipeCreatorComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectedFile: File = null;
+
+  onFileSelected(event) {
+    this.selectedFile = <File>event.target.files[0];
+  }
+
+  onUpload(){
+    let url = 'http://localhost:8080/picture';
+    const fd = new FormData();
+    console.log(this.selectedFile);
+    console.log(this.selectedFile.name);
+    fd.append('file',this.selectedFile, this.selectedFile.name);
+    console.log(fd);
+    this.http.post(url,fd).subscribe(res => {
+      console.log(res);
+    });
+  }
 
   CreateRecipe() {
     let url = 'http://localhost:8080/recipe';
