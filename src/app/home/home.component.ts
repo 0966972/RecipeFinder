@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ListedRecipe} from '../model/listed-recipe';
-import {ListedRecipeService} from '../service/listed-recipe.service';
+import {RecipeService} from '../service/recipe.service';
 import {Router} from "@angular/router";
 
 @Component({
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   searchInput: ''
 
   constructor(
-    private recipeService: ListedRecipeService,
+    private recipeService: RecipeService,
     private router: Router,
   ) {
   }
