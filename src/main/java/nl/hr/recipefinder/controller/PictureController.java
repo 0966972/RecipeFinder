@@ -1,19 +1,15 @@
 package nl.hr.recipefinder.controller;
 
+import nl.hr.recipefinder.model.dto.PictureDto;
 import nl.hr.recipefinder.model.entity.Picture;
-import nl.hr.recipefinder.repository.PictureRepository;
 import nl.hr.recipefinder.service.PictureService;
-import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.util.StreamUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,27 +30,22 @@ public class PictureController {
     this.modelMapper = modelMapper;
   }
 
-  @PostMapping()
-  public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-    String message = "";
-    try {
-      pictureService.storePicture(file);
-
-      message = "Uploaded the file successfully: " + file.getOriginalFilename();
-      return ResponseEntity.status(HttpStatus.OK).body(message);
-    } catch (Exception e) {
-      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-    }
-  }
 
   @GetMapping()
-  public List<Picture> donwloadFiles() {
-    return pictureService.getPictures();
+  public List<PictureDto> donwloadFiles() {
+    List<Picture> pictures = pictureService.getPictures();
+    List<PictureDto> pictureDtos = new ArrayList<>();
+    for (Picture picture : pictures) {
+      pictureDtos.add(modelMapper.map(picture, PictureDto.class));
+    }
+    return pictureDtos;
   }
+
   @GetMapping("/{id}")
-  public Picture donwloadFile(@PathVariable long id) {
-    return pictureService.getPicture(id);
+  public PictureDto donwloadFile(@PathVariable long id) {
+    Picture picture = pictureService.getPicture(id);
+    PictureDto mappedpicture = modelMapper.map(picture, PictureDto.class);
+    return mappedpicture;
   }
 
   @GetMapping("/{id}/show")
@@ -65,7 +56,6 @@ public class PictureController {
       .contentType(MediaType.IMAGE_JPEG)
       .body(imgFile.getContent());
   }
-
 
 
 }

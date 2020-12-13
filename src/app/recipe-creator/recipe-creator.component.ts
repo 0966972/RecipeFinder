@@ -24,40 +24,43 @@ export class RecipeCreatorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectedFile: File = null;
-  test: string
+  selectedFile1: File = null;
+  picture1: string
+  selectedFile2: File = null;
+  picture2: string
 
-  onFileSelected(event) {
-    this.selectedFile = <File>event.target.files[0];
-  }
-  handleUpload(event) {
+  handleUpload1(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
+    this.selectedFile1 = <File>event.target.files[0];
     reader.readAsDataURL(file);
     reader.onload = () => {
       console.log(reader.result);
-      this.test = reader.result.toString();
+      this.picture1 = reader.result.toString();
+    };
+  }
+  handleUpload2(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    this.selectedFile2 = <File>event.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      console.log(reader.result);
+      this.picture2 = reader.result.toString();
     };
   }
 
 
-  onUpload(){
-    let url = 'http://localhost:8080/picture';
-    const fd = new FormData();
-    console.log(this.selectedFile);
-    console.log(this.selectedFile.name);
-    fd.append('file',this.selectedFile, this.selectedFile.name);
-    console.log(fd);
-    this.http.post(url,fd).subscribe(res => {
-      console.log(res);
-    });
-  }
-
   CreateRecipe() {
     let url = 'http://localhost:8080/recipe';
     let pictures = [{
-      name : 'test',
-      content : this.test.split(',')[1]
+      name : this.selectedFile1.name,
+      type : this.selectedFile1.type,
+      content : this.picture1.split(',')[1]
+    },{
+      name : this.selectedFile2.name,
+      type : this.selectedFile2.type,
+      content : this.picture2.split(',')[1]
     }]
     let token: string = '' + sessionStorage.getItem('token');
     const headers = new HttpHeaders({

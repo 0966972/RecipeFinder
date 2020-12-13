@@ -35,24 +35,28 @@
       <br>
       <label for="instructions">Instructions:</label>
       <input type="text" name="Name" [(ngModel)]="model.instructions" #name="ngModel" required/>
-      <!-- <br>-->
-      <!-- <br>-->
-      <!-- <label for="photos">Photos:</label>-->
-      <!-- <input type="file" name="photo"[(ngModel)]="model.pictures" #name="ngModel" required/>-->
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <label>Choose images to upload (PNG, JPG)</label>
+      <input type="file" (change)="handleUpload1($event)">
+      <br>
+      <br>
+      <br>
+      <input type="file" (change)="handleUpload2($event)">
+      <br>
+      <br>
 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <button [disabled]="loading">Opslaan</button>
     </div>
   </div>
 </form>
 
-<h1>Image Uploading Module</h1>
-<input type="file" (change)="handleUpload($event)">
-<button type="button" (click)="onUpload()">Upload</button>
+<!--<h1>Image Uploading Module</h1>-->
+<!--<input type="file" (change)="handleUpload($event)">-->
+<!--<button type="button" (click)="onUpload()">Upload</button>-->
 
 
 
