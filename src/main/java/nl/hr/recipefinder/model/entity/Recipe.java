@@ -23,7 +23,7 @@ public class Recipe extends BaseEntity {
   private Integer servings;
 
   @OneToMany(mappedBy = "recipe")
-  private Set<RecipeIngredient> ingredients = new HashSet<>();
+  private List<RecipeIngredient> ingredients = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")

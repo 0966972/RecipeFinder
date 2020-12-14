@@ -5,8 +5,8 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +18,5 @@ public class Ingredient extends BaseEntity {
 
   @JsonIgnore
   @OneToMany(mappedBy = "ingredient")
-  private Set<RecipeIngredient> recipes = new HashSet<>();
+  private List<RecipeIngredient> recipes = new ArrayList<>();
 }
