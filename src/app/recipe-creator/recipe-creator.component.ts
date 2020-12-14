@@ -7,7 +7,7 @@ import {toBase64String} from "@angular/compiler/src/output/source_map";
 @Component({
   selector: 'app-recipe-creator',
   templateUrl: './recipe-creator.component.html',
-  // styleUrls: ['./recipe-creator.component.css']
+  styleUrls: ['./recipe-creator.component.css']
 })
 export class RecipeCreatorComponent implements OnInit {
   model: any = {};
@@ -18,6 +18,18 @@ export class RecipeCreatorComponent implements OnInit {
     private router: Router,
     private http: HttpClient
   ) {
+  }
+
+  public steps: any[] = [{
+    number: 1,
+    details: ''
+  }];
+
+  addStep() {
+    this.steps.push({
+      number: this.steps.length + 1,
+      details: '',
+    });
   }
 
 
@@ -70,7 +82,8 @@ export class RecipeCreatorComponent implements OnInit {
       name: this.model.name,
       description: this.model.description,
       instructions: this.model.instructions,
-      pictures
+      pictures: pictures,
+      steps: this.steps
     };
     this.http.post<Observable<boolean>>(url, postData, {headers: headers}).subscribe(isValid => {
       if (isValid) {

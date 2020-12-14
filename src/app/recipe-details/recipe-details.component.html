@@ -29,7 +29,7 @@
           <p>{{recipe.instructions}}</p>
           <h5>Stappen</h5>
           <ul *ngFor="let step of recipe.steps; let i = index;">
-            <li><b>{{i+1}}.</b> {{step}}</li>
+            <li><b>{{step.number}}.</b> {{step.details}}</li>
           </ul>
         </div>
       </div>
