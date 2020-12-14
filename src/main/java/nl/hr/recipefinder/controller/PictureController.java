@@ -2,6 +2,7 @@ package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.PictureDto;
 import nl.hr.recipefinder.model.entity.Picture;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.service.PictureService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -43,20 +45,22 @@ public class PictureController {
 
   @GetMapping("/{id}")
   public PictureDto donwloadFile(@PathVariable long id) {
-    Picture picture = pictureService.getPicture(id);
-    PictureDto mappedpicture = modelMapper.map(picture, PictureDto.class);
-    return mappedpicture;
+    Optional<Picture> picture = pictureService.getPicture(id);
+    if (picture.isPresent()) return modelMapper.map(picture, PictureDto.class);
+    else throw new HttpNotFoundError();
   }
 
   @GetMapping("/{id}/show")
   public ResponseEntity<byte[]> showPicture(@PathVariable long id) {
-    var imgFile = pictureService.getPicture(id);
-    return ResponseEntity.
-      ok()
-      .contentType(MediaType.IMAGE_JPEG)
-      .body(imgFile.getContent());
+    Optional<Picture> picture = pictureService.getPicture(id);
+    var a = pictureService.getPicture(id).get();
+    if (picture.isPresent())
+      return ResponseEntity.
+        ok()
+        .contentType(MediaType.IMAGE_JPEG)
+        .body(a.getContent());
+    else throw new HttpNotFoundError();
   }
-
 
 }
 

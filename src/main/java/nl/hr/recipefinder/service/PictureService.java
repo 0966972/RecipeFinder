@@ -32,8 +32,8 @@ public class PictureService {
     return pictureRepository.findAll();
   }
 
-  public Picture getPicture(long id){
-    return pictureRepository.findById(id).get();
+  public Optional<Picture> getPicture(long id){
+    return pictureRepository.findById(id);
   }
 }
 
