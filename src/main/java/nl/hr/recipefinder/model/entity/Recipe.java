@@ -4,9 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -22,7 +20,7 @@ public class Recipe extends BaseEntity {
   private String instructions;
   private Integer servings;
 
-  @OneToMany(mappedBy = "recipe")
+  @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
   private List<RecipeIngredient> ingredients = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL)

@@ -1,8 +1,8 @@
 package nl.hr.recipefinder.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.List;
 public class Ingredient extends BaseEntity {
   private String name;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "ingredient")
+  @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
   private List<RecipeIngredient> recipes = new ArrayList<>();
 }
