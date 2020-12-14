@@ -1,6 +1,8 @@
 package nl.hr.recipefinder.model.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.hr.recipefinder.model.entity.Picture;
 
 import java.util.ArrayList;
