@@ -1,15 +1,17 @@
 package nl.hr.recipefinder.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Recipe extends BaseEntity {
   private String name;
   @Column(columnDefinition = "TEXT")
@@ -24,9 +26,9 @@ public class Recipe extends BaseEntity {
     joinColumns = {@JoinColumn(name = "recipe_id")},
     inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
   )
-  Set<Ingredient> ingredients = new HashSet<>();
+  List<Ingredient> ingredients = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
-  private Set<Picture> pictures = new HashSet<>();
+  private List<Picture> pictures = new ArrayList<>();
 }

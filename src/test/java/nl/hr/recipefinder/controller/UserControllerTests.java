@@ -55,7 +55,6 @@ class UserControllerTests {
     long input = 5000;
     Mockito.when(userService.findUserById(input)).thenReturn(Optional.empty());
 
-
     try {
       // act
       userController.getUser(input);
@@ -181,7 +180,7 @@ class UserControllerTests {
   }
 
   @Test
-  void createUser_whenUserIsSaved_thenReturnsOKNewUser() {
+  void createUser_whenUserIsSaved_thenReturnsNewUser() {
     // arrange
     User user = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);

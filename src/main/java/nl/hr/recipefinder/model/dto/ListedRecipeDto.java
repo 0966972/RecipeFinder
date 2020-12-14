@@ -1,14 +1,16 @@
 package nl.hr.recipefinder.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import nl.hr.recipefinder.model.entity.Picture;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ListedRecipeDto {
   private Long id;
   private String name;
@@ -16,5 +18,5 @@ public class ListedRecipeDto {
   private String description;
   private Integer servings;
 
-  private Set<Picture> pictures = new HashSet<>();
+  private List<Picture> pictures = new ArrayList<>();
 }
