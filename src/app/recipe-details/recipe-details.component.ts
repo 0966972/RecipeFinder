@@ -83,8 +83,19 @@ export class RecipeDetailsComponent implements OnInit {
       "\n\nEen kneepje limoensap is ook erg lekker.";
     stub.servings = 4;
     stub.creator = "Bentley";
-    stub.ingredients = [["400g", "gemengde paddestoelen"], [ "1", "rode ui"], ["2", "tenen knoflook"], ["4", "zilveruitjes"], ["2", "cornichons"],
-      ["4", "takjes verse badpeterselie"], ["", "olijfolie"], ["1 el", "kappertjes"], ["50 ml", "whisky"], ["", "gerookte-parikapoeder"], ["80g", "demi creme fraiche"]];
+    stub.ingredients = [
+      {measurement: "400g", name: "gemengde paddestoelen"},
+      {measurement: "1", name: "rode ui"},
+      {measurement: "2", name: "tenen knoflook"},
+      {measurement: "4", name: "zilveruitjes"},
+      {measurement: "2", name: "cornichons"},
+      {measurement: "4", name: "takjes verse badpeterselie"},
+      {measurement: "", name: "olijfolie"},
+      {measurement: "1 el", name: "kappertjes"},
+      {measurement: "50 ml", name: "whisky"},
+      {measurement: "", name: "gerookte-parikapoeder"},
+      {measurement: "80g", name: "demi creme fraiche"}
+    ];
     stub.pictures = [["assets/image/background2.jpg", "Voorbereiden van de ingredienten"],
       ["assets/image/background.jpg", "Kook de eiernoedels"],
       ["assets/image/beef_stroganoff.jpg", "De maaltijd is klaar"]];
