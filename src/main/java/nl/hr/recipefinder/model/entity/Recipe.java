@@ -26,12 +26,13 @@ public class Recipe extends BaseEntity {
     joinColumns = {@JoinColumn(name = "recipe_id")},
     inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
   )
-  Set<Ingredient> ingredients = new HashSet<>();
+  List<Ingredient> ingredients = new ArrayList<>();
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
-  private Set<Picture> pictures = new HashSet<>();
 
+  private List<Picture> pictures = new ArrayList<>();
+  
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "step_id")
   public List<Step> steps = new ArrayList<>();

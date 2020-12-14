@@ -49,16 +49,30 @@
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
 
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <label>Choose images to upload (PNG, JPG)</label>
+      <input type="file" (change)="handleUpload1($event)">
+      <br>
+      <br>
+      <br>
+      <input type="file" (change)="handleUpload2($event)">
+      <br>
+      <br>
 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
       <button [disabled]="loading">Opslaan</button>
     </div>
   </div>
 </form>
+
+<!--<h1>Image Uploading Module</h1>-->
+<!--<input type="file" (change)="handleUpload($event)">-->
+<!--<button type="button" (click)="onUpload()">Upload</button>-->
+
+
 
 
 </body>
