@@ -72,6 +72,7 @@ export class RecipeCreatorComponent implements OnInit {
   addIngredient() {
     this.recipe.ingredients.push({
       name: null,
+      measurement: null,
     });
   }
 

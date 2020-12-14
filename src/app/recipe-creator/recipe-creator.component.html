@@ -70,6 +70,7 @@
       <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
         <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
+        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement" name="ingredientMeasurement_{{i}}" required/>
       </section>
 
       <button type="button" (click)="addIngredient()">Add Ingredient</button>
