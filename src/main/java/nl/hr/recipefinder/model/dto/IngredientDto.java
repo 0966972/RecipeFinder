@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class IngredientDto {
     private String name;
+    private String measurement;
 }
