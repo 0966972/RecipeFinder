@@ -53,12 +53,11 @@ public class PictureController {
   @GetMapping("/{id}/show")
   public ResponseEntity<byte[]> showPicture(@PathVariable long id) {
     Optional<Picture> picture = pictureService.getPicture(id);
-    var a = pictureService.getPicture(id).get();
     if (picture.isPresent())
       return ResponseEntity.
         ok()
         .contentType(MediaType.IMAGE_JPEG)
-        .body(a.getContent());
+        .body(picture.get().getContent());
     else throw new HttpNotFoundError();
   }
 
