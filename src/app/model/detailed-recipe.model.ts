@@ -1,11 +1,12 @@
 import {Mappable} from "./mappable.model";
+import {Step} from "./step.model";
 
 export class DetailedRecipe implements Mappable {
   public id: bigint;
   public name: string;
   public description: string;
   public instructions: string;
-  public steps: string[];
+  public steps: Step[];
   public servings: number = 0;
   public duration: number = 0;
   public ingredients: string[][];
