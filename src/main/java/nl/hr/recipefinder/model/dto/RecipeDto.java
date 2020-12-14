@@ -1,7 +1,6 @@
 package nl.hr.recipefinder.model.dto;
 
 import lombok.*;
-import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.model.entity.Picture;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class RecipeDto {
   private String instructions;
   private Integer servings;
 
-  private List<Ingredient> ingredients = new ArrayList<>();
+  private Set<IngredientDto> ingredients;
 
   private List<Picture> pictures = new ArrayList<>();
 
