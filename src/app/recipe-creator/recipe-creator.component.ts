@@ -82,8 +82,8 @@ export class RecipeCreatorComponent implements OnInit {
       name: this.model.name,
       description: this.model.description,
       instructions: this.model.instructions,
-      pictures: this.model.pictures,
-      steps: this.steps     
+      pictures: pictures,
+      steps: this.steps
     };
     this.http.post<Observable<boolean>>(url, postData, {headers: headers}).subscribe(isValid => {
       if (isValid) {
