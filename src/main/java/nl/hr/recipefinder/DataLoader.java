@@ -1,6 +1,8 @@
 package nl.hr.recipefinder;
 
+import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.RecipeIngredient;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.RecipeService;
@@ -9,6 +11,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by maartendegoede on 07/12/2020.
@@ -48,6 +52,25 @@ public class DataLoader implements ApplicationRunner {
       "Bereid om te beginnen alle ingrediënten voor: maak de paddenstoelen schoon en scheur de grotere in stukjes. Pel de rode ui en knoflook, en snijd ze in dunne ringen en plakjes. Snijd de zilveruitjes en cornichons flinterdun. Pluk en snipper de peterselieblaadjes, en snijd de steeltjes fijn. " +
         "\n\nZet een grote, droge koekenpan met antiaanbaklaag met e paddenstoelen en rode ui op hoog vuur, schud de pan om ze uit te spreiden en bak ze 5 minuten terwijl je regelmatig roert (hierdoor komt de nootachtige smaak goed los). Sprenkel er  1 eetlepel olie over en doe de knoflook, zilveruitjes, cornichons, peterseliesteeltjes, en kappertjes erbij. Schenk na 3 minuten de whisky in de pan, kantel hem voorzichtig om de vlam in de pan te laten slaan, of steek de alcohol voorzichtig aan met een lucifer (pas op je wenkbrauwen!). Voeg nadat de vlammen gedoofd zijn ¼ eetlepel paprikapoeder, de crème fraîche en peterselie toe, en meng alles goed. Giet er een scheutje kokend water bij om het paddenstoelenmengsel een mooie, sausachtige consistentie te geven en voeg naar smaak zeezout en zwarte peper toe. " +
         "\n\nVerdeel de stroganoff over de borden, strooi er een snufje paprikapoeder op en geef er luchtige rijst bij."
+    );
+
+    RecipeIngredient mushroomsRecipeIngredient = new RecipeIngredient();
+    mushroomsRecipeIngredient.setMeasurement("500g");
+    Ingredient mushroomsIngredient = new Ingredient();
+    mushroomsIngredient.setName("Mushrooms");
+    mushroomsRecipeIngredient.setIngredient(mushroomsIngredient);
+
+    RecipeIngredient stroganoffRecipeIngredient = new RecipeIngredient();
+    stroganoffRecipeIngredient.setMeasurement("5000l");
+    Ingredient stroganoffIngredient = new Ingredient();
+    stroganoffIngredient.setName("Stroganoff");
+    stroganoffRecipeIngredient.setIngredient(stroganoffIngredient);
+
+    mushroomStroganoff.setIngredients(
+      List.of(
+        mushroomsRecipeIngredient,
+        stroganoffRecipeIngredient
+      )
     );
     mushroomStroganoff.setServings(2);
     recipeService.save(mushroomStroganoff);
