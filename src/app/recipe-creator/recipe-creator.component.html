@@ -34,7 +34,8 @@
       <br>
       <br>
       <label for="instructions">Instructions:</label>
-      <input type="text" name="Name" [(ngModel)]="model.instructions" #name="ngModel" required/>
+      <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
+      <div *ngIf="f.submitted && !instructions.valid">Instructions is required</div>
 
       <label>Stappen:</label>
       <br>
@@ -45,7 +46,6 @@
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
 
-      <div *ngIf="f.submitted && !recipe.instructions.valid">Instructions is required</div>
       <br>
       <br>
       <label>Servings:</label>

@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
-import {Step} from "../model/step.model";
 
 @Component({
   selector: 'recipe-details',
@@ -36,14 +35,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   showRecipe() {
     let url = 'http://localhost:8080/recipe/' + this.routeId;
-    let token: string = '' + sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      authorization: 'Basic ' + token
-    });
-
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
-
-
       this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
 
       // this.recipe = this.createStubRecipe();
@@ -99,8 +91,16 @@ export class RecipeDetailsComponent implements OnInit {
     stub.pictures = [["assets/image/background2.jpg", "Voorbereiden van de ingredienten"],
       ["assets/image/background.jpg", "Kook de eiernoedels"],
       ["assets/image/beef_stroganoff.jpg", "De maaltijd is klaar"]];
-    stub.steps = [{ number: 1, details: "Snijd ze in dunne plakjes en doe ze met 1 eetlepel olie in een grote, zware braadpan op hoog vuur." },
-      {number: 2, details: "Bak ze 2 minuten, voeg het eekhoorntjesbrood en 1,5 liter kokend water toe, leg een deksel op de pan en laat 10 minuten op laag vuur koken." }]
+    stub.steps = [
+      {
+        number: 1,
+        details: "Snijd ze in dunne plakjes en doe ze met 1 eetlepel olie in een grote, zware braadpan op hoog vuur."
+      },
+      {
+        number: 2,
+        details: "Bak ze 2 minuten, voeg het eekhoorntjesbrood en 1,5 liter kokend water toe, leg een deksel op de pan en laat 10 minuten op laag vuur koken."
+      }
+    ]
     return stub;
   }
 }

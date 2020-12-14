@@ -3,8 +3,6 @@ import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
 import {Recipe} from "../model/recipe";
 import {RecipeService} from "../service/recipe.service";
-import {Ingredient} from "../model/ingredient";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -17,7 +15,8 @@ export class RecipeCreatorComponent implements OnInit {
     description: null,
     instructions: null,
     servings: null,
-    ingredients: []
+    ingredients: [],
+    pictures: [],
     steps: [
       {number: 1, details: ''}
     ]
@@ -82,15 +81,18 @@ export class RecipeCreatorComponent implements OnInit {
 
 
   createRecipe() {
-    let pictures = [{
-      name: this.selectedFile1.name,
-      type: this.selectedFile1.type,
-      content: this.picture1.split(',')[1]
-    }, {
-      name: this.selectedFile2.name,
-      type: this.selectedFile2.type,
-      content: this.picture2.split(',')[1]
-    }]
+    let pictures = [
+      {
+        name: this.selectedFile1.name,
+        type: this.selectedFile1.type,
+        content: this.picture1.split(',')[1]
+      },
+      {
+        name: this.selectedFile2.name,
+        type: this.selectedFile2.type,
+        content: this.picture2.split(',')[1]
+      }
+    ]
     let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token

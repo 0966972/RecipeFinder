@@ -7,5 +7,6 @@ export class Recipe {
   instructions: String
   servings: number
   ingredients: Ingredient[]
+  pictures: any[]
   steps: Step[]
 }
