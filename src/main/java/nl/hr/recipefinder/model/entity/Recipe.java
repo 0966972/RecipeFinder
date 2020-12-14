@@ -20,8 +20,8 @@ public class Recipe extends BaseEntity {
   private String instructions;
   private Integer servings;
 
-  @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-  private List<RecipeIngredient> ingredients = new ArrayList<>();
+  @OneToMany(mappedBy = "recipe")
+  private List<RecipeIngredient> ingredients;
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
