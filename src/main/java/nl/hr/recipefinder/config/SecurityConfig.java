@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic()
       .and()
       .authorizeRequests()
-      .antMatchers("/admin/**", "/swagger-ui/**", "h2-console/**").hasRole(Role.ADMIN.name())
-      .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**").permitAll()
+      .antMatchers("/admin/**", "/swagger-ui/**", "/h2-console/**").hasRole(Role.ADMIN.name())
+      .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**","/picture/**").permitAll()
       .anyRequest().authenticated()
       .and()
-      .csrf().ignoringAntMatchers("/user/**", "/recipe/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+      .csrf().ignoringAntMatchers("/user/**", "/recipe/**", "/h2-console/**","/picture/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
   }
 
   @Bean

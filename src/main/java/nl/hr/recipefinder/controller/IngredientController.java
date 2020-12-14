@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/ingredient")
 public class IngredientController {
-  private IngredientService ingredientService;
+  private final IngredientService ingredientService;
+  private final ModelMapper modelMapper;
 
   @Autowired
-  ModelMapper modelMapper;
-
-  @Autowired
-  public IngredientController(IngredientService ingredientService) {
+  public IngredientController(IngredientService ingredientService, ModelMapper modelMapper) {
     this.ingredientService = ingredientService;
+    this.modelMapper = modelMapper;
   }
 }
 

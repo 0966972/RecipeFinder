@@ -2,14 +2,17 @@ package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
+import nl.hr.recipefinder.model.dto.StepDto;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.Step;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,7 +53,8 @@ public class RecipeController {
   @GetMapping("/{id}")
   public RecipeDto Recipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    return modelMapper.map(recipe.get(), RecipeDto.class);
+    if (recipe.isPresent()) return modelMapper.map(recipe.get(), RecipeDto.class);
+    else throw new HttpNotFoundError();
   }
 
   @PostMapping()
