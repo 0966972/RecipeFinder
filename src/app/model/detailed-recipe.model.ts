@@ -1,4 +1,5 @@
 import {Mappable} from "./mappable.model";
+import {Ingredient} from "./ingredient";
 import {Step} from "./step.model";
 
 export class DetailedRecipe implements Mappable {
@@ -9,7 +10,7 @@ export class DetailedRecipe implements Mappable {
   public steps: Step[];
   public servings: number = 0;
   public duration: number = 0;
-  public ingredients: string[][];
+  public ingredients: Ingredient[];
   public pictures: string[][];
   public creator: string;
 
