@@ -12,14 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 public class Step extends BaseEntity {
-  public Step(String detailsss){
-    this.details = detailsss;
-  }
-
-  public Step(){
-
-  }
-
+  public Integer number;
   public String details;
 
   @JsonIgnore

@@ -45,7 +45,7 @@
       <br>
       <button type="button" (click)="addStep()">Stap toevoegen</button>
       <section *ngFor="let step of steps; let i = index;">
-        <label>Stap {{i + 1}}</label>
+        <label>Stap {{step.number}}</label>
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
 

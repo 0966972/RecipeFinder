@@ -20,11 +20,13 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
   public steps: any[] = [{
+    number: 1,
     details: ''
   }];
 
   addStep() {
     this.steps.push({
+      number: this.steps.length + 1,
       details: '',
     });
   }

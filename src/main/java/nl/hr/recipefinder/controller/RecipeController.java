@@ -60,7 +60,6 @@ public class RecipeController {
   @PostMapping()
   public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
-    mappedRecipe.steps = modelMapper.map(recipedto.steps, new TypeToken<List<Step>>() {}.getType());
     recipeService.save(mappedRecipe);
     return true;
   }

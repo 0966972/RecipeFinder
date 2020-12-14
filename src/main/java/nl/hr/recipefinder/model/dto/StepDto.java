@@ -11,5 +11,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class StepDto {
+  private Integer number;
   private String details;
 }
