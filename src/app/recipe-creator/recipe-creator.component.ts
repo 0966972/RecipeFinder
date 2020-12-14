@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
 import {Recipe} from "../model/recipe";
 import {RecipeService} from "../service/recipe.service";
+import {Ingredient} from "../model/ingredient";
+import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -15,6 +17,7 @@ export class RecipeCreatorComponent implements OnInit {
     description: null,
     instructions: null,
     servings: null,
+    ingredients: []
     steps: [
       {number: 1, details: ''}
     ]
@@ -63,6 +66,17 @@ export class RecipeCreatorComponent implements OnInit {
       console.log(reader.result);
       this.picture2 = reader.result.toString();
     };
+  }
+
+
+  addIngredient() {
+    this.recipe.ingredients.push({
+      name: null,
+    });
+  }
+
+  removeIngredient(i: number) {
+    this.recipe.ingredients.splice(i, 1);
   }
 
 

@@ -66,6 +66,13 @@
       <br>
 
       <button [disabled]="loading">Opslaan</button>
+
+      <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
+      </section>
+
+      <button type="button" (click)="addIngredient()">Add Ingredient</button>
     </div>
   </div>
 </form>
