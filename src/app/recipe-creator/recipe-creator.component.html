@@ -40,6 +40,16 @@
       <!-- <label for="photos">Photos:</label>-->
       <!-- <input type="file" name="photo"[(ngModel)]="model.pictures" #name="ngModel" required/>-->
 
+      <label>Stappen:</label>
+      <br>
+      <br>
+      <button type="button" (click)="addStep()">Stap toevoegen</button>
+      <section *ngFor="let step of steps; let i = index;">
+        <label>Stap {{i + 1}}</label>
+        <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
+      </section>
+
+
       <br>
       <br>
       <br>

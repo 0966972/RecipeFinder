@@ -15,6 +15,7 @@ public class RecipeDto {
   private String description;
   private String instructions;
   private Integer servings;
+  public StepDto[] steps;
 
   private Set<Ingredient> ingredients = new HashSet<>();
 

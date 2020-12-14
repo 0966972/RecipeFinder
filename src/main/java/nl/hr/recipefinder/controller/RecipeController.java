@@ -2,15 +2,17 @@ package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
+import nl.hr.recipefinder.model.dto.StepDto;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.Step;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -58,6 +60,7 @@ public class RecipeController {
   @PostMapping()
   public boolean createRecipe(@RequestBody RecipeDto recipedto) {
     Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
+    mappedRecipe.steps = modelMapper.map(recipedto.steps, new TypeToken<List<Step>>() {}.getType());
     recipeService.save(mappedRecipe);
     return true;
   }
