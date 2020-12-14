@@ -44,9 +44,9 @@ export class RecipeDetailsComponent implements OnInit {
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
 
 
-      // this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
+      this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
 
-      this.recipe = this.createStubRecipe();
+      // this.recipe = this.createStubRecipe();
 
     }, error => {
       switch (error) {
