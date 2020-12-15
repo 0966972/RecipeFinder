@@ -9,6 +9,8 @@ export class AuthService {
   authenticated = false;
   role = 'USER';
 
+  private userId : bigint = undefined;
+
   constructor(private http: HttpClient) {
   }
 
@@ -54,6 +56,27 @@ export class AuthService {
         sessionStorage.setItem('token', '');
         return callback && callback();
       })).subscribe();
+  }
+
+  getUserId(): bigint {
+    let token: string = sessionStorage.getItem('token');
+    const headers = new HttpHeaders(  {
+      authorization: 'Basic ' + token
+    });
+    let url = 'http://localhost:8080/session/login';
+
+    this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
+      response => {
+        if (response['name']) {
+          console.log(response['principal']['user']['id']);
+          this.userId =  response['principal']['user']['id'];
+        }
+      },
+      (error) => {
+        alert("Het is momenteel niet mogelijk om een recept te plaatsen.")
+      }
+    );
+    return this.userId;
   }
 
   get isAdmin(): boolean {
