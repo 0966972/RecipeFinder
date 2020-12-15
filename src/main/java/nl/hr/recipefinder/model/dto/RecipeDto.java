@@ -6,9 +6,7 @@ import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.model.entity.Picture;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

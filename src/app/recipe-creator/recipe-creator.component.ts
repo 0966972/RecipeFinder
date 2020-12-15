@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
+import {Router} from "@angular/router";
+import {HttpHeaders} from "@angular/common/http";
+import {Recipe} from "../model/recipe";
+import {RecipeService} from "../service/recipe.service";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -10,30 +10,34 @@ import {toBase64String} from "@angular/compiler/src/output/source_map";
   styleUrls: ['./recipe-creator.component.css']
 })
 export class RecipeCreatorComponent implements OnInit {
-  model: any = {};
+  recipe: Recipe = {
+    name: null,
+    description: null,
+    instructions: null,
+    servings: null,
+    ingredients: [],
+    pictures: [],
+    steps: [
+      {number: 1, details: ''}
+    ]
+  };
   loading: any;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private recipeService: RecipeService,
   ) {
   }
 
-  public steps: any[] = [{
-    number: 1,
-    details: ''
-  }];
-
   addStep() {
-    this.steps.push({
-      number: this.steps.length + 1,
+    this.recipe.steps.push({
+      number: this.recipe.steps.length + 1,
       details: '',
     });
   }
 
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   selectedFile1: File = null;
@@ -51,6 +55,7 @@ export class RecipeCreatorComponent implements OnInit {
       this.picture1 = reader.result.toString();
     };
   }
+
   handleUpload2(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -63,38 +68,44 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
 
-  CreateRecipe() {
-    let url = 'http://localhost:8080/recipe';
-    let pictures = [{
-      name : this.selectedFile1.name,
-      type : this.selectedFile1.type,
-      content : this.picture1.split(',')[1]
-    },{
-      name : this.selectedFile2.name,
-      type : this.selectedFile2.type,
-      content : this.picture2.split(',')[1]
-    }]
-    let token: string = '' + sessionStorage.getItem('token');
+  addIngredient() {
+    this.recipe.ingredients.push({
+      name: null,
+      measurement: null,
+    });
+  }
+
+  removeIngredient(i: number) {
+    this.recipe.ingredients.splice(i, 1);
+  }
+
+
+  createRecipe() {
+    let pictures = [
+      {
+        name: this.selectedFile1.name,
+        type: this.selectedFile1.type,
+        content: this.picture1.split(',')[1]
+      },
+      {
+        name: this.selectedFile2.name,
+        type: this.selectedFile2.type,
+        content: this.picture2.split(',')[1]
+      }
+    ]
+    let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    let postData = {
-      name: this.model.name,
-      description: this.model.description,
-      instructions: this.model.instructions,
-      pictures: pictures,
-      steps: this.steps
-    };
-    this.http.post<Observable<boolean>>(url, postData, {headers: headers}).subscribe(isValid => {
+    this.recipe.pictures = pictures;
+
+    this.recipeService.create(this.recipe, headers).subscribe(isValid => {
       if (isValid) {
-        console.log(postData);
+        console.log(this.recipe);
         this.router.navigate(['']);
       } else {
-        alert("User creation failed.")
+        alert("Recipe creation failed.")
       }
-
     });
-
   }
-
 }

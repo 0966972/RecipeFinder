@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ListedRecipe} from '../model/listed-recipe';
 import {Observable} from 'rxjs/Observable';
+import {Recipe} from "../model/recipe";
 
 @Injectable()
-export class ListedRecipeService {
+export class RecipeService {
 
   private readonly recipesUrl: string;
 
@@ -19,5 +20,9 @@ export class ListedRecipeService {
   public search(searchInput): Observable<ListedRecipe[]> {
     let url = 'http://localhost:8080/recipe/search/' + searchInput;
     return this.http.get<ListedRecipe[]>(url);
+  }
+
+  public create(recipe: Recipe, headers): Observable<boolean> {
+    return this.http.post<boolean>(this.recipesUrl, recipe, {headers: headers});
   }
 }

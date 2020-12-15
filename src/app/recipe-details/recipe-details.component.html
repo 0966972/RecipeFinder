@@ -21,7 +21,7 @@
         <div class="col-3">
           <h5>Ingredienten</h5>
           <ul *ngFor="let ingredient of recipe.ingredients;">
-            <li>{{ingredient[0]}} {{ingredient[1]}}</li>
+            <li>{{ingredient.measurement}} {{ingredient.name}}</li>
           </ul>
         </div>
         <div class="col-9">

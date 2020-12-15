@@ -17,38 +17,40 @@
 </nav>
 
 <h1>Add Recipe</h1>
-<form name="CreateRipe" (ngSubmit)="f.form.valid && CreateRecipe()" #f="ngForm" novalidate>ø
+<form name="CreateRipe" (ngSubmit)="f.form.valid && createRecipe()" #f="ngForm" novalidate>
 
   <div class="container_recipevalues">
     <div class="formfields">
 
       <label for="name">Title:</label>
-      <input type="text" name="Name" [(ngModel)]="model.name" #name="ngModel" required/>
+      <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required/>
       <div *ngIf="f.submitted && !name.valid">Title is required</div>
       <br>
       <br>
 
       <label for="description">Description:</label>
-      <input type="text" name="Name" [(ngModel)]="model.description" #description="ngModel" required/>
-      <div *ngIf="f.submitted && !description.valid">description is required</div>
+      <input type="text" name="Name" [(ngModel)]="recipe.description" #description="ngModel" required/>
+      <div *ngIf="f.submitted && !description.valid">Description is required</div>
       <br>
       <br>
       <label for="instructions">Instructions:</label>
-      <input type="text" name="Name" [(ngModel)]="model.instructions" #name="ngModel" required/>
-      <!-- <br>-->
-      <!-- <br>-->
-      <!-- <label for="photos">Photos:</label>-->
-      <!-- <input type="file" name="photo"[(ngModel)]="model.pictures" #name="ngModel" required/>-->
+      <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
+      <div *ngIf="f.submitted && !instructions.valid">Instructions is required</div>
 
       <label>Stappen:</label>
       <br>
       <br>
       <button type="button" (click)="addStep()">Stap toevoegen</button>
-      <section *ngFor="let step of steps; let i = index;">
+      <section *ngFor="let step of recipe.steps; let i = index;">
         <label>Stap {{step.number}}</label>
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
 
+      <br>
+      <br>
+      <label>Servings:</label>
+      <input type="number" name="Name" [(ngModel)]="recipe.servings" #servings="ngModel" required/>
+      <div *ngIf="f.submitted && !servings.valid">Servings is required</div>
       <br>
       <br>
       <br>
@@ -64,6 +66,14 @@
       <br>
 
       <button [disabled]="loading">Opslaan</button>
+
+      <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
+        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement" name="ingredientMeasurement_{{i}}" required/>
+      </section>
+
+      <button type="button" (click)="addIngredient()">Add Ingredient</button>
     </div>
   </div>
 </form>
