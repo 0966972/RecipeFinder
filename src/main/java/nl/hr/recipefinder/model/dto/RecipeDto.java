@@ -4,7 +4,9 @@ import lombok.*;
 import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.model.entity.Picture;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,7 +18,9 @@ public class RecipeDto {
   private String instructions;
   private Integer servings;
 
-  private Set<Ingredient> ingredients = new HashSet<>();
+  private List<Ingredient> ingredients = new ArrayList<>();
 
-  private Set<Picture> pictures = new HashSet<>();
+  private List<Picture> pictures = new ArrayList<>();
+
+  private List<StepDto> steps = new ArrayList<>();
 }

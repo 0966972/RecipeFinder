@@ -1,10 +1,10 @@
 package nl.hr.recipefinder.repository;
 
-import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.entity.Picture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-  User findUserByUsername(String username);
+public interface PictureRepository extends JpaRepository<Picture, Long> {
+
 }

@@ -22,10 +22,6 @@ public class UserService {
     return userRepository.findUserByUsername(username);
   }
 
-  public User findUserByUsernameAndPassword(String username, String password) {
-    return userRepository.findUserByUsernameAndPassword(username, password);
-  }
-
   public Optional<User> findUserById(Long id) {
     return userRepository.findById(id);
   }

@@ -32,4 +32,8 @@ public class Recipe extends BaseEntity {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
   private List<Picture> pictures = new ArrayList<>();
+  
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "step_id")
+  public List<Step> steps = new ArrayList<>();
 }
