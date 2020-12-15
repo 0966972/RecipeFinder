@@ -1,9 +1,6 @@
 package nl.hr.recipefinder.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import nl.hr.recipefinder.security.Role;
 
 import javax.persistence.Column;
@@ -12,11 +9,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+
+@Getter
+@Setter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity {
 
   @Column(unique = true)

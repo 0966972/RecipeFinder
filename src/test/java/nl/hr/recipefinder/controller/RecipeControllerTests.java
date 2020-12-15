@@ -47,8 +47,8 @@ public class RecipeControllerTests {
   void getRecipes_whenRecipesPresent_returnRecipes() {
     // arrange
     List<Recipe> recipes = new ArrayList<>();
-    Recipe recipe = new Recipe("Nieuw Recept", "Een beschrijving", "De instructies", 5, new ArrayList<>(), new ArrayList<>());
-    ListedRecipeDto recipeDto = new ListedRecipeDto(Long.getLong("0"),"Nieuw Recept", "Een beschrijving", 5, new ArrayList<>());
+    Recipe recipe = new Recipe();
+    ListedRecipeDto recipeDto = new ListedRecipeDto();
     recipes.add(recipe);
     Mockito.when(recipeService.getRecipes()).thenReturn(recipes);
     Mockito.when(modelMapper.map(recipe, ListedRecipeDto.class)).thenReturn(recipeDto);

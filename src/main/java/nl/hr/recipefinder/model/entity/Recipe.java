@@ -8,9 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+
+@Getter
+@Setter
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Recipe extends BaseEntity {
@@ -32,7 +33,7 @@ public class Recipe extends BaseEntity {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
   private List<Picture> pictures = new ArrayList<>();
-  
+
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "step_id")
   public List<Step> steps = new ArrayList<>();
