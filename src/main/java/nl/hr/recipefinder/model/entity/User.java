@@ -2,6 +2,7 @@ package nl.hr.recipefinder.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import nl.hr.recipefinder.security.Role;
 
@@ -11,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @NoArgsConstructor

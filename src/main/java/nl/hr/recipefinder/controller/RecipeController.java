@@ -42,7 +42,7 @@ public class RecipeController {
         .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 
@@ -55,7 +55,7 @@ public class RecipeController {
         .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 
@@ -75,7 +75,7 @@ public class RecipeController {
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
     }
     catch (DataIntegrityViolationException e){
-      throw new HttpConflictError();
+      throw new HttpConflictError(e);
     }
   }
 }

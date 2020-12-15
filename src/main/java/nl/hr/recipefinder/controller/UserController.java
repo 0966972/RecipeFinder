@@ -48,7 +48,7 @@ public class UserController {
 
       throw new HttpNotFoundError();
     } catch (Exception e) {
-      throw new HttpNotFoundError();
+      throw new HttpNotFoundError(e);
     }
   }
 
@@ -62,7 +62,7 @@ public class UserController {
       }
       return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     } catch (Exception e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 
@@ -77,9 +77,9 @@ public class UserController {
 
       return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
-      throw new HttpConflictError();
+      throw new HttpConflictError(e);
     } catch (DataAccessException e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 }

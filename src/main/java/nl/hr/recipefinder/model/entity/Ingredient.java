@@ -8,6 +8,7 @@ import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 public class Ingredient extends BaseEntity {
