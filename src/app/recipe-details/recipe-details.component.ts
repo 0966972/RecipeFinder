@@ -5,6 +5,7 @@ import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 import {Review} from "../model/review.model";
+import {AuthService} from "../service/auth.service";
 
 @Component({
   selector: 'recipe-details',
@@ -21,6 +22,7 @@ export class RecipeDetailsComponent implements OnInit {
   private routeSub: Subscription;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
@@ -64,6 +66,14 @@ export class RecipeDetailsComponent implements OnInit {
     });
 
     this.showRecipe();
+  }
+
+  get isLoggedIn(): boolean {
+    return this.authService.authenticated;
+  }
+
+  rememberRouteAndGotoLogin(){
+    this.router.navigate(['/login', {previous: '/recipe/' + this.routeId}])
   }
 
   createStubRecipe(): DetailedRecipe {

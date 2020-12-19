@@ -35,6 +35,13 @@
     </div>
     <h5>Beoordelingen</h5>
     <hr style="margin-top: 0px;"/>
+    <div id="createReviewRow" class="row">
+      <div class="col-3"></div>
+      <div class="col-9" >
+        <button *ngIf="isLoggedIn" class="btn btn-secondary">Plaats een review</button>
+        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om een review te plaatsen</button>
+      </div>
+    </div>
     <div id="reviewsRow" class="row" *ngFor="let review of recipe.reviews;">
       <div class="col-3">
         <img [src]="review.pictures[0]" alt="Afbeelding">
