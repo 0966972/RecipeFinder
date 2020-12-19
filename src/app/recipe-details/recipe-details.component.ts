@@ -14,8 +14,6 @@ import {AuthService} from "../service/auth.service";
 })
 
 export class RecipeDetailsComponent implements OnInit {
-
-  loaded = false;
   routeId: bigint;
   recipe: DetailedRecipe;
 
@@ -70,6 +68,20 @@ export class RecipeDetailsComponent implements OnInit {
 
   get isLoggedIn(): boolean {
     return this.authService.authenticated;
+  }
+
+  get isRecipeCreator(): boolean {
+    let loggedInUser = this.authService.username;
+    if (loggedInUser != null && loggedInUser == this.recipe.creator){
+      return true;
+    }
+    return false;
+  }
+
+  gotoReview(){
+    //this.router.navigate(['/recipe/'+this.routeId+'/review-create', {previous: '/recipe/' + this.routeId}])
+    this.router.navigate(['/review-create', {previous: '/recipe/' + this.routeId}])
+
   }
 
   rememberRouteAndGotoLogin(){

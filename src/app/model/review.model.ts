@@ -6,10 +6,10 @@ export class Review implements Mappable {
   public score: number;
   public title: string;
   public message: string;
-  public pictures: string[];
+  public pictures: any[];
   public user: User;
 
-  constructor(id?: number, score?: number, title?: string, message?: string, pictures?: string[], user?: User) {
+  constructor(id?: number, score?: number, title?: string, message?: string, pictures?: any[], user?: User) {
     this.id = id;
     this.score = score;
     this.title = title;

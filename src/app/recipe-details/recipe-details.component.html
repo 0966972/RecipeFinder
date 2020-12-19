@@ -7,7 +7,7 @@
     <ngb-carousel *ngIf="this.recipe.pictures">
       <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
         <div class="wrapper">
-          <img [src]="picture[0]" alt="Afbeelding">
+          <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
         </div>
         <div class="carousel-caption">
           <h3 id="pictureDescription">{{picture[1]}}</h3>
@@ -38,8 +38,8 @@
     <div id="createReviewRow" class="row">
       <div class="col-3"></div>
       <div class="col-9" >
-        <button *ngIf="isLoggedIn" class="btn btn-secondary">Plaats een review</button>
-        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om een review te plaatsen</button>
+        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReview())">Beoordeel dit recept</button>
+        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om dit recept te beoordelen</button>
       </div>
     </div>
     <div id="reviewsRow" class="row" *ngFor="let review of recipe.reviews;">

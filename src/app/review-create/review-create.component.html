@@ -1,0 +1,46 @@
+<body>
+<div class="panel">
+  <h1>RecipeFinder</h1>
+  <h2>Beoordeling</h2>
+  <form role="form" (submit)="submitReview()">
+    <div class="form-group">
+      <input placeholder="Titel" type="text" class="form-control" id="title" name="title"
+             [(ngModel)]="review.title"/>
+    </div>
+    <div class="form-group">
+      <input placeholder="Bericht" type="text" class="form-control" id="message" name="message"
+             [(ngModel)]="review.message"/>
+    </div>
+    <div class="form-group">
+      <input placeholder="Score" type="number" class="form-control" id="score" name="score"
+             [(ngModel)]="review.score"/>
+    </div>
+    <div class="form-group">
+      <div id="upload-jpg-buttons">
+      <h5>Upload een JPG of PNG afbeelding</h5>
+      <input type="file" (change)="addPicture($event)">
+      <button *ngIf="!showingPictures" (click)="showPictures" class="btn btn-secondary">Toon afbeeldingen</button>
+      <button *ngIf="showingPictures" (click)="showPictures" class="btn btn-secondary">Verberg afbeeldingen</button>
+      </div>
+      <section *ngFor="let picture of review.pictures; let index = index;">
+        <hr style="height:10px">
+        <div class="row">
+          <hr>
+          <div class="col-3">{{picture.name}} </div>
+          <div lass="col-2">
+            <button type="button" class="btn btn-danger btn-sm" (click)="removePicture(index)">Verwijder afbeelding</button>
+          </div>
+          <div class="col-6">
+            <img *ngIf="showingPictures" id="picture-preview" src="data:{{picture.type}};base64,{{picture.content}}" width="250" alt="Afbeelding">
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center" style="margin-top: 45px">
+      <button type="submit" class="btn btn-secondary">Plaats mijn beoordeling</button>
+    </div>
+  </form>
+</div>
+</body>
