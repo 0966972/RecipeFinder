@@ -25,6 +25,9 @@ public class Review extends BaseEntity {
   @Size(min = 1, max = 500)
   private String message;
 
+  @Size(min = 1, max = 50)
+  private String title;
+
   @OneToMany(cascade = CascadeType.ALL)
   private List<Picture> pictures = new ArrayList<>();
 
@@ -32,4 +35,8 @@ public class Review extends BaseEntity {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name="recipe_id", nullable = false)
   private Recipe recipe;
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="user_id", nullable = false)
+  private User user;
 }

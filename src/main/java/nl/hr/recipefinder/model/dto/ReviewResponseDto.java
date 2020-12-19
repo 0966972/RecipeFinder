@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDto {
+public class ReviewResponseDto {
   @Size(max = 5)
   private Integer score;
 
@@ -25,7 +25,8 @@ public class ReviewDto {
   @Size(min = 1, max = 500)
   private String message;
 
-  @OneToMany(cascade = CascadeType.ALL)
   private List<Picture> pictures;
+
+  private UserResponseDto user;
 }
 

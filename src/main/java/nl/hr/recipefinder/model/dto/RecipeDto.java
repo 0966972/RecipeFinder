@@ -22,5 +22,5 @@ public class RecipeDto {
 
   private List<StepDto> steps = new ArrayList<>();
 
-  private List<ReviewDto> reviews = new ArrayList<>();
+  private List<ReviewResponseDto> reviews = new ArrayList<>();
 }

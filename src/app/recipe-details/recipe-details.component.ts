@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
+import {Review} from "../model/review.model";
 
 @Component({
   selector: 'recipe-details',
@@ -38,7 +39,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
       this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
 
-      // this.recipe = this.createStubRecipe();
+      //this.recipe = this.createStubRecipe();
 
     }, error => {
       switch (error) {
@@ -100,6 +101,10 @@ export class RecipeDetailsComponent implements OnInit {
         number: 2,
         details: "Bak ze 2 minuten, voeg het eekhoorntjesbrood en 1,5 liter kokend water toe, leg een deksel op de pan en laat 10 minuten op laag vuur koken."
       }
+    ]
+    stub.reviews = [
+      new Review(1, 5, "matig", "vond het helemaal niks, maar ik geef hem toch een 5.", []),
+      new Review(2, 4 ,"heerlijk.","kon er van genieten.", [])
     ]
     return stub;
   }
