@@ -9,4 +9,5 @@ export class Recipe {
   ingredients: Ingredient[]
   pictures: any[]
   steps: Step[]
+  // fotos: any[]
 }
