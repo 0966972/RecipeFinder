@@ -4,7 +4,7 @@
   <h3>{{recipe.description}}</h3>
   <p></p>
   <div class="cont">
-    <ngb-carousel *ngIf="this.recipe.pictures">
+    <ngb-carousel *ngIf="this.recipe.pictures" id="recipeCarousel">
       <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
         <div class="wrapper">
           <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
@@ -35,16 +35,16 @@
     </div>
     <h5>Beoordelingen</h5>
     <hr style="margin-top: 0px;"/>
-    <div id="createReviewRow" class="row">
-      <div class="col-3"></div>
-      <div class="col-9" >
-        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReview())">Beoordeel dit recept</button>
-        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om dit recept te beoordelen</button>
-      </div>
-    </div>
     <div id="reviewsRow" class="row" *ngFor="let review of recipe.reviews;">
       <div class="col-3">
-        <img [src]="review.pictures[0]" alt="Afbeelding">
+        <ngb-carousel *ngIf="review.pictures" id="reviewCarousel">
+          <ng-template ngbSlide *ngFor="let picture of review.pictures;">
+            <div class="wrapper">
+              <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
+            </div>
+          </ng-template>
+        </ngb-carousel>
+        <div *ngIf="review.pictures.length == 0" style="text-align: center">Geen afbeeldingen geüpload</div>
       </div>
       <div class="col-9">
         <h5>{{review.title}}</h5>
@@ -55,6 +55,14 @@
         </p>
       </div>
     </div>
+    <div id="createReviewRow" class="row">
+      <div class="col-3"></div>
+      <div class="col-9" >
+        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReview())">Beoordeel dit recept</button>
+        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om dit recept te beoordelen</button>
+      </div>
+    </div>
   </div>
 </div>
 </body>
+<router-outlet></router-outlet>

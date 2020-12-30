@@ -46,6 +46,10 @@
   padding-bottom: 20px;
 }
 
+#reviewsRow {
+  margin-bottom: 5px;
+}
+
 #pictureDescription {
   color: rgba(0, 0, 0, 1);
 }
@@ -72,11 +76,6 @@ h5 {
   padding-bottom: 10px;
 }
 
-img {
-  width: 1140px;
-  height: auto;
-}
-
 ul {
   list-style-type: none;
   padding: 0px;
@@ -87,13 +86,31 @@ li {
   padding-bottom: 5px;
 }
 
-ngb-carousel .wrapper {
+#recipeCarousel .wrapper {
   position: relative;
   height: 0;
   padding-top: 55%;
 }
 
-ngb-carousel .wrapper > img {
+#recipeCarousel .wrapper > img {
+  width: 1140px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#reviewCarousel .wrapper {
+  position: relative;
+  height: 0;
+  padding-top: 75%;
+}
+
+#reviewCarousel .wrapper > img {
+  width: 250px;
+  height: auto;
   position: absolute;
   top: 0;
   left: 0;

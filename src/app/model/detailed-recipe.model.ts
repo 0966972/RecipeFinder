@@ -12,7 +12,7 @@ export class DetailedRecipe implements Mappable {
   public servings: number = 0;
   public duration: number = 0;
   public ingredients: Ingredient[];
-  public pictures: string[][];
+  public pictures: any[];
   public creator: string;
   public reviews: Review[];
 

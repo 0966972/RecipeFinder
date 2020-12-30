@@ -18,11 +18,12 @@ const routes: Routes = [
   {
     path: 'recipe', children: [
       {path: ':id', component: RecipeDetailsComponent, children :[
+          {path: 'review-create', component: ReviewCreateComponent}
         ]}
     ]
   },
   {path: 'recipe-creator', component: RecipeCreatorComponent},
-  {path: 'review-create', component: ReviewCreateComponent},
+  //{path: 'review-create', component: ReviewCreateComponent},
   {path: '**', redirectTo: ''}
 ];
 

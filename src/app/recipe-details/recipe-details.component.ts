@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 import {Review} from "../model/review.model";
 import {AuthService} from "../service/auth.service";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'recipe-details',
@@ -24,9 +25,10 @@ export class RecipeDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private cdr:ChangeDetectorRef,
     carouselConfig: NgbCarouselConfig
   ) {
-    carouselConfig.interval = 4000;
+    carouselConfig.interval = 0;
     carouselConfig.keyboard = true;
     carouselConfig.pauseOnHover = true;
     carouselConfig.showNavigationIndicators = true;
@@ -37,18 +39,19 @@ export class RecipeDetailsComponent implements OnInit {
   showRecipe() {
     let url = 'http://localhost:8080/recipe/' + this.routeId;
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
+      console.log(response);
       this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
-
+      console.log(this.recipe);
       //this.recipe = this.createStubRecipe();
 
     }, error => {
       switch (error) {
         case 500:
-          alert("De server is helaas niet bereikbaar, probeer het later nog eens.");
+          alert("500: De server is helaas niet bereikbaar, probeer het later nog eens.");
           this.router.navigate(['']);
           break;
         case 404:
-          alert("Het opgevraagde recept konden we helaas niet vinden.");
+          alert("404: Het opgevraagde recept konden we helaas niet vinden.");
           this.router.navigate(['']);
           break;
         default:
@@ -79,9 +82,18 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   gotoReview(){
-    //this.router.navigate(['/recipe/'+this.routeId+'/review-create', {previous: '/recipe/' + this.routeId}])
-    this.router.navigate(['/review-create', {previous: '/recipe/' + this.routeId}])
+    this.router.navigate(['recipe/' + this.routeId + '/review-create', {previous: '/recipe/' + this.routeId}]).then(
+      ()=>
+      this.router.events
+        .pipe(
+          filter(value => value instanceof NavigationEnd),
+        )
+        .subscribe(() => {
+          this.showRecipe();
+        })
+    );
 
+    //this.router.navigate(['/review-create', {previous: '/recipe/' + this.routeId}])
   }
 
   rememberRouteAndGotoLogin(){
