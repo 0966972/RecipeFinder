@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
 import {Recipe} from "../model/recipe";
 import {RecipeService} from "../service/recipe.service";
+import {Ingredient} from "../model/ingredient";
+import {IngredientService} from "../service/ingredient.service";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -21,11 +23,14 @@ export class RecipeCreatorComponent implements OnInit {
       {number: 1, details: ''}
     ]
   };
+  ingredients: Ingredient[] = []
+  ingredientOptions: Ingredient[] = []
   loading: any;
 
   constructor(
     private router: Router,
     private recipeService: RecipeService,
+    private ingredientService: IngredientService,
   ) {
   }
 
@@ -68,15 +73,46 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
 
+  findIngredient(input) {
+    this.ingredientOptions = [];
+
+    // if ($event.timeStamp - this.lastkeydown1 > 200) {
+    this.ingredientService.search(input).subscribe( options => {
+      this.ingredientOptions = options
+    });
+    // }
+  }
+
+
   addIngredient() {
     this.recipe.ingredients.push({
-      name: null,
+      ingredientId: null,
       measurement: null,
     });
+    this.ingredients.push({
+      id: null,
+      name: null,
+    })
   }
 
   removeIngredient(i: number) {
     this.recipe.ingredients.splice(i, 1);
+    this.ingredients.splice(i, 1);
+  }
+
+
+  submitButtonPressed() {
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.ingredientService.create(this.ingredients, headers).subscribe(ingredients =>{
+      this.ingredients = ingredients
+      for (let i=0; i < ingredients.length; i++) {
+        this.recipe.ingredients[i].ingredientId = ingredients[i].id
+      }
+      this.createRecipe()
+    })
   }
 
 

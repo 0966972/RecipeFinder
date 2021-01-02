@@ -1,6 +1,5 @@
 package nl.hr.recipefinder;
 
-import nl.hr.recipefinder.model.dto.IngredientDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
@@ -66,8 +65,8 @@ public class DataLoader implements ApplicationRunner {
 
       // ingredients
       List.of(
-        new IngredientDto("Mushrooms", "500g"),
-        new IngredientDto("Stroganoff", "382l")
+//        new IngredientDto(null, "Mushrooms", "500g"),
+//        new IngredientDto("Stroganoff", "382l")
       ),
 
       // pictures

@@ -15,6 +15,7 @@ import {RecipeCreatorComponent} from './recipe-creator/recipe-creator.component'
 import {AuthService} from "./service/auth.service";
 import {RouterModule} from "@angular/router";
 import {RecipeService} from "./service/recipe.service";
+import {IngredientService} from "./service/ingredient.service";
 import {NgbCarouselConfig, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReviewCreateComponent} from "./review-create/review-create.component";
 
@@ -51,6 +52,7 @@ export class XhrInterceptor implements HttpInterceptor {
   ],
   providers: [
     RecipeService,
+    IngredientService,
     AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
     NgbCarouselConfig
   ],

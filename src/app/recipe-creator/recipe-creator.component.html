@@ -17,7 +17,7 @@
 </nav>
 
 <h1>Add Recipe</h1>
-<form name="CreateRipe" (ngSubmit)="f.form.valid && createRecipe()" #f="ngForm" novalidate>
+<form name="CreateRipe" (ngSubmit)="submitButtonPressed()" #f="ngForm" novalidate>
 
   <div class="container_recipevalues">
     <div class="formfields">
@@ -67,10 +67,20 @@
 
       <button [disabled]="loading">Opslaan</button>
 
-      <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
+      <!-- DONE: step 1: Add list of Ingredients. -->
+      <!-- DONE: step 2: Also add list of RecipeIngredients -->
+      <!-- DONE?: step 3. Add autocomplete -->
+      <!-- TODO: step 3. Upon done: Send list of Ingredients to backend. -->
+      <!-- TODO: Step 4. Backend will create any new ones, and return all of the IDs to the frontend.  -->
+      <!-- TODO: step 5. Frontend will turn IDs + Measurements into RecipeIngredients, and create these alongside the Recipe -->
+      <section *ngFor="let ingredient of ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
-        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement" name="ingredientMeasurement_{{i}}" required/>
+        <!-- TODO: autoComplete from http://www.mukeshkumar.net/articles/angular/3-ways-to-implement-autocomplete-textbox-in-angular-with-typescript-on-large-data -->
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient($event)" list="ingredientOptions" name="ingredientName_{{i}}" required />
+        <datalist id="ingredientOptions">
+          <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
+        </datalist>
+        <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement" name="ingredientMeasurement_{{i}}" required/>
       </section>
 
       <button type="button" (click)="addIngredient()">Add Ingredient</button>
