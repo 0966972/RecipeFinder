@@ -16,6 +16,7 @@ public class ListedRecipeDto {
   private String name;
 
   private String description;
+  private Integer preparationTime;
   private Integer servings;
 
   private List<Picture> pictures = new ArrayList<>();

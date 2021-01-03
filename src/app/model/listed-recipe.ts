@@ -3,5 +3,6 @@ export class ListedRecipe {
   name: String
 
   description: String
+  preparationTime: number
   servings: number
 }
