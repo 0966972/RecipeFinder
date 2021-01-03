@@ -18,10 +18,10 @@ public class Recipe extends BaseEntity {
   private String name;
   @Column(columnDefinition = "TEXT")
   private String description;
+  private Integer preparationTime;
   @Column(columnDefinition = "TEXT")
   private String instructions;
   private Integer servings;
-  private Integer length;
 
   @ManyToMany(cascade = {CascadeType.ALL})
   @JoinTable(
