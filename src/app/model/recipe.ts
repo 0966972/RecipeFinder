@@ -8,6 +8,7 @@ export class Recipe {
   servings: number
   ingredients: Ingredient[]
   pictures: any[]
+  dummy: any[]
   steps: Step[]
-  // fotos: any[]
+
 }

@@ -31,6 +31,12 @@
           <ul *ngFor="let step of recipe.steps; let i = index;">
             <li><b>{{step.number}}.</b> {{step.details}}</li>
           </ul>
+          <h5>fotos</h5>
+          <ul *ngFor="let pictures of recipe.pictures; let i = index;">
+            <div>
+            <img [src]="'data:image/jpeg;base64,'+pictures.content" style="width:200px;"/>
+            </div>
+          </ul>
         </div>
       </div>
     </div>

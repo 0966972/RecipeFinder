@@ -16,7 +16,8 @@ export class RecipeCreatorComponent implements OnInit {
     instructions: null,
     servings: null,
     ingredients: [],
-    pictures: [{name: "dummy"}],
+    pictures: [],
+    dummy: [],
     steps: [
       {number: 1, details: ''}
     ]
@@ -37,10 +38,13 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
   addFoto() {
-    this.recipe.pictures.push({
-      number: this.recipe.pictures.length + 1,
-      details: '',
-    });
+    if (this.recipe.dummy.length < 5){
+      this.recipe.dummy.push({
+        number: this.recipe.pictures.length + 1,
+        details: '',
+      });
+    };
+
   }
 
 

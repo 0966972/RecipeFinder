@@ -25,10 +25,20 @@
     <!--        </div>-->
     <div class="picture">
       <img src="http://localhost:8080/picture/2/show" height="50px">
+      <ul *ngFor="let pictures of recipe.pictures; let i = index;">
+        <div>
+          <img [src]="'data:image/jpeg;base64,'+pictures.content" style="width:200px;"/>
+        </div>
+      </ul>
+
     </div>
+
+
     <div class="col-9">
       <h5>{{ recipe.name }}</h5>
       <p>{{ recipe.description }}<br/></p>
+
+      <p>{{ recipe.pictures[0]| json}}</p>
 
 
         <!-- Simon Besseling | Voor {{ recipe.servings }} personen | 18 Ingredienten<br/>-->
