@@ -67,7 +67,7 @@
       <label>Choose images to upload (PNG, JPG)</label>
       <br>
       <br>
-      <button type="button" (click)="addFoto()">Foto toevoegen</button>
+      <button type="button" (click)="addPicture()">Foto toevoegen</button>
       <section *ngFor="let picture of recipe.dummy; let i = index ;">
         <input type="file" (change)="handleUpload0($event)"/>
       </section>

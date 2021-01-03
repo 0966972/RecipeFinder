@@ -37,7 +37,7 @@ export class RecipeCreatorComponent implements OnInit {
     });
   }
 
-  addFoto() {
+  addPicture() {
     if (this.recipe.dummy.length < 5) {
       this.recipe.dummy.push({
         number: this.recipe.pictures.length + 1,
