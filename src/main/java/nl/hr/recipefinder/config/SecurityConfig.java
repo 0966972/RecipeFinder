@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .ignoringAntMatchers(
         "/user/**",
         "/ingredient/**",
+        "/recipeIngredient/**",
         "/recipe/**",
         "/h2-console/**",
         "/picture/**"

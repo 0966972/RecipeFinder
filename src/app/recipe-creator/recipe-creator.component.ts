@@ -5,6 +5,7 @@ import {Recipe} from "../model/recipe";
 import {RecipeService} from "../service/recipe.service";
 import {Ingredient} from "../model/ingredient";
 import {IngredientService} from "../service/ingredient.service";
+import {RecipeIngredientService} from "../service/recipe-ingredient.service";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -13,6 +14,7 @@ import {IngredientService} from "../service/ingredient.service";
 })
 export class RecipeCreatorComponent implements OnInit {
   recipe: Recipe = {
+    id: null,
     name: null,
     description: null,
     instructions: null,
@@ -30,6 +32,7 @@ export class RecipeCreatorComponent implements OnInit {
   constructor(
     private router: Router,
     private recipeService: RecipeService,
+    private recipeIngredientService: RecipeIngredientService,
     private ingredientService: IngredientService,
   ) {
   }
@@ -77,7 +80,7 @@ export class RecipeCreatorComponent implements OnInit {
     this.ingredientOptions = [];
 
     // if ($event.timeStamp - this.lastkeydown1 > 200) {
-    this.ingredientService.search(input).subscribe( options => {
+    this.ingredientService.search(input).subscribe(options => {
       this.ingredientOptions = options
     });
     // }
@@ -86,8 +89,9 @@ export class RecipeCreatorComponent implements OnInit {
 
   addIngredient() {
     this.recipe.ingredients.push({
-      ingredientId: null,
+      id: {recipeId: null, ingredientId: null,},
       measurement: null,
+      name: null,
     });
     this.ingredients.push({
       id: null,
@@ -106,10 +110,10 @@ export class RecipeCreatorComponent implements OnInit {
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    this.ingredientService.create(this.ingredients, headers).subscribe(ingredients =>{
+    this.ingredientService.create(this.ingredients, headers).subscribe(ingredients => {
       this.ingredients = ingredients
-      for (let i=0; i < ingredients.length; i++) {
-        this.recipe.ingredients[i].ingredientId = ingredients[i].id
+      for (let i = 0; i < ingredients.length; i++) {
+        this.recipe.ingredients[i].id.ingredientId = ingredients[i].id
       }
       this.createRecipe()
     })
@@ -135,10 +139,19 @@ export class RecipeCreatorComponent implements OnInit {
     });
     this.recipe.pictures = pictures;
 
-    this.recipeService.create(this.recipe, headers).subscribe(isValid => {
-      if (isValid) {
+    this.recipeService.create(this.recipe, headers).subscribe(recipe => {
+      if (recipe) {
         console.log(this.recipe);
-        this.router.navigate(['']);
+        for (let i = 0; i < this.recipe.ingredients.length; i++) {
+          this.recipe.ingredients[i].id.recipeId = recipe.id
+        }
+        this.recipeIngredientService.create(this.recipe.ingredients, headers).subscribe(isValid => {
+          if (isValid) {
+            this.router.navigate(['']);
+          } else {
+            alert("Ingredients failed")
+          }
+        })
       } else {
         alert("Recipe creation failed.")
       }

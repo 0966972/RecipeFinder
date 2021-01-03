@@ -28,7 +28,10 @@ public class RecipeController {
   final ModelMapper modelMapper;
 
   @Autowired
-  public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
+  public RecipeController(
+    RecipeService recipeService,
+    ModelMapper modelMapper
+  ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
   }

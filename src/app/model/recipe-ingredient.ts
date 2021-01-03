@@ -1,4 +1,7 @@
 export class RecipeIngredient {
-  ingredientId: number
+  id: {
+    recipeId: number,
+    ingredientId: number
+  }
   measurement: String
 }

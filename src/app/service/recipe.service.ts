@@ -22,7 +22,7 @@ export class RecipeService {
     return this.http.get<ListedRecipe[]>(url);
   }
 
-  public create(recipe: Recipe, headers): Observable<boolean> {
-    return this.http.post<boolean>(this.recipesUrl, recipe, {headers: headers});
+  public create(recipe: Recipe, headers): Observable<Recipe> {
+    return this.http.post<Recipe>(this.recipesUrl, recipe, {headers: headers});
   }
 }
