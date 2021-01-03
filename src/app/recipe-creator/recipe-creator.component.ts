@@ -26,7 +26,8 @@ export class RecipeCreatorComponent implements OnInit {
     ]
   };
   ingredients: Ingredient[] = []
-  ingredientOptions: Ingredient[] = []
+  ingredientOptions: any[] = []
+  lastKeyDown: any;
   loading: any;
 
   constructor(
@@ -76,14 +77,20 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
 
-  findIngredient(input) {
+  findIngredient(event, i) {
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
     this.ingredientOptions = [];
 
-    // if ($event.timeStamp - this.lastkeydown1 > 200) {
-    this.ingredientService.search(input).subscribe(options => {
-      this.ingredientOptions = options
-    });
-    // }
+    let input = this.ingredients[i].name
+    if (input != null && input.length > 2 && event.timeStamp - this.lastKeyDown > 200) {
+      this.lastKeyDown = event.timeStamp
+      this.ingredientService.search(input, headers).subscribe(options => {
+        this.ingredientOptions = options
+      });
+    }
   }
 
 

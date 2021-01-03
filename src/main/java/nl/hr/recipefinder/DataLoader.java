@@ -104,10 +104,7 @@ public class DataLoader implements ApplicationRunner {
       2,
 
       // ingredients
-      List.of(
-//        new IngredientDto(null, "Mushrooms", "500g"),
-//        new IngredientDto("Stroganoff", "382l")
-      ),
+      List.of(),
 
       // pictures
       List.of(),

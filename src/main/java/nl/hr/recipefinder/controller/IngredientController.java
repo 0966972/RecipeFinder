@@ -35,9 +35,13 @@ public class IngredientController {
   }
 
 
-
   @GetMapping("/search/{searchInput}")
-  public List<Ingredient> searchIngredients(@PathVariable String searchInput) {
-    return ingredientService.findIngredientsByName(searchInput);
+  public List<IngredientDto> searchIngredients(@PathVariable String searchInput) {
+    List<Ingredient> ingredients = ingredientService.findIngredientsByName(searchInput);
+
+    return ingredients
+      .stream()
+      .map((it) -> modelMapper.map(it, IngredientDto.class))
+      .collect(Collectors.toList());
   }
 }

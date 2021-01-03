@@ -18,8 +18,8 @@ export class IngredientService {
     return this.http.post<Ingredient[]>(this.ingredientUrl, ingredients, {headers: headers});
   }
 
-  public search(searchInput): Observable<Ingredient[]> {
+  public search(searchInput, headers): Observable<any[]> {
     let url = this.ingredientUrl + '/search/' + searchInput;
-    return this.http.get<Ingredient[]>(url);
+    return this.http.get<any[]>(url, {headers:headers});
   }
 }
