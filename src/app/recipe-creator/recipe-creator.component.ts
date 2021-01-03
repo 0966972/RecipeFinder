@@ -38,12 +38,13 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
   addFoto() {
-    if (this.recipe.dummy.length < 5){
+    if (this.recipe.dummy.length < 5) {
       this.recipe.dummy.push({
         number: this.recipe.pictures.length + 1,
         details: '',
       });
-    };
+    }
+    ;
 
   }
 
@@ -60,7 +61,6 @@ export class RecipeCreatorComponent implements OnInit {
     this.selectedFile0 = <File>event.target.files[0];
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
       this.picture0 = reader.result.toString();
       this.recipe.pictures.push({
         number: this.recipe.pictures.length,
@@ -69,11 +69,6 @@ export class RecipeCreatorComponent implements OnInit {
         content: this.picture0.split(',')[1]
       });
     };
-    // delete this.recipe.pictures[0];
-    console.log(this.recipe.pictures);
-    console.log(this.recipe.pictures[0]);
-    console.log(this.recipe.pictures[0].name == "dummy");
-
 
   }
 
