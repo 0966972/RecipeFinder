@@ -38,4 +38,7 @@ public class Recipe extends BaseEntity {
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "step_id")
   public List<Step> steps = new ArrayList<>();
+
+  @OneToMany(mappedBy="recipe", cascade = CascadeType.ALL)
+  List<Review> reviews;
 }
