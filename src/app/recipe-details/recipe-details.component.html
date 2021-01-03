@@ -1,39 +1,68 @@
 <body>
-  <div class="container">
-    <h1>{{recipe.name}}</h1>
-    <h3>{{recipe.description}}</h3>
-    <p></p>
-    <div class="cont">
-      <ngb-carousel *ngIf="this.recipe.pictures" >
-        <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
-          <div class="wrapper">
-            <img [src]="picture[0]" alt="Afbeelding">
-          </div>
-          <div class="carousel-caption">
-            <h3 id="pictureDescription">{{picture[1]}}</h3>
-          </div>
-          <div class="top-text-block">
-            <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.duration}} minuten </h5>
-          </div>
-        </ng-template>
-      </ngb-carousel>
-      <div id="twoColumns" class="row">
-        <div class="col-3">
-          <h5>Ingredienten</h5>
-          <ul *ngFor="let ingredient of recipe.ingredients;">
-            <li>{{ingredient.measurement}} {{ingredient.name}}</li>
-          </ul>
+<div class="container">
+  <h1>{{recipe.name}}</h1>
+  <h3>{{recipe.description}}</h3>
+  <p></p>
+  <div class="cont">
+    <ngb-carousel *ngIf="this.recipe.pictures" id="recipeCarousel">
+      <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
+        <div class="wrapper">
+          <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
         </div>
-        <div class="col-9">
-          <h5>Bereidingswijze</h5>
-          <p>{{recipe.instructions}}</p>
-          <h5>Stappen</h5>
-          <ul *ngFor="let step of recipe.steps; let i = index;">
-            <li><b>{{step.number}}.</b> {{step.details}}</li>
-          </ul>
+        <div class="carousel-caption">
+          <h3 id="pictureDescription">{{picture[1]}}</h3>
         </div>
+        <div class="top-text-block">
+          <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.duration}} minuten </h5>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+    <div id="ingredientsAndStepsRow" class="row">
+      <div class="col-3">
+        <h5>Ingredienten</h5>
+        <ul *ngFor="let ingredient of recipe.ingredients;">
+          <li>{{ingredient.measurement}} {{ingredient.name}}</li>
+        </ul>
+      </div>
+      <div class="col-9">
+        <h5>Bereidingswijze</h5>
+        <p>{{recipe.instructions}}</p>
+        <h5>Stappen</h5>
+        <ul *ngFor="let step of recipe.steps;">
+          <li><b>{{step.number}}.</b> {{step.details}}</li>
+        </ul>
+      </div>
+    </div>
+    <h5>Beoordelingen</h5>
+    <hr style="margin-top: 0px;"/>
+    <div id="reviewsRow" class="row" *ngFor="let review of recipe.reviews;">
+      <div class="col-3">
+        <ngb-carousel *ngIf="review.pictures" id="reviewCarousel">
+          <ng-template ngbSlide *ngFor="let picture of review.pictures;">
+            <div class="wrapper">
+              <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
+            </div>
+          </ng-template>
+        </ngb-carousel>
+        <div *ngIf="review.pictures.length == 0" style="text-align: center">Geen afbeeldingen geüpload</div>
+      </div>
+      <div class="col-9">
+        <h5>{{review.title}}</h5>
+        <p>{{review.message}}
+          <br/>{{review.user.username}}<br/>
+          <i *ngFor="let i of [].constructor(review.score);" class="fa fa-star" style="color:gold;"></i>
+          <i *ngFor="let i of [].constructor(5-review.score);" class="fa fa-star" style="color:gray;"></i>
+        </p>
+      </div>
+    </div>
+    <div id="createReviewRow" class="row">
+      <div class="col-3"></div>
+      <div class="col-9" >
+        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReview())">Beoordeel dit recept</button>
+        <button *ngIf="!isLoggedIn" class="btn btn-secondary" (click)="rememberRouteAndGotoLogin()">Login om dit recept te beoordelen</button>
       </div>
     </div>
   </div>
+</div>
 </body>
-
+<router-outlet></router-outlet>
