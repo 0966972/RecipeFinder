@@ -23,7 +23,6 @@ const routes: Routes = [
     ]
   },
   {path: 'recipe-creator', component: RecipeCreatorComponent},
-  //{path: 'review-create', component: ReviewCreateComponent},
   {path: '**', redirectTo: ''}
 ];
 
