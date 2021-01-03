@@ -15,6 +15,7 @@ public class RecipeDto {
   private String description;
   private String instructions;
   private Integer servings;
+  private Integer length;
 
   private List<Ingredient> ingredients = new ArrayList<>();
 
