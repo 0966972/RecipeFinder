@@ -26,28 +26,18 @@ public class IngredientController {
 
 
   @PostMapping()
-  public List<IngredientDto> createIngredients(@RequestBody List<IngredientDto> ingredientDtos) {
+  public List<Ingredient> createIngredients(@RequestBody List<IngredientDto> ingredientDtos) {
     List<Ingredient> mappedIngredients = ingredientDtos.stream()
       .map((it) -> modelMapper.map(it, Ingredient.class))
       .collect(Collectors.toList());
 
-    List<Ingredient> createdIngredients = ingredientService.findOrCreateIngredients(mappedIngredients);
-
-    return createdIngredients.stream()
-      .map((it) -> modelMapper.map(it, IngredientDto.class))
-      .collect(Collectors.toList());
+    return ingredientService.findOrCreateIngredients(mappedIngredients);
   }
 
 
 
   @GetMapping("/search/{searchInput}")
-  public List<IngredientDto> searchIngredients(@PathVariable String searchInput) {
-    List<Ingredient> ingredients = ingredientService.findIngredientsByName(searchInput);
-
-    return ingredients.stream()
-      .map((it) -> modelMapper.map(it, IngredientDto.class))
-      .collect(Collectors.toList());
+  public List<Ingredient> searchIngredients(@PathVariable String searchInput) {
+    return ingredientService.findIngredientsByName(searchInput);
   }
-
-
 }

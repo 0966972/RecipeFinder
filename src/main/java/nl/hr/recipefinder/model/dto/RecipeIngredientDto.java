@@ -13,4 +13,5 @@ import nl.hr.recipefinder.model.entity.RecipeIngredientKey;
 public class RecipeIngredientDto {
     private RecipeIngredientKey id;
     private String measurement;
+    private String ingredientName;
 }

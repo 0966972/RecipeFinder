@@ -1,9 +1,12 @@
 package nl.hr.recipefinder;
 
+import nl.hr.recipefinder.model.dto.IngredientDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.entity.Recipe;
-import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.dto.RecipeIngredientDto;
+import nl.hr.recipefinder.model.entity.*;
 import nl.hr.recipefinder.security.Role;
+import nl.hr.recipefinder.service.IngredientService;
+import nl.hr.recipefinder.service.RecipeIngredientService;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by maartendegoede on 07/12/2020.
@@ -22,6 +26,8 @@ import java.util.List;
 public class DataLoader implements ApplicationRunner {
   private final UserService userService;
   private final RecipeService recipeService;
+  private final IngredientService ingredientService;
+  private final RecipeIngredientService recipeIngredientService;
   private final PasswordEncoder passwordEncoder;
   private final ModelMapper modelMapper;
 
@@ -29,11 +35,14 @@ public class DataLoader implements ApplicationRunner {
   public DataLoader(
     UserService userService,
     RecipeService recipeService,
-    PasswordEncoder passwordEncoder,
+    IngredientService ingredientService,
+    RecipeIngredientService recipeIngredientService, PasswordEncoder passwordEncoder,
     ModelMapper modelMapper
   ) {
     this.userService = userService;
     this.recipeService = recipeService;
+    this.ingredientService = ingredientService;
+    this.recipeIngredientService = recipeIngredientService;
     this.passwordEncoder = passwordEncoder;
     this.modelMapper = modelMapper;
   }
@@ -46,6 +55,37 @@ public class DataLoader implements ApplicationRunner {
     admin.setPassword(passwordEncoder.encode("admin"));
     admin.setRole(Role.ADMIN);
     userService.save(admin);
+
+
+    List<IngredientDto> ingredients = List.of(
+      new IngredientDto("Demi Créme Fraîche"),
+      new IngredientDto("Gemengde Paddenstoelen"),
+      new IngredientDto("Rode Ui"),
+      new IngredientDto("Knoflook"),
+      new IngredientDto("Zilveruitjes"),
+      new IngredientDto("Cornichons"),
+      new IngredientDto("Verse Bladpeterselie"),
+      new IngredientDto("Olijfolie"),
+      new IngredientDto("Kappertjes"),
+      new IngredientDto("Whisky"),
+      new IngredientDto("Gerookte Paprikapoeder"),
+      new IngredientDto("Verse Gemberwortel"),
+      new IngredientDto("Arachideolie"),
+      new IngredientDto("Wortel"),
+      new IngredientDto("Verse Rode Peper"),
+      new IngredientDto("Ingelegde Sushigember"),
+      new IngredientDto("Lente-uitjes"),
+      new IngredientDto("Rode Misopasta"),
+      new IngredientDto("Zoutarme Sojasaus"),
+      new IngredientDto("Eiernoedels"),
+      new IngredientDto("Shanghai of Baby Paksoi"),
+      new IngredientDto("Sesamzaad")
+    );
+    List<Ingredient> savedIngredients = ingredientService.findOrCreateIngredients(
+      ingredients.stream().map(
+        (it) -> modelMapper.map(it, Ingredient.class)
+      ).collect(Collectors.toList())
+    );
 
 
     RecipeDto mushroomStroganoff = new RecipeDto(
@@ -75,7 +115,59 @@ public class DataLoader implements ApplicationRunner {
       // steps
       List.of()
     );
-    recipeService.save(modelMapper.map(mushroomStroganoff, Recipe.class));
+    Long recipeId = recipeService.save(modelMapper.map(mushroomStroganoff, Recipe.class)).getId();
+
+    List<RecipeIngredientDto> mushroomStroganoffIngredients = List.of(
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(0).getId()),
+        "80g", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(1).getId()),
+        "400g", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(2).getId()),
+        "1", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(3).getId()),
+        "2 tenen", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(4).getId()),
+        "4", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(5).getId()),
+        "2", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(6).getId()),
+        "4 takjes", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(7).getId()),
+        "", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(8).getId()),
+        "1 el", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(9).getId()),
+        "50 ml", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(10).getId()),
+        "", ""
+      )
+    );
+    recipeIngredientService.saveAll(
+      mushroomStroganoffIngredients.stream().map(
+        (it) -> modelMapper.map(it, RecipeIngredient.class)
+      ).collect(Collectors.toList())
+    );
 
 
     Recipe noodleSoup = new Recipe();
@@ -87,6 +179,66 @@ public class DataLoader implements ApplicationRunner {
         "\n\nEen kneepje limoensap is ook erg lekker."
     );
     noodleSoup.setServings(4);
-    recipeService.save(noodleSoup);
+    recipeId = recipeService.save(noodleSoup).getId();
+
+    List<RecipeIngredientDto> noodleSoupIngredients = List.of(
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(3).getId()),
+        "4 tenen", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(11).getId()),
+        "4 cm", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(12).getId()),
+        "", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(13).getId()),
+        "1", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(14).getId()),
+        "1", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(15).getId()),
+        "1 tl", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(16).getId()),
+        "2", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(17).getId()),
+        "2 volle el", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(18).getId()),
+        "", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(19).getId()),
+        "200 g", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(20).getId()),
+        "2 stronkjes", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(1).getId()),
+        "250g", ""
+      ),
+      new RecipeIngredientDto(
+        new RecipeIngredientKey(recipeId, savedIngredients.get(21).getId()),
+        "1 el", ""
+      )
+    );
+    recipeIngredientService.saveAll(
+      noodleSoupIngredients.stream().map(
+        (it) -> modelMapper.map(it, RecipeIngredient.class)
+      ).collect(Collectors.toList())
+    );
   }
 }

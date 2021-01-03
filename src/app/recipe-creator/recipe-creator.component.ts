@@ -91,7 +91,7 @@ export class RecipeCreatorComponent implements OnInit {
     this.recipe.ingredients.push({
       id: {recipeId: null, ingredientId: null,},
       measurement: null,
-      name: null,
+      ingredientName: null,
     });
     this.ingredients.push({
       id: null,
