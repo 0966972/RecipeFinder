@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class RecipeController {
   @Autowired
   public RecipeController(
     RecipeService recipeService,
-    ModelMapper modelMapper
+     ModelMapper modelMapper
   ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
@@ -48,12 +49,26 @@ public class RecipeController {
     }
   }
 
-  @GetMapping("/search/{searchInput}")
-  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable String searchInput) {
+  @PostMapping("/search/{searchInput}")
+  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable String searchInput, @RequestBody String[] ingredients) {
     try {
-      List<Recipe> recipes = recipeService.findRecipesByNameAndDescription(searchInput, searchInput);
+      List<Recipe> recipes = recipeService.findRecipesByNameOrDescription(searchInput);
 
-      return new ResponseEntity<>(recipes.stream()
+      ArrayList<Recipe> foundRecipes = new ArrayList<>();
+      for (Recipe recipe : recipes) {
+        boolean match = true;
+        for (String ingredient : ingredients) {
+          if (recipe.getIngredients().stream().noneMatch((it) -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+            match = false;
+            break;
+          }
+        }
+
+        if (match)
+          foundRecipes.add(recipe);
+      }
+
+      return new ResponseEntity<>(foundRecipes.stream()
         .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {

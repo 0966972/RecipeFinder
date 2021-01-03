@@ -16,6 +16,14 @@
     <!-- </div>-->
     <div class="col-6">
       <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput" (change)="searchInputChanged()">
+
+
+      <section *ngFor="let ingredient of filterIngredients; let i = index;">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove Filter</button>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" (change)="searchInputChanged()" required/>
+      </section>
+      <button type="button" (click)="addIngredient()">Add Filter</button>
+
     </div>
   </div>
   <hr/>
