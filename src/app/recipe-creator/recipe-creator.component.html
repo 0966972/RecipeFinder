@@ -75,7 +75,7 @@
       <section *ngFor="let ingredient of ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
         <!-- TODO: autoComplete from http://www.mukeshkumar.net/articles/angular/3-ways-to-implement-autocomplete-textbox-in-angular-with-typescript-on-large-data -->
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (change)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required/>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required/>
         <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
                name="ingredientMeasurement_{{i}}" required/>
       </section>
