@@ -5,6 +5,7 @@ export class Recipe {
   id: null
   name: String
   description: String
+  preparationTime: number
   instructions: String
   servings: number
   ingredients: RecipeIngredient[]

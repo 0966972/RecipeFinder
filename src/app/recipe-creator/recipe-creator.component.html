@@ -30,6 +30,13 @@
       <div *ngIf="f.submitted && !description.valid">Description is required</div>
       <br>
       <br>
+
+      <label for="preparationTime">Preparation time in minutes:</label>
+      <input type="number" name="Name" [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel" required/>
+      <div *ngIf="f.submitted && !preparationTime.valid">Preparation time is required</div>
+      <br>
+      <br>
+
       <label for="instructions">Instructions:</label>
       <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
       <div *ngIf="f.submitted && !instructions.valid">Instructions is required</div>

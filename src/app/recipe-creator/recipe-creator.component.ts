@@ -17,6 +17,7 @@ export class RecipeCreatorComponent implements OnInit {
     id: null,
     name: null,
     description: null,
+    preparationTime: 0,
     instructions: null,
     servings: null,
     ingredients: [],

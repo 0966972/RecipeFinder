@@ -11,6 +11,8 @@ export class DetailedRecipe implements Mappable {
   public instructions: string;
   public steps: Step[];
   public servings: number = 0;
+
+  public preparationTime: number = 0;
   public duration: number = 0;
   public ingredients: RecipeIngredient[];
   public pictures: any[];

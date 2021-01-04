@@ -14,6 +14,7 @@ import java.util.List;
 public class RecipeDto {
   private String name;
   private String description;
+  private Integer preparationTime;
   private String instructions;
   private Integer servings;
 
