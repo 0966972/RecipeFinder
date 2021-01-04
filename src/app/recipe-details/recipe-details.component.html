@@ -4,10 +4,10 @@
     <h3>{{recipe.description}}</h3>
     <p></p>
     <div class="cont">
-      <ngb-carousel *ngIf="this.recipe.pictures" >
+      <ngb-carousel *ngIf="this.recipe.pictures" id="recipeCarousel">
         <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
           <div class="wrapper">
-            <img [src]="picture[0]" alt="Afbeelding">
+            <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
           </div>
           <div class="carousel-caption">
             <h3 id="pictureDescription">{{picture[1]}}</h3>
@@ -17,18 +17,6 @@
           </div>
         </ng-template>
       </ngb-carousel>
-      <div id="twoColumns" class="row">
-        <div class="col-3">
-          <h5>Ingredienten</h5>
-          <ul *ngFor="let ingredient of recipe.ingredients;">
-            <li>{{ingredient.measurement}} {{ingredient.name}}</li>
-          </ul>
-        </div>
-        <div class="top-text-block">
-          <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.duration}} minuten </h5>
-        </div>
-      </ng-template>
-    </ngb-carousel>
     <div id="ingredientsAndStepsRow" class="row">
       <div class="col-3">
         <h5>Ingredienten</h5>
@@ -76,5 +64,6 @@
     </div>
   </div>
 </div>
+
 </body>
 <router-outlet></router-outlet>
