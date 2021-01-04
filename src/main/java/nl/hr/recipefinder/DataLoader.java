@@ -92,6 +92,7 @@ public class DataLoader implements ApplicationRunner {
       // description
       "Crunchy Cornichons, Geurige Kapptertjes, Romige Whiskysaus & Peterselie",
 
+      // preperationtime
       10,
 
       // instructions

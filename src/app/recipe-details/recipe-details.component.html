@@ -4,10 +4,10 @@
     <h3>{{recipe.description}}</h3>
     <p></p>
     <div class="cont">
-      <ngb-carousel *ngIf="this.recipe.pictures" >
+      <ngb-carousel *ngIf="this.recipe.pictures" id="recipeCarousel">
         <ng-template ngbSlide *ngFor="let picture of recipe.pictures;">
           <div class="wrapper">
-            <img [src]="picture[0]" alt="Afbeelding">
+            <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
           </div>
           <div class="carousel-caption">
             <h3 id="pictureDescription">{{picture[1]}}</h3>
@@ -64,5 +64,6 @@
     </div>
   </div>
 </div>
+
 </body>
 <router-outlet></router-outlet>
