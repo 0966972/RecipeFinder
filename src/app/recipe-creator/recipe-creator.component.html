@@ -18,7 +18,7 @@
 <h1>Add Recipe</h1>
 <form name="CreateRipe" (ngSubmit)="f.form.valid && createRecipe()" #f="ngForm" novalidate>
 
-  <div class="container_recipevalues">
+  <div class="">
     <div class="formfields">
       <label for="name">Title:</label>
       <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required/>
@@ -51,6 +51,8 @@
       <button type="button" (click)="addStep()">Stap toevoegen</button>
       <section *ngFor="let step of recipe.steps; let i = index;">
         <label>Stap {{step.number}}</label>
+        <br>
+        <br>
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
       <br>
@@ -121,7 +123,7 @@
   }
   html,
   body {
-    background-image: url('assets/image/background.jpg');
+    /*background-image: url('assets/image/background.jpg');*/
     height: 100vh;
   }
   .container_recipevalues {

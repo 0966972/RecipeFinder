@@ -92,6 +92,8 @@ public class DataLoader implements ApplicationRunner {
       // description
       "Crunchy Cornichons, Geurige Kapptertjes, Romige Whiskysaus & Peterselie",
 
+      10,
+
       // instructions
       "Bereid om te beginnen alle ingrediënten voor: maak de paddenstoelen schoon en scheur de grotere in stukjes. Pel de rode ui en knoflook, en snijd ze in dunne ringen en plakjes. Snijd de zilveruitjes en cornichons flinterdun. Pluk en snipper de peterselieblaadjes, en snijd de steeltjes fijn. " +
         "\n\nZet een grote, droge koekenpan met antiaanbaklaag met e paddenstoelen en rode ui op hoog vuur, schud de pan om ze uit te spreiden en bak ze 5 minuten terwijl je regelmatig roert (hierdoor komt de nootachtige smaak goed los). Sprenkel er  1 eetlepel olie over en doe de knoflook, zilveruitjes, cornichons, peterseliesteeltjes, en kappertjes erbij. Schenk na 3 minuten de whisky in de pan, kantel hem voorzichtig om de vlam in de pan te laten slaan, of steek de alcohol voorzichtig aan met een lucifer (pas op je wenkbrauwen!). Voeg nadat de vlammen gedoofd zijn ¼ eetlepel paprikapoeder, de crème fraîche en peterselie toe, en meng alles goed. Giet er een scheutje kokend water bij om het paddenstoelenmengsel een mooie, sausachtige consistentie te geven en voeg naar smaak zeezout en zwarte peper toe. " +
