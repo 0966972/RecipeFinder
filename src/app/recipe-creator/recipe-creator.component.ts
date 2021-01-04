@@ -23,7 +23,8 @@ export class RecipeCreatorComponent implements OnInit {
     pictures: [],
     steps: [
       {number: 1, details: ''}
-    ]
+    ],
+    reviews: [],
   };
   ingredients: Ingredient[] = []
   ingredientOptions: any[] = []

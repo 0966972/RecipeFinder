@@ -107,6 +107,9 @@ public class DataLoader implements ApplicationRunner {
       List.of(),
 
       // steps
+      List.of(),
+
+      // reviews
       List.of()
     );
     Long recipeId = recipeService.save(modelMapper.map(mushroomStroganoff, Recipe.class)).getId();

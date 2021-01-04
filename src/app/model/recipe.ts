@@ -10,4 +10,5 @@ export class Recipe {
   ingredients: RecipeIngredient[]
   pictures: any[]
   steps: Step[]
+  reviews: any[]
 }
