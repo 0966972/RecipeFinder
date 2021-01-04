@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ListedRecipe} from '../model/listed-recipe';
 import {RecipeService} from '../service/recipe.service';
 import {Router} from "@angular/router";
+import {Ingredient} from "../model/ingredient";
+import {HttpHeaders} from "@angular/common/http";
+import {IngredientService} from "../service/ingredient.service";
 
 @Component({
   selector: 'home',
@@ -11,26 +14,65 @@ import {Router} from "@angular/router";
 export class HomeComponent implements OnInit {
 
   recipes: ListedRecipe[];
-  searchInput: ''
+  picture: ''
+  searchInput: '' = ''
+  filterIngredients: Ingredient[] = []
+  ingredientOptions: any[] = []
 
   constructor(
     private recipeService: RecipeService,
+    private ingredientService: IngredientService,
     private router: Router,
   ) {
   }
 
   ngOnInit() {
     this.recipeService.findAll().subscribe(data => {
-      this.recipes = data;
-    });
+      this.recipes = data
+    })
+    ;
   }
+
+  getPicture(){
+
+  }
+
+
 
   openRecipe(id: number) {
     this.router.navigate(['recipe/' + id])
   }
 
+
+  findIngredient(i) {
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.ingredientOptions = [];
+
+    this.ingredientService.search(this.filterIngredients[i].name, headers).subscribe(options => {
+      this.ingredientOptions = options
+    });
+
+    this.searchInputChanged()
+  }
+
+
+  addIngredient() {
+    this.filterIngredients.push({
+      id: null,
+      name: null,
+    })
+  }
+
+  removeIngredient(i: number) {
+    this.filterIngredients.splice(i, 1);
+    this.searchInputChanged()
+  }
+
   searchInputChanged() {
-    this.recipeService.search(this.searchInput).subscribe(data => {
+    this.recipeService.search(this.searchInput, this.filterIngredients).subscribe(data => {
       this.recipes = data;
     });
   }

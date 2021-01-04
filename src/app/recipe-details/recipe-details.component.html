@@ -24,9 +24,6 @@
             <li>{{ingredient.measurement}} {{ingredient.name}}</li>
           </ul>
         </div>
-        <div class="carousel-caption">
-          <h3 id="pictureDescription">{{picture[1]}}</h3>
-        </div>
         <div class="top-text-block">
           <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.duration}} minuten </h5>
         </div>
@@ -36,7 +33,7 @@
       <div class="col-3">
         <h5>Ingredienten</h5>
         <ul *ngFor="let ingredient of recipe.ingredients;">
-          <li>{{ingredient.measurement}} {{ingredient.name}}</li>
+          <li>{{ingredient.measurement}} {{ingredient.ingredientName}}</li>
         </ul>
       </div>
       <div class="col-9">

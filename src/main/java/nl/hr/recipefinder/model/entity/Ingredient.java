@@ -1,12 +1,12 @@
 package nl.hr.recipefinder.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,9 +14,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient extends BaseEntity {
+  public enum State {PENDING, ACCEPTED, REFUSED}
+
   private String name;
-  @JsonIgnore
-  @ManyToMany(mappedBy = "ingredients")
-  private Set<Recipe> Recipes = new HashSet<>();
-//    https://www.baeldung.com/hibernate-many-to-many
+
+  @Enumerated(EnumType.STRING)
+  private State acceptedState;
+
+  @OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
+  private List<RecipeIngredient> recipes;
 }

@@ -1,24 +1,22 @@
 package nl.hr.recipefinder.controller;
 
-import io.swagger.models.Response;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.StepDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
-import nl.hr.recipefinder.model.entity.Step;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +29,10 @@ public class RecipeController {
   final ModelMapper modelMapper;
 
   @Autowired
-  public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
+  public RecipeController(
+    RecipeService recipeService,
+    ModelMapper modelMapper
+  ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
   }
@@ -48,18 +49,38 @@ public class RecipeController {
     }
   }
 
-  @GetMapping("/search/{searchInput}")
-  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable String searchInput) {
+  @PostMapping(value = {"/search/", "/search/{searchInput}"})
+  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable(required = false) String searchInput, @RequestBody String[] ingredients) {
+    List<Recipe> recipes;
+    if (searchInput != null) {
+      recipes = recipeService.findRecipesByNameOrDescription(searchInput);
+    } else {
+      recipes = recipeService.getRecipes();
+    }
     try {
-      List<Recipe> recipes = recipeService.findRecipesByNameAndDescription(searchInput, searchInput);
 
-      return new ResponseEntity<>(recipes.stream()
+      ArrayList<Recipe> foundRecipes = new ArrayList<>();
+      for (Recipe recipe : recipes) {
+        boolean match = true;
+        for (String ingredient : ingredients) {
+          if (recipe.getIngredients().stream().noneMatch((it) -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+            match = false;
+            break;
+          }
+        }
+
+        if (match)
+          foundRecipes.add(recipe);
+      }
+
+      return new ResponseEntity<>(foundRecipes.stream()
         .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
       throw new HttpInternalServerError(e);
     }
   }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {
@@ -70,13 +91,12 @@ public class RecipeController {
 
   @PostMapping()
   public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
-    try{
+    try {
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
-    }
-    catch (DataIntegrityViolationException e){
+    } catch (DataIntegrityViolationException e) {
       throw new HttpConflictError(e);
     }
   }

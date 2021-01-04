@@ -12,22 +12,19 @@
 <nav class="navbar navbar-light bg-light">
   <a id="title" class="navbar-brand" href="/home">RecipeFinder</a>
   <span class="nav navbar-nav navbar-right">
-                <a href="#"><b></b></a>
-            </span>
+         <a href="#"><b></b></a>
+         </span>
 </nav>
-
 <h1>Add Recipe</h1>
 <form name="CreateRipe" (ngSubmit)="f.form.valid && createRecipe()" #f="ngForm" novalidate>
 
   <div class="container_recipevalues">
     <div class="formfields">
-
       <label for="name">Title:</label>
       <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required/>
       <div *ngIf="f.submitted && !name.valid">Title is required</div>
       <br>
       <br>
-
       <label for="description">Description:</label>
       <input type="text" name="Name" [(ngModel)]="recipe.description" #description="ngModel" required/>
       <div *ngIf="f.submitted && !description.valid">Description is required</div>
@@ -43,8 +40,12 @@
       <label for="instructions">Instructions:</label>
       <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
       <div *ngIf="f.submitted && !instructions.valid">Instructions is required</div>
-
+      <br>
       <label>Stappen:</label>
+      <br>
+      <br>
+      <br>
+      <br>
       <br>
       <br>
       <button type="button" (click)="addStep()">Stap toevoegen</button>
@@ -52,7 +53,6 @@
         <label>Stap {{step.number}}</label>
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
-
       <br>
       <br>
       <label>Servings:</label>
@@ -62,90 +62,91 @@
       <br>
       <br>
       <br>
-      <br>
-      <label>Choose images to upload (PNG, JPG)</label>
-      <input type="file" (change)="handleUpload1($event)">
-      <br>
-      <br>
-      <br>
-      <input type="file" (change)="handleUpload2($event)">
-      <br>
-      <br>
-
-      <button [disabled]="loading">Opslaan</button>
-
       <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
         <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
-        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement" name="ingredientMeasurement_{{i}}" required/>
+        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement"
+               name="ingredientMeasurement_{{i}}" required/>
+      </section>
+      <button type="button" (click)="addIngredient()">Add Ingredient</button>
+      <br>
+      <br>
+      <br>
+      <label>Choose images to upload (PNG, JPG)</label>
+      <br>
+      <br>
+      <button type="button" (click)="addPicture()">Foto toevoegen</button>
+      <section *ngFor="let picture of recipe.dummy; let i = index ;">
+        <input type="file" (change)="handleUpload0($event)"/>
+      </section>
+      <br>
+      <br>
+      <br>
+      <button [disabled]="loading">Opslaan</button>
+
+
+
+      <datalist id="ingredientName">
+        <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
+      </datalist>
+
+      <section *ngFor="let ingredient of ingredients; let i = index;">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
+        <!-- TODO: autoComplete from http://www.mukeshkumar.net/articles/angular/3-ways-to-implement-autocomplete-textbox-in-angular-with-typescript-on-large-data -->
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required/>
+        <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
+               name="ingredientMeasurement_{{i}}" required/>
       </section>
 
       <button type="button" (click)="addIngredient()">Add Ingredient</button>
+
     </div>
   </div>
 </form>
-
 <!--<h1>Image Uploading Module</h1>-->
 <!--<input type="file" (change)="handleUpload($event)">-->
 <!--<button type="button" (click)="onUpload()">Upload</button>-->
-
-
-
-
 </body>
 <style>
   @font-face {
     font-family: Pacifico;
     src: url('assets/font/Pacifico-Regular.ttf') format("truetype");
   }
-
   @font-face {
     font-family: Roboto;
     src: url('assets/font/Roboto-Regular.ttf') format("truetype");
   }
-
   * {
     font-family: Roboto;
   }
-
   html,
   body {
     background-image: url('assets/image/background.jpg');
     height: 100vh;
   }
-
   .container_recipevalues {
     background-color: white;
   }
-
-
   #title, h1, h3, h5 {
     font-family: Pacifico;
   }
-
   input {
     box-sizing: border-box
   }
-
   .formfields {
     width: 100%;
     margin: 8px 0;
     padding: 16px 20px;
     border-radius: 5px;
     border: 0px solid gray;
-
-
   }
-
   label {
     float: left;
   }
-
   input {
     float: right;
     width: 100%;
   }
-
   .container_recipevalues {
     margin-top: 5px;
     border-radius: 5px;
@@ -153,12 +154,10 @@
     width: 80%;
     margin: auto;
   }
-
   .cont {
     position: relative;
     width: 1140px;
   }
-
   .top-text-block {
     padding: 10px;
     position: absolute;
@@ -169,7 +168,6 @@
     padding-left: 20px;
     padding-right: 20px;
   }
-
   .bottom-text-block {
     padding: 10px;
     position: absolute;
@@ -181,45 +179,36 @@
     padding-right: 20px;
     width: 100%;
   }
-
   .navbar {
     box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .2);
   }
-
   a {
     color: inherit;
   }
-
   h1 {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
   }
-
   h3 {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
   }
-
   h5 {
     padding-top: 10px;
     padding-bottom: 10px;
   }
-
   img {
     margin-bottom: 10px;;
   }
-
   ul {
     list-style-type: none;
     padding: 0px;
   }
-
   li {
     padding-top: 5px;
     padding-bottom: 5px;
   }
-
 </style>
 </html>
