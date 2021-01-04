@@ -21,7 +21,6 @@ export class RecipeService {
   public search(searchInput: String, filterIngredients: Ingredient[]): Observable<ListedRecipe[]> {
     let ingredients = filterIngredients.map(it => it.name)
     let url = 'http://localhost:8080/recipe/search/' + searchInput;
-    console.log(url)
     return this.http.post<ListedRecipe[]>(url, ingredients);
   }
 
