@@ -9,6 +9,7 @@ export class Recipe {
   servings: number
   ingredients: RecipeIngredient[]
   pictures: any[]
+  dummy: any[]
   steps: Step[]
   reviews: any[]
 }

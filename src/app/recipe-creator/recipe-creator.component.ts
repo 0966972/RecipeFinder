@@ -21,6 +21,7 @@ export class RecipeCreatorComponent implements OnInit {
     servings: null,
     ingredients: [],
     pictures: [],
+    dummy: [],
     steps: [
       {number: 1, details: ''}
     ],
@@ -45,35 +46,39 @@ export class RecipeCreatorComponent implements OnInit {
     });
   }
 
+  addPicture() {
+    if (this.recipe.dummy.length < 5) {
+      this.recipe.dummy.push({
+        number: this.recipe.pictures.length + 1,
+        details: '',
+      });
+    }
+    ;
+
+  }
+
 
   ngOnInit() {
   }
 
-  selectedFile1: File = null;
-  picture1: string
-  selectedFile2: File = null;
-  picture2: string
+  selectedFile0: File = null;
+  picture0: string
 
-  handleUpload1(event) {
+  handleUpload0(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
-    this.selectedFile1 = <File>event.target.files[0];
+    this.selectedFile0 = <File>event.target.files[0];
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
-      this.picture1 = reader.result.toString();
+      this.picture0 = reader.result.toString();
+      this.recipe.pictures.push({
+        number: this.recipe.pictures.length,
+        name: this.selectedFile0.name,
+        type: this.selectedFile0.type,
+        content: this.picture0.split(',')[1]
+      });
     };
-  }
 
-  handleUpload2(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    this.selectedFile2 = <File>event.target.files[0];
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      console.log(reader.result);
-      this.picture2 = reader.result.toString();
-    };
   }
 
 
@@ -124,23 +129,10 @@ export class RecipeCreatorComponent implements OnInit {
 
 
   createRecipe() {
-    let pictures = [
-      {
-        name: this.selectedFile1.name,
-        type: this.selectedFile1.type,
-        content: this.picture1.split(',')[1]
-      },
-      {
-        name: this.selectedFile2.name,
-        type: this.selectedFile2.type,
-        content: this.picture2.split(',')[1]
-      }
-    ]
     let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    this.recipe.pictures = pictures;
 
     this.recipeService.create(this.recipe, headers).subscribe(recipe => {
       if (recipe) {

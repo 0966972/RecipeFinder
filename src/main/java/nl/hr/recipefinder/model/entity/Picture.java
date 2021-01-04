@@ -17,6 +17,7 @@ public class Picture extends BaseEntity {
   private String type;
   @Lob
   private byte[] content;
+  private boolean thumbnail;
   @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   private Recipe recipe;

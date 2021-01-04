@@ -14,6 +14,7 @@ import {IngredientService} from "../service/ingredient.service";
 export class HomeComponent implements OnInit {
 
   recipes: ListedRecipe[];
+  picture: ''
   searchInput: '' = ''
   filterIngredients: Ingredient[] = []
   ingredientOptions: any[] = []
@@ -27,9 +28,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.recipeService.findAll().subscribe(data => {
-      this.recipes = data;
-    });
+      this.recipes = data
+    })
+    ;
   }
+
+  getPicture(){
+
+  }
+
+
 
   openRecipe(id: number) {
     this.router.navigate(['recipe/' + id])

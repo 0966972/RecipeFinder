@@ -15,7 +15,7 @@ public class PictureDto {
   private String name;
   private String type;
   private byte[] content;
-
+  private boolean thumbnail;
   private Recipe recipe;
 
 }
