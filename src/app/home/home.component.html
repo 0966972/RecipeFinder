@@ -11,16 +11,29 @@
 </head>
 
 <body>
-  <div class="container">
-    <h5 style="margin-top: 100px;">Filter Recepten</h5>
-    <div class="row">
-      <!-- <div class="col-6">-->
-      <!-- <input class="form-control" placeholder="Ingredienten">-->
-      <!-- </div>-->
-      <div class="col-6">
-        <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput"
-          (change)="searchInputChanged()">
-      </div>
+
+<div class="container">
+  <h5 style="margin-top: 100px;">Filter Recepten</h5>
+  <div class="row">
+    <!-- <div class="col-6">-->
+    <!-- <input class="form-control" placeholder="Ingredienten">-->
+    <!-- </div>-->
+    <div class="col-6">
+      <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput"
+             (keyup)="searchInputChanged()">
+
+
+      <datalist id="ingredientName">
+        <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
+      </datalist>
+
+      <section *ngFor="let ingredient of filterIngredients; let i = index;">
+        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove Filter</button>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required/>
+      </section>
+      <button type="button" (click)="addIngredient()">Add Filter</button>
+
+
     </div>
     <hr />
 

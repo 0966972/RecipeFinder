@@ -3,6 +3,9 @@ import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
 import {Recipe} from "../model/recipe";
 import {RecipeService} from "../service/recipe.service";
+import {Ingredient} from "../model/ingredient";
+import {IngredientService} from "../service/ingredient.service";
+import {RecipeIngredientService} from "../service/recipe-ingredient.service";
 
 @Component({
   selector: 'app-recipe-creator',
@@ -11,6 +14,7 @@ import {RecipeService} from "../service/recipe.service";
 })
 export class RecipeCreatorComponent implements OnInit {
   recipe: Recipe = {
+    id: null,
     name: null,
     description: null,
     instructions: null,
@@ -20,13 +24,18 @@ export class RecipeCreatorComponent implements OnInit {
     dummy: [],
     steps: [
       {number: 1, details: ''}
-    ]
+    ],
+    reviews: [],
   };
+  ingredients: Ingredient[] = []
+  ingredientOptions: any[] = []
   loading: any;
 
   constructor(
     private router: Router,
     private recipeService: RecipeService,
+    private recipeIngredientService: RecipeIngredientService,
+    private ingredientService: IngredientService,
   ) {
   }
 
@@ -73,15 +82,49 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
 
+  findIngredient(i) {
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.ingredientOptions = [];
+
+    this.ingredientService.search(this.ingredients[i].name, headers).subscribe(options => {
+      this.ingredientOptions = options
+    });
+  }
+
+
   addIngredient() {
     this.recipe.ingredients.push({
-      name: null,
+      id: {recipeId: null, ingredientId: null,},
       measurement: null,
+      ingredientName: null,
     });
+    this.ingredients.push({
+      id: null,
+      name: null,
+    })
   }
 
   removeIngredient(i: number) {
     this.recipe.ingredients.splice(i, 1);
+    this.ingredients.splice(i, 1);
+  }
+
+
+  submitButtonPressed() {
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.ingredientService.create(this.ingredients, headers).subscribe(ingredients => {
+      this.ingredients = ingredients
+      for (let i = 0; i < ingredients.length; i++) {
+        this.recipe.ingredients[i].id.ingredientId = ingredients[i].id
+      }
+      this.createRecipe()
+    })
   }
 
 
@@ -91,10 +134,19 @@ export class RecipeCreatorComponent implements OnInit {
       authorization: 'Basic ' + token
     });
 
-    this.recipeService.create(this.recipe, headers).subscribe(isValid => {
-      if (isValid) {
+    this.recipeService.create(this.recipe, headers).subscribe(recipe => {
+      if (recipe) {
         console.log(this.recipe);
-        this.router.navigate(['']);
+        for (let i = 0; i < this.recipe.ingredients.length; i++) {
+          this.recipe.ingredients[i].id.recipeId = recipe.id
+        }
+        this.recipeIngredientService.create(this.recipe.ingredients, headers).subscribe(isValid => {
+          if (isValid) {
+            this.router.navigate(['']);
+          } else {
+            alert("Ingredients failed")
+          }
+        })
       } else {
         alert("Recipe creation failed.")
       }

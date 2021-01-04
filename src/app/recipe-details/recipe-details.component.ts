@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
+import {Review} from "../model/review.model";
+import {AuthService} from "../service/auth.service";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'recipe-details',
@@ -12,20 +15,20 @@ import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 })
 
 export class RecipeDetailsComponent implements OnInit {
-
-  loaded = false;
   routeId: bigint;
   recipe: DetailedRecipe;
 
   private routeSub: Subscription;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private cdr:ChangeDetectorRef,
     carouselConfig: NgbCarouselConfig
   ) {
-    carouselConfig.interval = 4000;
+    carouselConfig.interval = 0;
     carouselConfig.keyboard = true;
     carouselConfig.pauseOnHover = true;
     carouselConfig.showNavigationIndicators = true;
@@ -36,18 +39,19 @@ export class RecipeDetailsComponent implements OnInit {
   showRecipe() {
     let url = 'http://localhost:8080/recipe/' + this.routeId;
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
+      console.log(response);
       this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
-
-      // this.recipe = this.createStubRecipe();
+      console.log(this.recipe);
+      //this.recipe = this.createStubRecipe();
 
     }, error => {
       switch (error) {
         case 500:
-          alert("De server is helaas niet bereikbaar, probeer het later nog eens.");
+          alert("500: De server is helaas niet bereikbaar, probeer het later nog eens.");
           this.router.navigate(['']);
           break;
         case 404:
-          alert("Het opgevraagde recept konden we helaas niet vinden.");
+          alert("404: Het opgevraagde recept konden we helaas niet vinden.");
           this.router.navigate(['']);
           break;
         default:
@@ -65,6 +69,37 @@ export class RecipeDetailsComponent implements OnInit {
     this.showRecipe();
   }
 
+  get isLoggedIn(): boolean {
+    return this.authService.authenticated;
+  }
+
+  get isRecipeCreator(): boolean {
+    let loggedInUser = this.authService.username;
+    if (loggedInUser != null && loggedInUser == this.recipe.creator){
+      return true;
+    }
+    return false;
+  }
+
+  gotoReview(){
+    this.router.navigate(['recipe/' + this.routeId + '/review-create', {previous: '/recipe/' + this.routeId}]).then(
+      ()=>
+      this.router.events
+        .pipe(
+          filter(value => value instanceof NavigationEnd),
+        )
+        .subscribe(() => {
+          this.showRecipe();
+        })
+    );
+
+    //this.router.navigate(['/review-create', {previous: '/recipe/' + this.routeId}])
+  }
+
+  rememberRouteAndGotoLogin(){
+    this.router.navigate(['/login', {previous: '/recipe/' + this.routeId}])
+  }
+
   createStubRecipe(): DetailedRecipe {
     let stub: DetailedRecipe = new DetailedRecipe();
     stub.name = "Vlugge Noedelsoep met Paddenstoelen";
@@ -76,17 +111,17 @@ export class RecipeDetailsComponent implements OnInit {
     stub.servings = 4;
     stub.creator = "Bentley";
     stub.ingredients = [
-      {measurement: "400g", name: "gemengde paddestoelen"},
-      {measurement: "1", name: "rode ui"},
-      {measurement: "2", name: "tenen knoflook"},
-      {measurement: "4", name: "zilveruitjes"},
-      {measurement: "2", name: "cornichons"},
-      {measurement: "4", name: "takjes verse badpeterselie"},
-      {measurement: "", name: "olijfolie"},
-      {measurement: "1 el", name: "kappertjes"},
-      {measurement: "50 ml", name: "whisky"},
-      {measurement: "", name: "gerookte-parikapoeder"},
-      {measurement: "80g", name: "demi creme fraiche"}
+      // {measurement: "400g", name: "gemengde paddestoelen"},
+      // {measurement: "1", name: "rode ui"},
+      // {measurement: "2", name: "tenen knoflook"},
+      // {measurement: "4", name: "zilveruitjes"},
+      // {measurement: "2", name: "cornichons"},
+      // {measurement: "4", name: "takjes verse badpeterselie"},
+      // {measurement: "", name: "olijfolie"},
+      // {measurement: "1 el", name: "kappertjes"},
+      // {measurement: "50 ml", name: "whisky"},
+      // {measurement: "", name: "gerookte-parikapoeder"},
+      // {measurement: "80g", name: "demi creme fraiche"}
     ];
     stub.pictures = [["assets/image/background2.jpg", "Voorbereiden van de ingredienten"],
       ["assets/image/background.jpg", "Kook de eiernoedels"],
@@ -100,6 +135,10 @@ export class RecipeDetailsComponent implements OnInit {
         number: 2,
         details: "Bak ze 2 minuten, voeg het eekhoorntjesbrood en 1,5 liter kokend water toe, leg een deksel op de pan en laat 10 minuten op laag vuur koken."
       }
+    ]
+    stub.reviews = [
+      new Review(1, 5, "matig", "vond het helemaal niks, maar ik geef hem toch een 5.", []),
+      new Review(2, 4 ,"heerlijk.","kon er van genieten.", [])
     ]
     return stub;
   }

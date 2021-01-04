@@ -2,7 +2,6 @@ package nl.hr.recipefinder.config;
 
 import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
-import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.SessionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -56,11 +54,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic()
       .and()
       .authorizeRequests()
-      .antMatchers("/admin/**", "/swagger-ui/**", "/h2-console/**").hasRole(Role.ADMIN.name())
-      .antMatchers("/index.html", "/", "/home", "/login", "/session/**", "/user/**", "/recipe/**","/picture/**").permitAll()
-      .anyRequest().authenticated()
+      .antMatchers("/").permitAll()
       .and()
-      .csrf().ignoringAntMatchers("/user/**", "/recipe/**", "/h2-console/**","/picture/**").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+      .csrf().disable();
+
+//    http
+//      .headers().frameOptions().disable()
+//      .and()
+//      .cors().configurationSource(corsConfigurationSource())
+//      .and()
+//      .httpBasic()
+//      .and()
+//      .authorizeRequests()
+//      .antMatchers(
+//        "/admin/**",
+//        "/admin/ingredients/**",
+//        "/admin/ingredients/pending/**",
+//        "/admin/ingredients/refused/**",
+//        "/swagger-ui/**",
+//        "/h2-console/**"
+//      ).hasRole(Role.ADMIN.name())
+//      .antMatchers(
+//        "/index.html",
+//        "/",
+//        "/home",
+//        "/login",
+//        "/session/**",
+//        "/user/**",
+//        "/recipe/**",
+//        "/picture/**"
+//      ).permitAll()
+//      .anyRequest().authenticated()
+//      .and()
+//      .csrf()
+//      .ignoringAntMatchers(
+//        "/user/**",
+//        "/ingredient/**",
+//        "/recipeIngredient/**",
+//        "/recipe/**",
+//        "/h2-console/**",
+//        "/picture/**"
+//      ).csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
   }
 
   @Bean

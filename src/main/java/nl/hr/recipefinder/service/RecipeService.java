@@ -21,8 +21,8 @@ public class RecipeService {
   }
 
 
-  public List<Recipe> findRecipesByNameAndDescription(String name, String description) {
-    return recipeRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(name, description);
+  public List<Recipe> findRecipesByNameOrDescription(String searchInput) {
+    return recipeRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchInput, searchInput);
   }
 
   public Optional<Recipe> findById(Long id) {
