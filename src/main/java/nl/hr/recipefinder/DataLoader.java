@@ -2,6 +2,7 @@ package nl.hr.recipefinder;
 
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeIngredientDto;
+import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.*;
 import nl.hr.recipefinder.repository.IngredientRepository;
 import nl.hr.recipefinder.security.Role;
@@ -102,6 +103,9 @@ public class DataLoader implements ApplicationRunner {
 
       // servings
       2,
+
+      // user
+      "Simon",
 
       // ingredients
       List.of(),

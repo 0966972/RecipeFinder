@@ -3,10 +3,12 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
+import nl.hr.recipefinder.service.SessionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,14 +29,17 @@ public class RecipeController {
 
   private final RecipeService recipeService;
   final ModelMapper modelMapper;
+  private final SessionService sessionService;
 
   @Autowired
   public RecipeController(
     RecipeService recipeService,
-    ModelMapper modelMapper
+    ModelMapper modelMapper,
+    SessionService sessionService
   ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
+    this.sessionService = sessionService;
   }
 
   @GetMapping()
@@ -85,14 +90,20 @@ public class RecipeController {
   @GetMapping("/{id}")
   public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    if (recipe.isPresent()) return new ResponseEntity<>(modelMapper.map(recipe.get(), RecipeDto.class), HttpStatus.OK);
+    var recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
+    if(recipe.get().user != null){
+      recipeDto.creator = recipe.get().user.username;
+    }
+    if (recipe.isPresent()) return new ResponseEntity<>(recipeDto, HttpStatus.OK);
     else throw new HttpNotFoundError();
   }
 
   @PostMapping()
   public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
     try {
+      User user = sessionService.getAuthenticatedUser();
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
+      mappedRecipe.user = user;
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
