@@ -58,6 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       .antMatchers(
         "/admin/**",
+        "/admin/ingredients/**",
+        "/admin/ingredients/pending/**",
+        "/admin/ingredients/refused/**",
         "/swagger-ui/**",
         "/h2-console/**"
       ).hasRole(Role.ADMIN.name())

@@ -28,7 +28,7 @@ public class IngredientController {
   @PostMapping()
   public List<Ingredient> createIngredients(@RequestBody List<IngredientDto> ingredientDtos) {
     List<Ingredient> mappedIngredients = ingredientDtos.stream()
-      .map((it) -> modelMapper.map(it, Ingredient.class))
+      .map((it) -> new Ingredient(it.getName(), Ingredient.State.PENDING, List.of()))
       .collect(Collectors.toList());
 
     return ingredientService.findOrCreateIngredients(mappedIngredients);
