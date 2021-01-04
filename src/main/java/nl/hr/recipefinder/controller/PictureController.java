@@ -34,7 +34,7 @@ public class PictureController {
 
 
   @GetMapping()
-  public List<PictureDto> donwloadFiles() {
+  public List<PictureDto> downloadFiles() {
     List<Picture> pictures = pictureService.getPictures();
     List<PictureDto> pictureDtos = new ArrayList<>();
     for (Picture picture : pictures) {
@@ -44,7 +44,7 @@ public class PictureController {
   }
 
   @GetMapping("/{id}")
-  public PictureDto donwloadFile(@PathVariable long id) {
+  public PictureDto downloadFile(@PathVariable long id) {
     Optional<Picture> picture = pictureService.getPicture(id);
     if (picture.isPresent()) return modelMapper.map(picture, PictureDto.class);
     else throw new HttpNotFoundError();

@@ -111,17 +111,17 @@ export class RecipeDetailsComponent implements OnInit {
     stub.servings = 4;
     stub.creator = "Bentley";
     stub.ingredients = [
-      {measurement: "400g", name: "gemengde paddestoelen"},
-      {measurement: "1", name: "rode ui"},
-      {measurement: "2", name: "tenen knoflook"},
-      {measurement: "4", name: "zilveruitjes"},
-      {measurement: "2", name: "cornichons"},
-      {measurement: "4", name: "takjes verse badpeterselie"},
-      {measurement: "", name: "olijfolie"},
-      {measurement: "1 el", name: "kappertjes"},
-      {measurement: "50 ml", name: "whisky"},
-      {measurement: "", name: "gerookte-parikapoeder"},
-      {measurement: "80g", name: "demi creme fraiche"}
+      // {measurement: "400g", name: "gemengde paddestoelen"},
+      // {measurement: "1", name: "rode ui"},
+      // {measurement: "2", name: "tenen knoflook"},
+      // {measurement: "4", name: "zilveruitjes"},
+      // {measurement: "2", name: "cornichons"},
+      // {measurement: "4", name: "takjes verse badpeterselie"},
+      // {measurement: "", name: "olijfolie"},
+      // {measurement: "1 el", name: "kappertjes"},
+      // {measurement: "50 ml", name: "whisky"},
+      // {measurement: "", name: "gerookte-parikapoeder"},
+      // {measurement: "80g", name: "demi creme fraiche"}
     ];
     stub.pictures = [["assets/image/background2.jpg", "Voorbereiden van de ingredienten"],
       ["assets/image/background.jpg", "Kook de eiernoedels"],

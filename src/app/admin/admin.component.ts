@@ -1,7 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Router} from "@angular/router";
+import {AdminService} from "../service/admin.service";
+import {AdminIngredient} from "../model/admin-ingredient";
 
 @Component({
   selector: 'admin',
@@ -10,52 +10,52 @@ import {Observable} from "rxjs";
 
 export class AdminComponent implements OnInit {
   loading: any;
-  isAdmin = false;
-
-  user = {
-    id: 0,
-    username: '',
-    role: '',
-  }
+  pendingIngredients: AdminIngredient[] = []
+  rejectedIngredients: AdminIngredient[] = []
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private adminService: AdminService,
   ) {
   }
 
-  get isContentVisible(): boolean {
-    return this.isAdmin;
+
+  acceptRejectedIngredient(i) {
+    let ingredient = this.rejectedIngredients[i];
+
+    this.adminService.acceptIngredient(ingredient).subscribe(ingredient => {
+      if (ingredient)
+        this.rejectedIngredients.splice(i, 1);
+    });
+  }
+
+
+  acceptPendingIngredient(i) {
+    let ingredient = this.pendingIngredients[i];
+
+    this.adminService.acceptIngredient(ingredient).subscribe(it => {
+      if (it)
+        this.pendingIngredients.splice(i, 1);
+    });
+  }
+
+  rejectPendingIngedient(i) {
+    let ingredient = this.pendingIngredients[i];
+
+    this.adminService.rejectIngredient(ingredient).subscribe(it => {
+      if (it) {
+        this.pendingIngredients.splice(i, 1);
+        this.rejectedIngredients.push(it)
+      }
+    });
   }
 
   ngOnInit() {
-    let token: string = sessionStorage.getItem('token');
-    let url = 'http://localhost:8080/session/login';
-    let headers: HttpHeaders = new HttpHeaders({
-      'Authorization': 'Basic ' + token
+    this.adminService.getPendingIngredients().subscribe(data => {
+      this.pendingIngredients = data;
     });
-
-    let options = {headers: headers};
-    this.http.get<Observable<Object>>(url, options).subscribe(response => {
-        this.user.username = response['name'];
-        this.user.id = response['principal']['user']['id'];
-        this.user.role = response['principal']['user']['role'];
-
-        if (this.user.role == "USER") {
-          alert('U bent niet geautoriseerd om deze pagina te bekijken.');
-          this.router.navigate(['']);
-          this.isAdmin = false;
-        }
-        this.isAdmin = true;
-      },
-      error => {
-        if (error.status == 401) {
-          alert('U bent niet geautoriseerd om deze pagina te bekijken.');
-          this.router.navigate(['']);
-          this.isAdmin = false;
-        }
-      }
-    );
+    this.adminService.getRefusedIngredients().subscribe(data => {
+      this.rejectedIngredients = data;
+    });
   }
 }
