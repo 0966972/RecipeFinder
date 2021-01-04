@@ -36,7 +36,7 @@
 
       <label for="preparationTime">Preparation time in minutes:</label>
       <input type="number" name="Name" [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel" required/>
-      <div *ngIf="f.submitted && !preparationTime.valid">Preparation time time is required</div>
+      <div *ngIf="f.submitted && !preparationTime.valid">Preparation time is required</div>
       <br>
       <br>
 
