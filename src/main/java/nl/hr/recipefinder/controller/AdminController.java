@@ -30,6 +30,8 @@ public class AdminController {
 
   @PostMapping("/ingredients")
   public Ingredient updateIngredientState(@RequestBody AdminIngredientDto ingredient) {
+    // todo: for some reason, this always returns "401 OK" (401 is actually the code for UnAuthorised)
+    // todo: I don't really know how to fix this anymore, if someone else could take a look at it it would be really nice
     return ingredientService.update(modelMapper.map(ingredient, Ingredient.class));
   }
 
