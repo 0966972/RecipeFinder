@@ -9,23 +9,6 @@
         <div class="wrapper">
           <img src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding">
         </div>
-
-        <div class="col-9">
-          <h5>Bereidingswijze</h5>
-          <p>{{recipe.instructions}}</p>
-          <h5>Stappen</h5>
-          <ul *ngFor="let step of recipe.steps; let i = index;">
-            <li><b>{{step.number}}.</b> {{step.details}}</li>
-          </ul>
-          <h5>fotos</h5>
-          <ul *ngFor="let pictures of recipe.pictures; let i = index;">
-            <div>
-            <img [src]="'data:image/jpeg;base64,'+pictures.content" style="width:200px;"/>
-            </div>
-          </ul>
-
-
-        </div>
         <div class="top-text-block">
           <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.duration}} minuten </h5>
         </div>
