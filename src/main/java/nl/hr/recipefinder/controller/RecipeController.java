@@ -3,10 +3,12 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
+import nl.hr.recipefinder.service.SessionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,14 +29,17 @@ public class RecipeController {
 
   private final RecipeService recipeService;
   final ModelMapper modelMapper;
+  private final SessionService sessionService;
 
   @Autowired
   public RecipeController(
     RecipeService recipeService,
-    ModelMapper modelMapper
+    ModelMapper modelMapper,
+    SessionService sessionService
   ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
+    this.sessionService = sessionService;
   }
 
   @GetMapping()
@@ -92,7 +97,9 @@ public class RecipeController {
   @PostMapping()
   public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
     try {
+      User user = sessionService.getAuthenticatedUser();
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
+      mappedRecipe.user = user;
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
