@@ -49,10 +49,15 @@ public class RecipeController {
     }
   }
 
-  @PostMapping("/search/{searchInput}")
-  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable String searchInput, @RequestBody String[] ingredients) {
+  @PostMapping(value = {"/search/", "/search/{searchInput}"})
+  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable(required = false) String searchInput, @RequestBody String[] ingredients) {
+    List<Recipe> recipes;
+    if (searchInput != null) {
+      recipes = recipeService.findRecipesByNameOrDescription(searchInput);
+    } else {
+      recipes = recipeService.getRecipes();
+    }
     try {
-      List<Recipe> recipes = recipeService.findRecipesByNameOrDescription(searchInput);
 
       ArrayList<Recipe> foundRecipes = new ArrayList<>();
       for (Recipe recipe : recipes) {
@@ -75,6 +80,7 @@ public class RecipeController {
       throw new HttpInternalServerError(e);
     }
   }
+
 
   @GetMapping("/{id}")
   public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {

@@ -14,7 +14,7 @@ import {IngredientService} from "../service/ingredient.service";
 export class HomeComponent implements OnInit {
 
   recipes: ListedRecipe[];
-  searchInput: ''
+  searchInput: '' = ''
   filterIngredients: Ingredient[] = []
   ingredientOptions: any[] = []
 
@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
       id: null,
       name: null,
     })
+
   }
 
   removeIngredient(i: number) {
