@@ -1,11 +1,10 @@
 package nl.hr.recipefinder;
 
-import nl.hr.recipefinder.model.dto.IngredientDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeIngredientDto;
 import nl.hr.recipefinder.model.entity.*;
+import nl.hr.recipefinder.repository.IngredientRepository;
 import nl.hr.recipefinder.security.Role;
-import nl.hr.recipefinder.service.IngredientService;
 import nl.hr.recipefinder.service.RecipeIngredientService;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.UserService;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 public class DataLoader implements ApplicationRunner {
   private final UserService userService;
   private final RecipeService recipeService;
-  private final IngredientService ingredientService;
+  private final IngredientRepository ingredientRepository;
   private final RecipeIngredientService recipeIngredientService;
   private final PasswordEncoder passwordEncoder;
   private final ModelMapper modelMapper;
@@ -35,13 +34,14 @@ public class DataLoader implements ApplicationRunner {
   public DataLoader(
     UserService userService,
     RecipeService recipeService,
-    IngredientService ingredientService,
-    RecipeIngredientService recipeIngredientService, PasswordEncoder passwordEncoder,
+    IngredientRepository ingredientRepository,
+    RecipeIngredientService recipeIngredientService,
+    PasswordEncoder passwordEncoder,
     ModelMapper modelMapper
   ) {
     this.userService = userService;
     this.recipeService = recipeService;
-    this.ingredientService = ingredientService;
+    this.ingredientRepository = ingredientRepository;
     this.recipeIngredientService = recipeIngredientService;
     this.passwordEncoder = passwordEncoder;
     this.modelMapper = modelMapper;
@@ -57,35 +57,32 @@ public class DataLoader implements ApplicationRunner {
     userService.save(admin);
 
 
-    List<IngredientDto> ingredients = List.of(
-      new IngredientDto("Demi Créme Fraîche"),
-      new IngredientDto("Gemengde Paddenstoelen"),
-      new IngredientDto("Rode Ui"),
-      new IngredientDto("Knoflook"),
-      new IngredientDto("Zilveruitjes"),
-      new IngredientDto("Cornichons"),
-      new IngredientDto("Verse Bladpeterselie"),
-      new IngredientDto("Olijfolie"),
-      new IngredientDto("Kappertjes"),
-      new IngredientDto("Whisky"),
-      new IngredientDto("Gerookte Paprikapoeder"),
-      new IngredientDto("Verse Gemberwortel"),
-      new IngredientDto("Arachideolie"),
-      new IngredientDto("Wortel"),
-      new IngredientDto("Verse Rode Peper"),
-      new IngredientDto("Ingelegde Sushigember"),
-      new IngredientDto("Lente-uitjes"),
-      new IngredientDto("Rode Misopasta"),
-      new IngredientDto("Zoutarme Sojasaus"),
-      new IngredientDto("Eiernoedels"),
-      new IngredientDto("Shanghai of Baby Paksoi"),
-      new IngredientDto("Sesamzaad")
+    List<Ingredient> ingredients = List.of(
+      new Ingredient("Demi Créme Fraîche", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Gemengde Paddenstoelen", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Rode Ui", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Knoflook", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Zilveruitjes", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Cornichons", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Verse Bladpeterselie", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Olijfolie", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Kappertjes", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Whisky", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Gerookte Paprikapoeder", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Verse Gemberwortel", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Arachideolie", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Wortel", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Verse Rode Peper", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Ingelegde Sushigember", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Lente-uitjes", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Rode Misopasta", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Zoutarme Sojasaus", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Eiernoedels", Ingredient.State.ACCEPTED, List.of()),
+      new Ingredient("Shanghai of Baby Paksoi", Ingredient.State.PENDING, List.of()),
+      new Ingredient("Sesamzaad", Ingredient.State.PENDING, List.of()),
+      new Ingredient("Kauwgom", Ingredient.State.REFUSED, List.of())
     );
-    List<Ingredient> savedIngredients = ingredientService.findOrCreateIngredients(
-      ingredients.stream().map(
-        (it) -> modelMapper.map(it, Ingredient.class)
-      ).collect(Collectors.toList())
-    );
+    List<Ingredient> savedIngredients = ingredientRepository.saveAll(ingredients);
 
 
     RecipeDto mushroomStroganoff = new RecipeDto(

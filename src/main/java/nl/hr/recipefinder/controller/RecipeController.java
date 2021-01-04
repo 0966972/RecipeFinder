@@ -31,7 +31,7 @@ public class RecipeController {
   @Autowired
   public RecipeController(
     RecipeService recipeService,
-     ModelMapper modelMapper
+    ModelMapper modelMapper
   ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;

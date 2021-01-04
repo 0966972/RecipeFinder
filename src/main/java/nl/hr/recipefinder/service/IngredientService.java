@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class IngredientService {
@@ -16,52 +16,34 @@ public class IngredientService {
     this.ingredientRepository = ingredientRepository;
   }
 
-  public List<Ingredient> findOrCreateIngredients(List<Ingredient> ingredients) {
-    List<Ingredient> existingIngredients = ingredientRepository.findByNameIn(
-      ingredients.stream()
-        .map(Ingredient::getName)
-        .collect(Collectors.toList())
-    );
-    List<Ingredient> ingredientsToCreate =
-      ingredients.stream().filter((it) ->
-        existingIngredients.stream().noneMatch((other) ->
-          other.getName().equals(it.getName())
-        )
-      ).collect(Collectors.toList());
+  public Ingredient update(Ingredient ingredient) {
+    return ingredientRepository.save(ingredient);
+  }
 
-    List<Ingredient> createdIngredients = ingredientRepository.saveAll(ingredientsToCreate);
+  public List<Ingredient> findOrCreateIngredients(List<Ingredient> ingredientsToCreate) {
+    ArrayList<Ingredient> finalIngredients = new ArrayList<>();
+    for (Ingredient ingredientToCreate : ingredientsToCreate) {
+      Optional<Ingredient> existingIngredient = ingredientRepository.findByName(ingredientToCreate.getName());
 
-    ArrayList<Ingredient> finalList = new ArrayList<>();
-    for (Ingredient ingredient : ingredients) {
-      boolean added = false;
-      for (Ingredient createdIngredient : createdIngredients) {
-        if (ingredient.getName().equals(createdIngredient.getName())) {
-          finalList.add(createdIngredient);
-          added = true;
-          break;
-        }
-      }
-
-      if (added)
+      if (existingIngredient.isPresent()) {
+        finalIngredients.add(existingIngredient.get());
         continue;
-
-      for (Ingredient existingIngredient : existingIngredients) {
-        if (ingredient.getName().equals(existingIngredient.getName())) {
-          finalList.add(existingIngredient);
-          added = true;
-          break;
-        }
       }
 
-      if (!added) throw new IllegalStateException("Should be created by now but isn't.");
+      ingredientToCreate.setAcceptedState(Ingredient.State.PENDING);
+      finalIngredients.add(ingredientRepository.save(ingredientToCreate));
     }
 
-    return finalList;
+    return finalIngredients;
+  }
+
+  public List<Ingredient> getIngredientsBySate(Ingredient.State state) {
+    return ingredientRepository.findByAcceptedState(state);
   }
 
 
   public List<Ingredient> findIngredientsByName(String searchInput) {
-    return ingredientRepository.findByNameContainingIgnoreCase(searchInput);
+    return ingredientRepository.findByNameContainingIgnoreCaseAndAcceptedStateEquals(searchInput, Ingredient.State.ACCEPTED);
   }
 
 
