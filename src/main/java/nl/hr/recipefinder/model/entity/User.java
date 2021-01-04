@@ -18,7 +18,7 @@ import javax.persistence.Enumerated;
 public class User extends BaseEntity {
 
   @Column(unique = true)
-  private String username;
+  public String username;
 
   private String password;
 

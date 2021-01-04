@@ -18,6 +18,8 @@ public class RecipeDto {
   private String instructions;
   private Integer servings;
 
+  public String creator;
+
   private List<RecipeIngredientDto> ingredients = new ArrayList<>();
 
   private List<Picture> pictures = new ArrayList<>();

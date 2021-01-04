@@ -90,7 +90,11 @@ public class RecipeController {
   @GetMapping("/{id}")
   public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    if (recipe.isPresent()) return new ResponseEntity<>(modelMapper.map(recipe.get(), RecipeDto.class), HttpStatus.OK);
+    var recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
+    if(recipe.get().user != null){
+      recipeDto.creator = recipe.get().user.username;
+    }
+    if (recipe.isPresent()) return new ResponseEntity<>(recipeDto, HttpStatus.OK);
     else throw new HttpNotFoundError();
   }
 
