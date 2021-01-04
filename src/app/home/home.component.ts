@@ -56,7 +56,6 @@ export class HomeComponent implements OnInit {
       id: null,
       name: null,
     })
-
   }
 
   removeIngredient(i: number) {
