@@ -29,15 +29,8 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.recipeService.findAll().subscribe(data => {
       this.recipes = data
-    })
-    ;
+    });
   }
-
-  getPicture(){
-
-  }
-
-
 
   openRecipe(id: number) {
     this.router.navigate(['recipe/' + id])

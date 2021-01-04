@@ -16,7 +16,7 @@
          </span>
 </nav>
 <h1>Add Recipe</h1>
-<form name="CreateRipe" (ngSubmit)="f.form.valid && createRecipe()" #f="ngForm" novalidate>
+<form name="CreateRipe" (ngSubmit)="f.form.valid && submitButtonPressed()" #f="ngForm" novalidate>
 
   <div class="">
     <div class="formfields">
@@ -64,12 +64,14 @@
       <br>
       <br>
       <br>
-      <section *ngFor="let ingredient of recipe.ingredients; let i = index;">
+      <section *ngFor="let ingredient of ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" name="ingredientName_{{i}}" required/>
-        <input placeholder="Measurement" type="text" [(ngModel)]="ingredient.measurement"
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)"
+               list="ingredientName" name="ingredientName_{{i}}" required/>
+        <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
                name="ingredientMeasurement_{{i}}" required/>
       </section>
+
       <button type="button" (click)="addIngredient()">Add Ingredient</button>
       <br>
       <br>
@@ -87,20 +89,10 @@
       <button [disabled]="loading">Opslaan</button>
 
 
-
       <datalist id="ingredientName">
         <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
       </datalist>
 
-      <section *ngFor="let ingredient of ingredients; let i = index;">
-        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
-        <!-- TODO: autoComplete from http://www.mukeshkumar.net/articles/angular/3-ways-to-implement-autocomplete-textbox-in-angular-with-typescript-on-large-data -->
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required/>
-        <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
-               name="ingredientMeasurement_{{i}}" required/>
-      </section>
-
-      <button type="button" (click)="addIngredient()">Add Ingredient</button>
 
     </div>
   </div>
@@ -114,27 +106,34 @@
     font-family: Pacifico;
     src: url('assets/font/Pacifico-Regular.ttf') format("truetype");
   }
+
   @font-face {
     font-family: Roboto;
     src: url('assets/font/Roboto-Regular.ttf') format("truetype");
   }
+
   * {
     font-family: Roboto;
   }
+
   html,
   body {
     /*background-image: url('assets/image/background.jpg');*/
     height: 100vh;
   }
+
   .container_recipevalues {
     background-color: white;
   }
+
   #title, h1, h3, h5 {
     font-family: Pacifico;
   }
+
   input {
     box-sizing: border-box
   }
+
   .formfields {
     width: 100%;
     margin: 8px 0;
@@ -142,13 +141,16 @@
     border-radius: 5px;
     border: 0px solid gray;
   }
+
   label {
     float: left;
   }
+
   input {
     float: right;
     width: 100%;
   }
+
   .container_recipevalues {
     margin-top: 5px;
     border-radius: 5px;
@@ -156,10 +158,12 @@
     width: 80%;
     margin: auto;
   }
+
   .cont {
     position: relative;
     width: 1140px;
   }
+
   .top-text-block {
     padding: 10px;
     position: absolute;
@@ -170,6 +174,7 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+
   .bottom-text-block {
     padding: 10px;
     position: absolute;
@@ -181,33 +186,41 @@
     padding-right: 20px;
     width: 100%;
   }
+
   .navbar {
     box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .2);
   }
+
   a {
     color: inherit;
   }
+
   h1 {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   h3 {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   h5 {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   img {
     margin-bottom: 10px;;
   }
+
   ul {
     list-style-type: none;
     padding: 0px;
   }
+
   li {
     padding-top: 5px;
     padding-bottom: 5px;
