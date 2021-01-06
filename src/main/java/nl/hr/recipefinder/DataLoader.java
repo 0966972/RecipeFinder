@@ -12,6 +12,7 @@ import nl.hr.recipefinder.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  * Created by maartendegoede on 07/12/2020.
  * Copyright © 2020 Maarten de Goede. All rights reserved.
  */
+@Profile("live")
 @Component
 public class DataLoader implements ApplicationRunner {
   private final UserService userService;
