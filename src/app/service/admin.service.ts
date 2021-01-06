@@ -21,12 +21,12 @@ export class AdminService {
 
   public acceptIngredient(ingredient: AdminIngredient): Observable<AdminIngredient> {
     ingredient.acceptedState = "ACCEPTED"
-    return this.http.post<AdminIngredient>(this.ingredientsUrl, ingredient, {headers: this.headers});
+    return this.http.patch<AdminIngredient>(this.ingredientsUrl, ingredient, {headers: this.headers});
   }
 
   public rejectIngredient(ingredient: AdminIngredient): Observable<AdminIngredient> {
     ingredient.acceptedState = "REFUSED"
-    return this.http.post<AdminIngredient>(this.ingredientsUrl, ingredient, {headers: this.headers});
+    return this.http.patch<AdminIngredient>(this.ingredientsUrl, ingredient, {headers: this.headers});
   }
 
   public getPendingIngredients(): Observable<AdminIngredient[]> {

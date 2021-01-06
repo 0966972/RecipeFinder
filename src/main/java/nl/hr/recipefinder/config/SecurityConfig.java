@@ -1,7 +1,9 @@
 package nl.hr.recipefinder.config;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
+import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.SessionService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,55 +56,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic()
       .and()
       .authorizeRequests()
-      .antMatchers("/").permitAll()
+      .antMatchers(
+        "/admin/**",
+        "/swagger-ui/**",
+        "/h2-console/**"
+      ).hasRole(Role.ADMIN.name())
+      .antMatchers(
+        "/index.html",
+        "/",
+        "/home",
+        "/login",
+        "/session/**",
+        "/user/**",
+        "/recipe/**",
+        "/picture/**"
+      ).permitAll()
+      .anyRequest().authenticated()
       .and()
       .csrf().disable();
-
-//    http
-//      .headers().frameOptions().disable()
-//      .and()
-//      .cors().configurationSource(corsConfigurationSource())
-//      .and()
-//      .httpBasic()
-//      .and()
-//      .authorizeRequests()
-//      .antMatchers(
-//        "/admin/**",
-//        "/admin/ingredients/**",
-//        "/admin/ingredients/pending/**",
-//        "/admin/ingredients/refused/**",
-//        "/swagger-ui/**",
-//        "/h2-console/**"
-//      ).hasRole(Role.ADMIN.name())
-//      .antMatchers(
-//        "/index.html",
-//        "/",
-//        "/home",
-//        "/login",
-//        "/session/**",
-//        "/user/**",
-//        "/recipe/**",
-//        "/picture/**"
-//      ).permitAll()
-//      .anyRequest().authenticated()
-//      .and()
-//      .csrf()
-//      .ignoringAntMatchers(
-//        "/user/**",
-//        "/ingredient/**",
-//        "/recipeIngredient/**",
-//        "/recipe/**",
-//        "/h2-console/**",
-//        "/picture/**"
-//      ).csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
   }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     final CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(ImmutableList.of("*"));
+    configuration.setAllowedOrigins(Lists.newArrayList("http://localhost:4200"));
     configuration.setAllowedMethods(ImmutableList.of("HEAD",
       "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(ImmutableList.of("*"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
