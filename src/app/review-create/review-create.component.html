@@ -7,8 +7,8 @@
              [(ngModel)]="review.title"/>
     </div>
     <div class="form-group">
-      <input placeholder="Bericht" type="text" class="form-control" id="reviewMessage" name="message"
-             [(ngModel)]="review.message"/>
+      <textarea placeholder="Bericht" class="form-control" id="reviewMessage" rows="3" [(ngModel)]="review.message" name="message"></textarea>
+
     </div>
     <div class="form-group">
       <input placeholder="Score" type="number" class="form-control" id="reviewScore" name="score" min="0" max="5"

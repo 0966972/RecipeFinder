@@ -62,6 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/h2-console/**"
       ).hasRole(Role.ADMIN.name())
       .antMatchers(
+        "/report/**").
+      hasRole(Role.USER.name())
+      .antMatchers(
         "/index.html",
         "/",
         "/home",

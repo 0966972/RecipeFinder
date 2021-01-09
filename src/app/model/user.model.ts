@@ -4,6 +4,8 @@ export class User implements Mappable {
   public id: number;
   public username: string;
   public role: string;
+  public isWarned: boolean;
+  public isActive: boolean;
 
   constructor() {}
 

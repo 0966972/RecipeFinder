@@ -1,0 +1,62 @@
+#submit-button{
+  margin-bottom: 20px;
+}
+
+@font-face {
+  font-family: Pacifico;
+}
+
+@font-face {
+  font-family: Roboto;
+}
+
+* {
+  font-family: Roboto;
+}
+
+#title, h1, h3, h4, h5 {
+  font-family: Pacifico;
+
+}
+
+#reportMessage {
+  height: 100px;
+}
+
+.container {
+  padding-top: 80px;
+  position: relative;
+  width: 1140px;
+}
+
+a {
+  color: inherit;
+}
+
+h1 {
+  font-size: 56px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h5 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}

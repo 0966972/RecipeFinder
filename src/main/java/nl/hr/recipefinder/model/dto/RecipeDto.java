@@ -12,13 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeDto {
+  private long id;
   private String name;
   private String description;
   private Integer preparationTime;
   private String instructions;
   private Integer servings;
 
-  public String creator;
+  public UserResponseDto user;
 
   private List<RecipeIngredientDto> ingredients = new ArrayList<>();
 

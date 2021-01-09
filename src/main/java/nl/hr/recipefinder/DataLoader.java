@@ -89,6 +89,8 @@ public class DataLoader implements ApplicationRunner {
 
 
     RecipeDto mushroomStroganoff = new RecipeDto(
+      // id
+      0,
       // name
       "Paddenstoelen Stroganoff",
 
@@ -107,7 +109,7 @@ public class DataLoader implements ApplicationRunner {
       2,
 
       // user
-      "Simon",
+      modelMapper.map(admin, UserResponseDto.class),
 
       // ingredients
       List.of(),
