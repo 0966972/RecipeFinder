@@ -85,10 +85,24 @@ public class RecipeControllerTests {
     Mockito.when(modelMapper.map(recipe.get(), RecipeDto.class)).thenReturn(recipeDto);
 
     // act
-    ResponseEntity<RecipeDto> result = recipeController.Recipe(input);
+    ResponseEntity<RecipeDto> response = recipeController.Recipe(input);
 
     // assert
-    assertThat(result.getBody()).isEqualTo(recipeDto);
+    assertThat(response.getBody()).isEqualTo(recipeDto);
+  }
+
+  @Test
+  void recipe_whenRecipeNotPresent_then404IsReceived() {
+    // arrange
+    long input = 1;
+    Optional<Recipe> recipe = Optional.empty();
+    Mockito.when(recipeService.findById(input)).thenReturn(recipe);
+
+    // act
+    ResponseEntity<RecipeDto> response = recipeController.Recipe(input);
+
+    // assert
+    assertThat(response.getStatusCode().equals(HttpStatus.NOT_FOUND));
   }
 
   @Test
