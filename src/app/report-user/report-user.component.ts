@@ -6,6 +6,7 @@ import {RecipeService} from "../service/recipe.service";
 import {ReportService} from "../service/report.service";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 import {ReportRequest} from "../model/report-request.model";
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'report-user',
@@ -37,8 +38,6 @@ export class ReportUserComponent implements OnInit {
     this.route.parent.url.subscribe(() => {
       let path = this.route.snapshot.paramMap.get('previous');
       this.routeId = parseInt(path.replace("/recipe/", ""));
-      this.report.reportingUserId = this.authService.getUserId()
-      this.getRecipe();
     });
   }
 
@@ -49,38 +48,41 @@ export class ReportUserComponent implements OnInit {
   }
 
   validateInput(): boolean {
-    if (this.validateString(this.report.message)) {
+    if (this.isInvalidString(this.report.message)) {
       alert("Vul een bericht in.")
       return false;
     }
     return true;
   }
 
-  validateString(string: string) {
+  isInvalidString(string: string) {
     return !string || !string.trim() || string == '';
   }
 
   reportUser() {
-    let body = this.report;
+    forkJoin(this.recipeService.find(this.routeId), this.authService.getPrincipal()).subscribe(
+      ([recipeResponse, principalResponse]) => {
+        this.recipe = new DetailedRecipe().map(recipeResponse);
+        this.report.reportedRecipeId = this.recipe.id;
+        this.report.reportedUserId = this.recipe.id;
+        if (principalResponse['name']) {
+          console.log("retrieved user id: " + principalResponse['principal']['user']['id']);
+          this.report.reportingUserId = principalResponse['principal']['user']['id'];
+        }
 
-    const headers = new HttpHeaders()
-      .set('Authorization', 'Basic ' + sessionStorage.getItem('token'))
-      .set('Content-Type', 'application/json');
-    this.reportService.reportUser(body, headers).subscribe(() => {
-      this.navigate();
-    }, error => {
-      this.displayHttpError(error.status);
-    });
-  }
+        let body = this.report;
+        const headers = new HttpHeaders()
+          .set('Authorization', 'Basic ' + sessionStorage.getItem('token'))
+          .set('Content-Type', 'application/json');
 
-  getRecipe() {
-    this.recipeService.find(this.routeId).subscribe((recipeResponse) => {
-      this.recipe = new DetailedRecipe().map(recipeResponse);
-      this.report.reportedRecipeId = this.recipe.id;
-      this.report.reportedUserId = this.recipe.id;
-    }, error => {
-      this.displayHttpError(error.status);
-    });
+        this.reportService.reportUser(body, headers).subscribe(() => {
+          this.navigate();
+        }, error => {
+          this.displayHttpError(error.status);
+        });
+      }, error => {
+        this.displayHttpError(error.status);
+      });
   }
 
   navigate() {

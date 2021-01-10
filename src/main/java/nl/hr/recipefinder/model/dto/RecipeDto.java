@@ -19,7 +19,7 @@ public class RecipeDto {
   private String instructions;
   private Integer servings;
 
-  public UserResponseDto user;
+  private UserResponseDto user;
 
   private List<RecipeIngredientDto> ingredients = new ArrayList<>();
 
