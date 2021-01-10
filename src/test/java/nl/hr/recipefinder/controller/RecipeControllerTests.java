@@ -89,6 +89,8 @@ public class RecipeControllerTests {
 
     // assert
     assertThat(response.getBody()).isEqualTo(recipeDto);
+    verify(recipeService, times(1)).findById(input);
+    verify(modelMapper, times(1)).map(recipe.get(), RecipeDto.class);
   }
 
   @Test
@@ -103,6 +105,7 @@ public class RecipeControllerTests {
 
     // assert
     assertThat(response.getStatusCode().equals(HttpStatus.NOT_FOUND));
+    verify(recipeService, times(1)).findById(input);
   }
 
   @Test
@@ -120,5 +123,7 @@ public class RecipeControllerTests {
 
     //assert
     assertThat(response.getStatusCode().equals(HttpStatus.CREATED));
+    verify(sessionService, times(1)).getAuthenticatedUser();
+    verify(modelMapper, times(1)).map(recipeDto, Recipe.class);
   }
 }
