@@ -78,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // session
       .antMatchers(HttpMethod.GET, "/session/**").permitAll()
       // user
+      .antMatchers("/user/ban/**").hasRole(Role.ADMIN.name())
       .antMatchers("/user/**").permitAll()
       // other
       .antMatchers("/swagger-ui/**", "/h2-console/**").hasRole(Role.ADMIN.name())

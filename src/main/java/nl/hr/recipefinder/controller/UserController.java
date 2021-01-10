@@ -52,6 +52,24 @@ public class UserController {
     }
   }
 
+  @GetMapping("/ban/{id}")
+  public ResponseEntity<Boolean> banUser(@PathVariable Long id) {
+    try {
+      Optional<User> foundUser = userService.findUserById(id);
+
+      if (foundUser.isPresent()){
+        User user = foundUser.get();
+        user.setRole(Role.BANNED);
+        userService.save(user);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+      }
+
+      throw new HttpNotFoundError();
+    } catch (Exception e) {
+      throw new HttpNotFoundError(e);
+    }
+  }
+
   @GetMapping()
   public ResponseEntity<List<UserResponseDto>> getUsers() {
     try {
