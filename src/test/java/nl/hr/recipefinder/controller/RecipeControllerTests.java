@@ -2,8 +2,12 @@ package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
+import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
+import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.RecipeService;
+import nl.hr.recipefinder.service.SessionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,6 +41,9 @@ public class RecipeControllerTests {
 
   @MockBean
   RecipeService recipeService;
+
+  @MockBean
+  SessionService sessionService;
 
   @MockBean
   ModelMapper modelMapper;
@@ -64,5 +72,22 @@ public class RecipeControllerTests {
     verify(recipeService, times(1)).getRecipes();
     verify(modelMapper, times(1)).map(recipe, ListedRecipeDto.class);
 
+  }
+
+  @Test
+  void createRecipe_whenRecipeCreated_then201IsReceived(){
+    // arrange
+    Recipe recipe = new Recipe("Tasty Chicken", "Very tasty chicken", 25,
+      "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
+    RecipeDto recipeDto = new RecipeDto("Tasty Chicken", "Very tasty chicken", 25,
+      "Boil the chicken" ,2 , "Simon", List.of(), List.of(), List.of(), List.of());
+    Mockito.when(sessionService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));
+    Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
+
+    // act
+    ResponseEntity<Recipe> response = recipeController.createRecipe(recipeDto);
+
+    //assert
+    assertThat(response.getStatusCode().equals(HttpStatus.CREATED));
   }
 }
