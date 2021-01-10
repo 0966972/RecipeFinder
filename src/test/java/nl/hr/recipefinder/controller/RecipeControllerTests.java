@@ -3,6 +3,7 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
+import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.security.Role;
@@ -25,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
@@ -71,7 +73,22 @@ public class RecipeControllerTests {
     assertThat(recipeDto).isIn(list);
     verify(recipeService, times(1)).getRecipes();
     verify(modelMapper, times(1)).map(recipe, ListedRecipeDto.class);
+  }
 
+  @Test
+  void recipe_whenRecipePresent_returnRecipe() {
+    // arrange
+    long input = 1;
+    Optional<Recipe> recipe = Optional.of(new Recipe());
+    RecipeDto recipeDto = new RecipeDto();
+    Mockito.when(recipeService.findById(input)).thenReturn(recipe);
+    Mockito.when(modelMapper.map(recipe.get(), RecipeDto.class)).thenReturn(recipeDto);
+
+    // act
+    ResponseEntity<RecipeDto> result = recipeController.Recipe(input);
+
+    // assert
+    assertThat(result.getBody()).isEqualTo(recipeDto);
   }
 
   @Test
