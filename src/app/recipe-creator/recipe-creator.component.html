@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,12 +9,13 @@
         integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
 <nav class="navbar navbar-light bg-light">
   <a id="title" class="navbar-brand" href="/home">RecipeFinder</a>
   <span class="nav navbar-nav navbar-right">
-         <a href="#"><b></b></a>
-         </span>
+            <a href="#"><b></b></a>
+        </span>
 </nav>
 <h1>Add Recipe</h1>
 <form name="CreateRipe" (ngSubmit)="f.form.valid && submitButtonPressed()" #f="ngForm" novalidate>
@@ -21,24 +23,26 @@
   <div class="">
     <div class="formfields">
       <label for="name">Title:</label>
-      <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required/>
+      <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required />
       <div *ngIf="f.submitted && !name.valid">Title is required</div>
       <br>
       <br>
       <label for="description">Description:</label>
-      <input type="text" name="Name" [(ngModel)]="recipe.description" #description="ngModel" required/>
+      <input type="text" name="Name" [(ngModel)]="recipe.description" #description="ngModel" required />
       <div *ngIf="f.submitted && !description.valid">Description is required</div>
       <br>
       <br>
 
       <label for="preparationTime">Preparation time in minutes:</label>
-      <input type="number" name="Name" [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel" required/>
+      <input type="number" name="Name" [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel"
+             required />
       <div *ngIf="f.submitted && !preparationTime.valid">Preparation time is required</div>
       <br>
       <br>
 
       <label for="instructions">Instructions:</label>
-      <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
+      <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel"
+             required />
       <div *ngIf="f.submitted && !instructions.valid">Instructions is required</div>
       <br>
       <label>Stappen:</label>
@@ -53,12 +57,12 @@
         <label>Stap {{step.number}}</label>
         <br>
         <br>
-        <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
+        <input type="text" [(ngModel)]="step.details" name="step_{{i}}" />
       </section>
       <br>
       <br>
       <label>Servings:</label>
-      <input type="number" name="Name" [(ngModel)]="recipe.servings" #servings="ngModel" required/>
+      <input type="number" name="Name" [(ngModel)]="recipe.servings" #servings="ngModel" required />
       <div *ngIf="f.submitted && !servings.valid">Servings is required</div>
       <br>
       <br>
@@ -66,10 +70,10 @@
       <br>
       <section *ngFor="let ingredient of ingredients; let i = index;">
         <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove</button>
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)"
-               list="ingredientName" name="ingredientName_{{i}}" required/>
+        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name"
+               (keyup)="findIngredient(i)" list="ingredientName" name="ingredientName_{{i}}" required />
         <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
-               name="ingredientMeasurement_{{i}}" required/>
+               name="ingredientMeasurement_{{i}}" required />
       </section>
 
       <button type="button" (click)="addIngredient()">Add Ingredient</button>
@@ -77,20 +81,25 @@
       <br>
       <br>
       <h5>Upload een JPG of PNG afbeelding</h5>
-<!--      <button type="button" (click)="addPicture()">Foto toevoegen</button>-->
-      <button *ngIf="!showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">Toon afbeeldingen</button>
-      <button *ngIf="showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">Verberg afbeeldingen</button>
+      <button *ngIf="!showingPictures && recipe.pictures.length > 0" (click)="showPictures"
+              class="btn btn-secondary">Toon afbeeldingen</button>
+      <button *ngIf="showingPictures && recipe.pictures.length > 0" (click)="showPictures"
+              class="btn btn-secondary">Verberg afbeeldingen</button>
 
       <section *ngFor="let picture of recipe.dummy; let i = index;">
-        <input type="file" (change)="handleUpload0($event)"/>
+        <input type="file" (change)="handleUpload0($event)" />
         <br>
 
         <section *ngFor="let picture of recipe.pictures; let index = index;">
           <div class="col-6">
-            <img *ngIf="showingPictures && i == index" id="picture-preview" src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding" height="150px">
-            <button *ngIf="i == index && picture.thumbnail == false" type="button" class="btn btn-danger btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
-            <button *ngIf="i == index && picture.thumbnail == true" type="button" class="btn btn-success btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
-            <button *ngIf="i == index" type="button" class="btn btn-danger btn-sm" (click)="removePicture(i)">Verwijder afbeelding</button>
+            <img *ngIf="showingPictures && i == index" id="picture-preview"
+                 src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding" height="150px">
+            <button *ngIf="i == index && picture.thumbnail == false" type="button"
+                    class="btn btn-danger btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
+            <button *ngIf="i == index && picture.thumbnail == true" type="button"
+                    class="btn btn-success btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
+            <button *ngIf="i == index" type="button" class="btn btn-danger btn-sm"
+                    (click)="removePicture(i)">Verwijder afbeelding</button>
           </div>
         </section>
 
@@ -109,9 +118,6 @@
     </div>
   </div>
 </form>
-<!--<h1>Image Uploading Module</h1>-->
-<!--<input type="file" (change)="handleUpload($event)">-->
-<!--<button type="button" (click)="onUpload()">Upload</button>-->
 </body>
 <style>
   @font-face {
@@ -138,7 +144,10 @@
     background-color: white;
   }
 
-  #title, h1, h3, h5 {
+  #title,
+  h1,
+  h3,
+  h5 {
     font-family: Pacifico;
   }
 
@@ -225,7 +234,8 @@
   }
 
   img {
-    margin-bottom: 10px;;
+    margin-bottom: 10px;
+  ;
   }
 
   ul {
@@ -238,4 +248,5 @@
     padding-bottom: 5px;
   }
 </style>
+
 </html>
