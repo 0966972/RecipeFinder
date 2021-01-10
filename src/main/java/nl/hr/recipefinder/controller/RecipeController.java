@@ -104,6 +104,7 @@ public class RecipeController {
       User user = sessionService.getAuthenticatedUser();
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
       mappedRecipe.user = user;
+      mappedRecipe.setIngredients(List.of());
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
