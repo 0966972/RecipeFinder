@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ public class RecipeServiceTests {
   }
 
   @Test
-  public void findByIdTest(){
+  public void findById_whenRecipeExists_thenReturnsRecipe(){
     // arrange
     long input = 1;
     Optional<Recipe> recipe = Optional.of(new Recipe());
