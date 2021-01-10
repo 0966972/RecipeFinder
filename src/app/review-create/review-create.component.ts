@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../model/review.model";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {AuthService} from "../service/auth.service";
 
 @Component({
@@ -25,7 +25,7 @@ export class ReviewCreateComponent implements OnInit {
     private authService: AuthService
   ) {
     this.review = new Review(
-       null,
+      null,
       null,
       null,
       null,
@@ -37,20 +37,30 @@ export class ReviewCreateComponent implements OnInit {
   public showMessageError = false;
   public showScoreError = false;
 
-  ngOnInit() {
-    console.log(this.route.parent.url.subscribe(urlSegment =>{
-      this.routeId = parseInt(urlSegment[0]['path']);
-    }));
-  }
-
   get isLoggedIn(): boolean {
     return this.authService.authenticated;
+  }
+
+  get showPictures(): boolean {
+    if (!this.showingPictures) {
+      this.showingPictures = true;
+      return true;
+    } else {
+      this.showingPictures = false;
+      return false;
+    }
+  }
+
+  ngOnInit() {
+    console.log(this.route.parent.url.subscribe(urlSegment => {
+      this.routeId = parseInt(urlSegment[0]['path']);
+    }));
   }
 
   addPicture(event) {
     const reader = new FileReader();
     let file = event.target.files[0];
-    if (file){
+    if (file) {
       reader.readAsDataURL(file);
       reader.onload = () => {
         let picture = {
@@ -63,23 +73,12 @@ export class ReviewCreateComponent implements OnInit {
     }
   }
 
-  get showPictures() : boolean {
-    if (!this.showingPictures){
-      this.showingPictures = true;
-      return true;
-    }
-    else{
-      this.showingPictures = false;
-      return false;
-    }
-  }
-
-  removePicture(index: number){
+  removePicture(index: number) {
     this.review.pictures.splice(index, 1);
   }
 
   submitReview() {
-    if (this.validateInput()){
+    if (this.validateInput()) {
       this.sendHttpRequest();
     }
   }
@@ -97,6 +96,7 @@ export class ReviewCreateComponent implements OnInit {
     }else{
       this.showMessageError = false;
     }
+
     if (this.validateScore(this.review.score)){
       this.showScoreError = true;
       return false;
@@ -106,42 +106,39 @@ export class ReviewCreateComponent implements OnInit {
     return true;
   }
 
-  validateString(string : string){
+  validateString(string: string) {
     return !string || !string.trim() || string == '';
-
   }
 
-  validateScore(score : number){
+  validateScore(score: number) {
     return score == null || score < this.minScore || score > this.maxScore;
   }
 
-  sendHttpRequest(){
-    let url = 'http://localhost:8080/recipe/'+this.routeId+'/review';
+  sendHttpRequest() {
+    let url = 'http://localhost:8080/recipe/' + this.routeId + '/review';
     let token: string = '' + sessionStorage.getItem('token');
     let body = this.review
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
 
-    this.http.post<Observable<Review>>(url, body,{headers: headers}).subscribe(() => {
+    this.http.post<Observable<Review>>(url, body, {headers: headers}).subscribe(() => {
       this.navigate();
     }, error => {
       this.displayHttpError(error.status);
     });
   }
 
-
-  navigate(){
+  navigate() {
     let previousRoute = this.route.snapshot.paramMap.get('previous');
-    if (previousRoute){
+    if (previousRoute) {
       this.router.navigate([previousRoute]);
-    }
-    else{
+    } else {
       this.router.navigate(['']);
     }
   }
 
-  displayHttpError(status: any){
+  displayHttpError(status: any) {
     switch (status) {
       case 400:
         alert("400: De beoordeling heeft ongeldige waarden.")

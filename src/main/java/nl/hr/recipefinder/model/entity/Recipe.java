@@ -1,6 +1,9 @@
 package nl.hr.recipefinder.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,10 +35,10 @@ public class Recipe extends BaseEntity {
   @JoinColumn(name = "step_id")
   public List<Step> steps = new ArrayList<>();
 
-  @OneToMany(mappedBy="recipe", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
   List<Review> reviews;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name="user_id", nullable = true)
+  @JoinColumn(name = "user_id", nullable = true)
   public User user;
 }

@@ -13,10 +13,16 @@
             <h3 id="pictureDescription">{{picture[1]}}</h3>
           </div>
           <div class="top-text-block">
-            <h5>Door {{recipe.creator}} | Voor {{recipe.servings}} personen | {{recipe.preparationTime}} minuten </h5>
+            <h5>Door {{recipe.user.username}} | Voor {{recipe.servings}} personen | {{recipe.preparationTime}} minuten </h5>
           </div>
         </ng-template>
       </ngb-carousel>
+    <div *ngIf="isLoggedIn && !isRecipeCreator" id="reportRow" class="row">
+      <div class="col-9"></div>
+      <div class="col-3">
+        <button class="btn btn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
+      </div>
+    </div>
     <div id="ingredientsAndStepsRow" class="row">
       <div class="col-3">
         <h5>Ingredienten</h5>
