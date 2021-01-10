@@ -3,16 +3,16 @@
   <h3 style="text-align: left">Beoordeel dit recept</h3>
   <form role="form" (submit)="submitReview()">
     <div class="form-group">
-      <input placeholder="Titel" type="text" class="form-control" id="reviewTitle" name="title"
-             [(ngModel)]="review.title"/>
+      <input placeholder="Titel" type="text" class="form-control" id="reviewTitle" name="title" [(ngModel)]="review.title"/>
+      <div *ngIf="showTitleError">Vul een titel in</div>
     </div>
     <div class="form-group">
-      <input placeholder="Bericht" type="text" class="form-control" id="reviewMessage" name="message"
-             [(ngModel)]="review.message"/>
+      <input placeholder="Bericht" type="text" class="form-control" id="reviewMessage" name="message" [(ngModel)]="review.message"/>
+      <div *ngIf="showMessageError">Vul een bericht in</div>
     </div>
     <div class="form-group">
-      <input placeholder="Score" type="number" class="form-control" id="reviewScore" name="score" min="0" max="5"
-             [(ngModel)]="review.score"/>
+      <input placeholder="Score" type="number" class="form-control" id="reviewScore" name="score" min="0" max="5" [(ngModel)]="review.score"/>
+      <div *ngIf="showScoreError">Alleen een score tussen 0 en 5 is geldig</div>
     </div>
     <div class="form-group">
       <div id="upload-jpg-buttons">

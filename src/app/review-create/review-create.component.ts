@@ -33,6 +33,10 @@ export class ReviewCreateComponent implements OnInit {
     )
   }
 
+  public showTitleError = false;
+  public showMessageError = false;
+  public showScoreError = false;
+
   ngOnInit() {
     console.log(this.route.parent.url.subscribe(urlSegment =>{
       this.routeId = parseInt(urlSegment[0]['path']);
@@ -82,16 +86,22 @@ export class ReviewCreateComponent implements OnInit {
 
   validateInput() : boolean{
     if (this.validateString(this.review.title)){
-      alert("Vul een titel in.")
+      this.showTitleError = true;
       return false;
+    }else{
+      this.showTitleError = false;
     }
     if (this.validateString(this.review.message)){
-      alert("Vul een bericht in.")
+      this.showMessageError = true;
       return false;
+    }else{
+      this.showMessageError = false;
     }
     if (this.validateScore(this.review.score)){
-      alert("Alleen een score tussen 0 en 5 is geldig.")
+      this.showScoreError = true;
       return false;
+    }else{
+      this.showScoreError = false;
     }
     return true;
   }
