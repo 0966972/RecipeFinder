@@ -3,7 +3,6 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.security.Role;
