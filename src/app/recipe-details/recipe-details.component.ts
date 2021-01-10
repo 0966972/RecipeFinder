@@ -7,6 +7,7 @@ import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
 import {Review} from "../model/review.model";
 import {AuthService} from "../service/auth.service";
 import {filter} from "rxjs/operators";
+import {User} from "../model/user.model";
 
 @Component({
   selector: 'recipe-details',
@@ -39,9 +40,7 @@ export class RecipeDetailsComponent implements OnInit {
   showRecipe() {
     let url = 'http://localhost:8080/recipe/' + this.routeId;
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
-      console.log(response);
       this.recipe = new DetailedRecipe().map(response); // enable when back-end returns ingredients and pictures
-      console.log(this.recipe);
       //this.recipe = this.createStubRecipe();
 
     }, error => {
@@ -75,7 +74,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   get isRecipeCreator(): boolean {
     let loggedInUser = this.authService.username;
-    if (loggedInUser != null && loggedInUser == this.recipe.creator){
+    if (loggedInUser != null && this.recipe.user != null && loggedInUser == this.recipe.user.username){
       return true;
     }
     return false;
@@ -92,8 +91,19 @@ export class RecipeDetailsComponent implements OnInit {
           this.showRecipe();
         })
     );
+  }
 
-    //this.router.navigate(['/review-create', {previous: '/recipe/' + this.routeId}])
+  gotoReport(){
+    this.router.navigate(['report-user/', {previous: '/recipe/' + this.routeId}]).then(
+      ()=>
+        this.router.events
+          .pipe(
+            filter(value => value instanceof NavigationEnd),
+          )
+          .subscribe(() => {
+            this.showRecipe();
+          })
+    );
   }
 
   rememberRouteAndGotoLogin(){
@@ -109,7 +119,7 @@ export class RecipeDetailsComponent implements OnInit {
       "\n\nRoer wanneer de tijd erop zit de misopasta en 2 eetlepels sojasaus door de bouillon. Kook de eiernoedels volgens de aanwijzingen op de verpakking en verdeel ze over view warme kommen. Breng de bouillon op smaak met sojasaus en zwarte peper. Snijd de stronkjes paksoi door midden of in kwarten, doe ze met de paddenstoelen (die hebben verschillende vormen en maten, dus bepaal zelf welke je snijdt, scheurt of heel laat) bij de bouillon, en kook ze niet langer dan 1 minuut, om de smaak lekker vers te houden. Verdeel groenten over de kommen, schep er de dampende bouillon over en serveer de soep met de pickles, lente-uitjes en een schepje sesamzaad." +
       "\n\nEen kneepje limoensap is ook erg lekker.";
     stub.servings = 4;
-    stub.creator = "Bentley";
+    stub.user = new User();
     stub.ingredients = [
       // {measurement: "400g", name: "gemengde paddestoelen"},
       // {measurement: "1", name: "rode ui"},
