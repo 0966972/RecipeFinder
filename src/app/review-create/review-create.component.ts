@@ -33,6 +33,10 @@ export class ReviewCreateComponent implements OnInit {
     )
   }
 
+  public showTitleError = false;
+  public showMessageError = false;
+  public showScoreError = false;
+
   get isLoggedIn(): boolean {
     return this.authService.authenticated;
   }
@@ -79,25 +83,31 @@ export class ReviewCreateComponent implements OnInit {
     }
   }
 
-  validateInput(): boolean {
-    if (this.validateString(this.review.title)) {
-      alert("Vul een titel in.")
+  validateInput() : boolean{
+    if (this.validateString(this.review.title)){
+      this.showTitleError = true;
       return false;
+    }else{
+      this.showTitleError = false;
     }
-    if (this.validateString(this.review.message)) {
-      alert("Vul een bericht in.")
+    if (this.validateString(this.review.message)){
+      this.showMessageError = true;
       return false;
+    }else{
+      this.showMessageError = false;
     }
-    if (this.validateScore(this.review.score)) {
-      alert("Alleen een score tussen 0 en 5 is geldig.")
+
+    if (this.validateScore(this.review.score)){
+      this.showScoreError = true;
       return false;
+    }else{
+      this.showScoreError = false;
     }
     return true;
   }
 
   validateString(string: string) {
     return !string || !string.trim() || string == '';
-
   }
 
   validateScore(score: number) {
@@ -118,7 +128,6 @@ export class ReviewCreateComponent implements OnInit {
       this.displayHttpError(error.status);
     });
   }
-
 
   navigate() {
     let previousRoute = this.route.snapshot.paramMap.get('previous');
