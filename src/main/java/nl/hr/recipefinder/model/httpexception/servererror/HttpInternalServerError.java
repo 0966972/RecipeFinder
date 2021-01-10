@@ -1,4 +1,4 @@
-package nl.hr.recipefinder.model.httpexception.serverError;
+package nl.hr.recipefinder.model.httpexception.servererror;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

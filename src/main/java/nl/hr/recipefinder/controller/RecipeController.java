@@ -46,7 +46,7 @@ public class RecipeController {
     List<Recipe> recipes = recipeService.getRecipes();
     try {
       return new ResponseEntity<>(recipes.stream()
-        .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
       throw new HttpInternalServerError(e);
@@ -67,7 +67,7 @@ public class RecipeController {
       for (Recipe recipe : recipes) {
         boolean match = true;
         for (String ingredient : ingredients) {
-          if (recipe.getIngredients().stream().noneMatch((it) -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+          if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
             match = false;
             break;
           }
@@ -78,7 +78,7 @@ public class RecipeController {
       }
 
       return new ResponseEntity<>(foundRecipes.stream()
-        .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
       throw new HttpInternalServerError(e);
@@ -86,7 +86,7 @@ public class RecipeController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {
+  public ResponseEntity<RecipeDto> getRecipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
 
     if(!recipe.isPresent()){
@@ -108,6 +108,7 @@ public class RecipeController {
       User user = sessionService.getAuthenticatedUser();
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
       mappedRecipe.user = user;
+      mappedRecipe.setIngredients(List.of());
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
       return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);

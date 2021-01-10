@@ -17,7 +17,7 @@ public class RecipeFinderApplication {
 
     SpringApplication app = new SpringApplication();
     app.setAdditionalProfiles("live");
-    app.run(RecipeFinderApplication.class, args);
+    SpringApplication.run(RecipeFinderApplication.class, args);
   }
 }
 

@@ -37,7 +37,7 @@ public class RecipeIngredientController {
     try {
       List<RecipeIngredient> mappedRecipeIngredients =
         recipeIngredients.stream()
-          .map((it) -> modelMapper.map(it, RecipeIngredient.class))
+          .map(it -> modelMapper.map(it, RecipeIngredient.class))
           .collect(Collectors.toList());
       List<RecipeIngredient> savedRecipeIngredients = recipeIngredientService.saveAll(mappedRecipeIngredients);
 

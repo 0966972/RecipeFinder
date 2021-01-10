@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.hr.recipefinder.model.entity.Picture;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import java.util.List;
 
