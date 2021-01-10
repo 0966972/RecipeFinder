@@ -29,6 +29,7 @@ public class Picture extends BaseEntity {
     this.name = name;
     this.type = type;
     this.content = content;
+
   }
 
   public byte[] getContent() {

@@ -13,6 +13,7 @@ import {RecipeIngredientService} from "../service/recipe-ingredient.service";
   styleUrls: ['./recipe-creator.component.css']
 })
 export class RecipeCreatorComponent implements OnInit {
+  showingPictures = false;
   recipe: Recipe = {
     id: null,
     name: null,
@@ -22,7 +23,7 @@ export class RecipeCreatorComponent implements OnInit {
     servings: null,
     ingredients: [],
     pictures: [],
-    dummy: [],
+    dummy: [{}],
     steps: [
       {number: 1, details: ''}
     ],
@@ -47,15 +48,15 @@ export class RecipeCreatorComponent implements OnInit {
     });
   }
 
-  addPicture() {
-    if (this.recipe.dummy.length < 5) {
-      this.recipe.dummy.push({
-        number: this.recipe.pictures.length + 1,
-        details: '',
-      });
+  get showPictures() : boolean {
+    if (!this.showingPictures){
+      this.showingPictures = true;
+      return true;
     }
-    ;
-
+    else{
+      this.showingPictures = false;
+      return false;
+    }
   }
 
 
@@ -76,12 +77,40 @@ export class RecipeCreatorComponent implements OnInit {
         number: this.recipe.pictures.length,
         name: this.selectedFile0.name,
         type: this.selectedFile0.type,
-        content: this.picture0.split(',')[1]
+        content: this.picture0.split(',')[1],
+        thumbnail: false
       });
+      if (this.recipe.dummy.length < 5) {
+        this.recipe.dummy.push({
+          number: this.recipe.pictures.length + 1,
+          details: '',
+        });
+      };
+      if (this.recipe.pictures.length == 1){
+        this.recipe.pictures[0].thumbnail = true;
+      };
     };
 
   }
 
+  setThumbnail(i){
+    console.log(i);
+    for (let i = 0; i < this.recipe.pictures.length; i++) {
+      this.recipe.pictures[i].thumbnail = false
+    }
+    this.recipe.pictures[i].thumbnail = true;
+  }
+
+  removePicture(index: number){
+    if(this.recipe.pictures[index].thumbnail == true && index > 0)
+    {
+      this.recipe.pictures[0].thumbnail = true;
+    };
+    this.recipe.pictures.splice(index, 1);
+    if(this.recipe.dummy.length > 1) {
+      this.recipe.dummy.splice(index, 1);
+    };
+  }
 
   findIngredient(i) {
     let token = sessionStorage.getItem('token');
@@ -134,7 +163,6 @@ export class RecipeCreatorComponent implements OnInit {
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-
     this.recipeService.create(this.recipe, headers).subscribe(recipe => {
       if (recipe) {
         console.log(this.recipe);

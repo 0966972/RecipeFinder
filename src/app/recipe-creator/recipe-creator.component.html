@@ -76,12 +76,24 @@
       <br>
       <br>
       <br>
-      <label>Choose images to upload (PNG, JPG)</label>
-      <br>
-      <br>
-      <button type="button" (click)="addPicture()">Foto toevoegen</button>
-      <section *ngFor="let picture of recipe.dummy; let i = index ;">
+      <h5>Upload een JPG of PNG afbeelding</h5>
+<!--      <button type="button" (click)="addPicture()">Foto toevoegen</button>-->
+      <button *ngIf="!showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">Toon afbeeldingen</button>
+      <button *ngIf="showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">Verberg afbeeldingen</button>
+
+      <section *ngFor="let picture of recipe.dummy; let i = index;">
         <input type="file" (change)="handleUpload0($event)"/>
+        <br>
+
+        <section *ngFor="let picture of recipe.pictures; let index = index;">
+          <div class="col-6">
+            <img *ngIf="showingPictures && i == index" id="picture-preview" src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding" height="150px">
+            <button *ngIf="i == index && picture.thumbnail == false" type="button" class="btn btn-danger btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
+            <button *ngIf="i == index && picture.thumbnail == true" type="button" class="btn btn-success btn-sm" (click)="setThumbnail(i)">Thumbnail afbeelding</button>
+            <button *ngIf="i == index" type="button" class="btn btn-danger btn-sm" (click)="removePicture(i)">Verwijder afbeelding</button>
+          </div>
+        </section>
+
       </section>
       <br>
       <br>
