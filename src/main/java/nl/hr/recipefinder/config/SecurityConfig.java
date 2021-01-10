@@ -60,10 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         "/admin/**",
         "/swagger-ui/**",
         "/h2-console/**"
-      ).hasAnyRole(Role.ADMIN.name(), Role.USER.name())
+      ).hasRole(Role.USER.name())
       .antMatchers(
-        "/report/**").
-      hasRole(Role.USER.name())
+        "/report/**"
+       ).hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       .antMatchers(
         "/index.html",
         "/",
