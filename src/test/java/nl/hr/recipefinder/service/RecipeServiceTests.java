@@ -42,4 +42,18 @@ public class RecipeServiceTests {
     // assert
     assertEquals(recipe, receivedRecipe);
   }
+
+  @Test
+  public void findById_whenRecipeNotExists_thenReturnsEmpty(){
+    // arrange
+    long input = 1;
+    Optional<Recipe> recipe = Optional.empty();
+    when(recipeRepository.findById(input)).thenReturn(recipe);
+
+    // act
+    Optional<Recipe> receivedRecipe = recipeService.findById(input);
+
+    // assert
+    assertEquals(recipe, receivedRecipe);
+  }
 }
