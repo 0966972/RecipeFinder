@@ -173,7 +173,7 @@ public class DataLoader implements ApplicationRunner {
     );
     recipeIngredientService.saveAll(
       mushroomStroganoffIngredients.stream().map(
-        (it) -> modelMapper.map(it, RecipeIngredient.class)
+        it -> modelMapper.map(it, RecipeIngredient.class)
       ).collect(Collectors.toList())
     );
 
@@ -245,7 +245,7 @@ public class DataLoader implements ApplicationRunner {
     );
     recipeIngredientService.saveAll(
       noodleSoupIngredients.stream().map(
-        (it) -> modelMapper.map(it, RecipeIngredient.class)
+        it -> modelMapper.map(it, RecipeIngredient.class)
       ).collect(Collectors.toList())
     );
   }

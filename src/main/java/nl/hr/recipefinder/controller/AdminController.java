@@ -37,7 +37,7 @@ public class AdminController {
   @GetMapping("/ingredients/refused")
   public List<AdminIngredientDto> getRefusedIngredients() {
     List<Ingredient> ingredients = ingredientService.getIngredientsBySate(Ingredient.State.REFUSED);
-    return ingredients.stream().map((it) ->
+    return ingredients.stream().map(it ->
       modelMapper.map(it, AdminIngredientDto.class)
     ).collect(Collectors.toList());
   }
@@ -46,7 +46,7 @@ public class AdminController {
   @GetMapping("/ingredients/pending")
   public List<AdminIngredientDto> getPendingIngredients() {
     List<Ingredient> ingredients = ingredientService.getIngredientsBySate(Ingredient.State.PENDING);
-    return ingredients.stream().map((it) ->
+    return ingredients.stream().map(it ->
       modelMapper.map(it, AdminIngredientDto.class)
     ).collect(Collectors.toList());
   }

@@ -6,7 +6,7 @@ import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.SessionService;
 import org.modelmapper.ModelMapper;
@@ -47,7 +47,7 @@ public class RecipeController {
     List<Recipe> recipes = recipeService.getRecipes();
     try {
       return new ResponseEntity<>(recipes.stream()
-        .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
       throw new HttpInternalServerError(e);
@@ -68,7 +68,7 @@ public class RecipeController {
       for (Recipe recipe : recipes) {
         boolean match = true;
         for (String ingredient : ingredients) {
-          if (recipe.getIngredients().stream().noneMatch((it) -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+          if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
             match = false;
             break;
           }
@@ -79,7 +79,7 @@ public class RecipeController {
       }
 
       return new ResponseEntity<>(foundRecipes.stream()
-        .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
         .collect(Collectors.toList()), HttpStatus.OK);
     } catch (Exception e) {
       throw new HttpInternalServerError(e);
@@ -87,7 +87,7 @@ public class RecipeController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<RecipeDto> Recipe(@PathVariable("id") Long id) {
+  public ResponseEntity<RecipeDto> getRecipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
     if (recipe.isEmpty()) throw new HttpNotFoundError();
     var recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
