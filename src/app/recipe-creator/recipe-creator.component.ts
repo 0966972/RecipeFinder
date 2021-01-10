@@ -85,13 +85,9 @@ export class RecipeCreatorComponent implements OnInit {
 
 
   findIngredient(i) {
-    let token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      authorization: 'Basic ' + token
-    });
     this.ingredientOptions = [];
 
-    this.ingredientService.search(this.ingredients[i].name, headers).subscribe(options => {
+    this.ingredientService.search(this.ingredients[i].name).subscribe(options => {
       this.ingredientOptions = options
     });
   }
