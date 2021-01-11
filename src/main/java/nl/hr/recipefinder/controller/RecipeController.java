@@ -89,8 +89,13 @@ public class RecipeController {
   @GetMapping("/{id}")
   public ResponseEntity<RecipeDto> getRecipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    if (recipe.isEmpty()) throw new HttpNotFoundError();
-    var recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
+
+    if(!recipe.isPresent()){
+      throw new HttpNotFoundError();
+    }
+
+    RecipeDto recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
+
     return new ResponseEntity<>(recipeDto, HttpStatus.OK);
   }
 
