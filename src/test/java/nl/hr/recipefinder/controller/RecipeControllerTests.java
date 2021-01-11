@@ -104,7 +104,7 @@ public class RecipeControllerTests {
     ResponseEntity<RecipeDto> response = recipeController.getRecipe(input);
 
     // assert
-    assertThat(response.getStatusCode().equals(HttpStatus.NOT_FOUND));
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
     verify(recipeService, times(1)).findById(input);
   }
 
@@ -122,7 +122,7 @@ public class RecipeControllerTests {
     ResponseEntity<Recipe> response = recipeController.createRecipe(recipeDto);
 
     //assert
-    assertThat(response.getStatusCode().equals(HttpStatus.CREATED));
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED));
     verify(sessionService, times(1)).getAuthenticatedUser();
     verify(modelMapper, times(1)).map(recipeDto, Recipe.class);
   }
