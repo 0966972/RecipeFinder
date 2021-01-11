@@ -41,11 +41,12 @@
         <ul *ngIf="recipe.pictures?.length == 0">
           <img src="./assets/image/image-not-found.jpg" width="150px" height="100px">
         </ul>
-        <ul *ngFor="let pictures of recipe.pictures; let i = index;">
-          <div *ngIf="i == 0">
+
+        <div *ngFor="let pictures of recipe.pictures; let i = index;">
+          <ul *ngIf="pictures.thumbnail == true">
             <img [src]="'data:image/jpeg;base64,'+pictures.content" width="150px" height="100px" />
-          </div>
-        </ul>
+          </ul>
+        </div>
       </div>
 
 
