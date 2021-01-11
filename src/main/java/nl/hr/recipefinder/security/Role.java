@@ -8,7 +8,8 @@ import java.util.Collections;
 
 public enum Role {
   USER(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))),
-  ADMIN(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+  ADMIN(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))),
+  BANNED(Collections.singletonList(new SimpleGrantedAuthority("ROLE_BANNED")));
 
   private final Collection<GrantedAuthority> authorities;
 

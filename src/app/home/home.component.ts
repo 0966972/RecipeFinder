@@ -38,13 +38,9 @@ export class HomeComponent implements OnInit {
 
 
   findIngredient(i) {
-    let token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      authorization: 'Basic ' + token
-    });
     this.ingredientOptions = [];
 
-    this.ingredientService.search(this.filterIngredients[i].name, headers).subscribe(options => {
+    this.ingredientService.search(this.filterIngredients[i].name).subscribe(options => {
       this.ingredientOptions = options
     });
 

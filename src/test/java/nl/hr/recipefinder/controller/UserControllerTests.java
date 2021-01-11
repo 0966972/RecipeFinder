@@ -52,6 +52,38 @@ class UserControllerTests {
   }
 
   @Test
+  void banUser_whenResourceNonExistent_thenReturnsNotFound() {
+    // arrange
+    long input = 5000;
+    Mockito.when(userService.findUserById(input)).thenReturn(Optional.empty());
+
+    try {
+      // act
+      userController.banUser(input);
+    } catch (Exception e) {
+      // assert
+      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+    }
+    verify(userService, times(1)).findUserById(input);
+  }
+
+  @Test
+  void banUser_whenResourceExists_thenReturnsTrue() {
+    // arrange
+    long input = 0;
+    Optional<User> expectedOptional = Optional.of(new User("a", "b", Role.USER));
+    Mockito.when(userService.findUserById(input)).thenReturn(expectedOptional);
+
+    // act
+    ResponseEntity<Boolean> result = userController.banUser(input);
+
+    // assert
+    assertThat(result.getBody()).isTrue();
+    verify(userService, times(1)).findUserById(input);
+  }
+
+
+  @Test
   void getUser_whenResourceNonExistent_thenReturnsNotFound() {
     // arrange
     long input = 5000;
