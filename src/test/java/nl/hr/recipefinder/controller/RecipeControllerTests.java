@@ -6,6 +6,8 @@ import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.SessionService;
@@ -38,7 +40,6 @@ import static org.mockito.Mockito.verify;
 public class RecipeControllerTests {
 
   @Autowired
-  @InjectMocks
   RecipeController recipeController;
 
   @MockBean
@@ -49,11 +50,6 @@ public class RecipeControllerTests {
 
   @MockBean
   ModelMapper modelMapper;
-
-  @BeforeEach
-  void setup() {
-    MockitoAnnotations.initMocks(this);
-  }
 
   @Test
   void getRecipes_whenRecipesPresent_returnRecipes() {
@@ -100,11 +96,14 @@ public class RecipeControllerTests {
     Optional<Recipe> recipe = Optional.empty();
     Mockito.when(recipeService.findById(input)).thenReturn(recipe);
 
-    // act
-    ResponseEntity<RecipeDto> response = recipeController.getRecipe(input);
+    try {
+      // act
+      recipeController.getRecipe(input);
+    } catch (Exception e) {
+      // assert
+      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+    }
 
-    // assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
     verify(recipeService, times(1)).findById(input);
   }
 
@@ -122,7 +121,7 @@ public class RecipeControllerTests {
     ResponseEntity<Recipe> response = recipeController.createRecipe(recipeDto);
 
     //assert
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED));
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     verify(sessionService, times(1)).getAuthenticatedUser();
     verify(modelMapper, times(1)).map(recipeDto, Recipe.class);
   }

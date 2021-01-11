@@ -5,6 +5,7 @@ import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.SessionService;
@@ -90,7 +91,7 @@ public class RecipeController {
     Optional<Recipe> recipe = recipeService.findById(id);
 
     if(!recipe.isPresent()){
-      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      throw new HttpNotFoundError();
     }
 
     RecipeDto recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
