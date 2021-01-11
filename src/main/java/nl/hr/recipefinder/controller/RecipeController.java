@@ -93,11 +93,7 @@ public class RecipeController {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    var recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
-
-    if(recipe.get().user != null){
-      recipeDto.creator = recipe.get().user.username;
-    }
+    RecipeDto recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
 
     return new ResponseEntity<>(recipeDto, HttpStatus.OK);
   }

@@ -3,6 +3,7 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
+import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.security.Role;
@@ -84,7 +85,7 @@ public class RecipeControllerTests {
     Mockito.when(modelMapper.map(recipe.get(), RecipeDto.class)).thenReturn(recipeDto);
 
     // act
-    ResponseEntity<RecipeDto> response = recipeController.Recipe(input);
+    ResponseEntity<RecipeDto> response = recipeController.getRecipe(input);
 
     // assert
     assertThat(response.getBody()).isEqualTo(recipeDto);
@@ -100,7 +101,7 @@ public class RecipeControllerTests {
     Mockito.when(recipeService.findById(input)).thenReturn(recipe);
 
     // act
-    ResponseEntity<RecipeDto> response = recipeController.Recipe(input);
+    ResponseEntity<RecipeDto> response = recipeController.getRecipe(input);
 
     // assert
     assertThat(response.getStatusCode().equals(HttpStatus.NOT_FOUND));
@@ -112,8 +113,8 @@ public class RecipeControllerTests {
     // arrange
     Recipe recipe = new Recipe("Tasty Chicken", "Very tasty chicken", 25,
       "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
-    RecipeDto recipeDto = new RecipeDto("Tasty Chicken", "Very tasty chicken", 25,
-      "Boil the chicken" ,2 , "Simon", List.of(), List.of(), List.of(), List.of());
+    RecipeDto recipeDto = new RecipeDto(1, "Tasty Chicken", "Very tasty chicken", 25,
+      "Boil the chicken" ,2 , new UserResponseDto(), List.of(), List.of(), List.of(), List.of());
     Mockito.when(sessionService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));
     Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
 
