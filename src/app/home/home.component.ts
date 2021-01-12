@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ListedRecipe} from '../model/listed-recipe';
+import {ListedRecipe} from '../model/listed-recipe.model';
 import {RecipeService} from '../service/recipe.service';
 import {Router} from "@angular/router";
-import {Ingredient} from "../model/ingredient";
+import {Ingredient} from "../model/ingredient.model";
 import {IngredientService} from "../service/ingredient.service";
 
 @Component({

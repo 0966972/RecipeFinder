@@ -1,6 +1,6 @@
 import {Mappable} from "./mappable.model";
 import {Step} from "./step.model";
-import {RecipeIngredient} from "./recipe-ingredient";
+import {RecipeIngredient} from "./recipe-ingredient.model";
 import {Review} from "./review.model";
 import {User} from "./user.model";
 

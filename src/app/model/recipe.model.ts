@@ -1,5 +1,5 @@
 import {Step} from "./step.model";
-import {RecipeIngredient} from "./recipe-ingredient";
+import {RecipeIngredient} from "./recipe-ingredient.model";
 import {User} from "./user.model";
 
 export class Recipe {

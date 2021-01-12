@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AdminIngredient} from "../model/admin-ingredient";
+import {AdminIngredient} from "../model/admin-ingredient.model";
 import {User} from "../model/user.model";
 
 @Injectable({
