@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ListedRecipe} from '../model/listed-recipe';
+import {ListedRecipe} from '../model/listed-recipe.model';
 import {Observable} from 'rxjs/Observable';
-import {Recipe} from "../model/recipe";
-import {Ingredient} from "../model/ingredient";
+import {Recipe} from "../model/recipe.model";
+import {Ingredient} from "../model/ingredient.model";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
 
 @Injectable()

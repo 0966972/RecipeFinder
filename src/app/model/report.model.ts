@@ -1,6 +1,6 @@
 import {Mappable} from "./mappable.model";
 import {User} from "./user.model";
-import {Recipe} from "./recipe";
+import {Recipe} from "./recipe.model";
 
 export class Report implements Mappable {
   public reportingUser: User;

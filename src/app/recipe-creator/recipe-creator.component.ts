@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
-import {Recipe} from "../model/recipe";
+import {Recipe} from "../model/recipe.model";
 import {RecipeService} from "../service/recipe.service";
-import {Ingredient} from "../model/ingredient";
+import {Ingredient} from "../model/ingredient.model";
 import {IngredientService} from "../service/ingredient.service";
 import {RecipeIngredientService} from "../service/recipe-ingredient.service";
 

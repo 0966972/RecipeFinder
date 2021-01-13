@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {ListedRecipe} from '../model/listed-recipe';
+import {ListedRecipe} from '../model/listed-recipe.model';
 import {RecipeService} from '../service/recipe.service';
 import {Router} from "@angular/router";
-import {Ingredient} from "../model/ingredient";
-import {HttpHeaders} from "@angular/common/http";
+import {Ingredient} from "../model/ingredient.model";
 import {IngredientService} from "../service/ingredient.service";
 
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent implements OnInit {

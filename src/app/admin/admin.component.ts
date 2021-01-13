@@ -1,15 +1,16 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {AdminService} from "../service/admin.service";
-import {AdminIngredient} from "../model/admin-ingredient";
+import {AdminIngredient} from "../model/admin-ingredient.model";
 import {Report} from "../model/report.model";
-import {Recipe} from "../model/recipe";
+import {Recipe} from "../model/recipe.model";
 import {User} from "../model/user.model";
 import {ReportService} from "../service/report.service";
 
 @Component({
   selector: 'admin',
-  templateUrl: './admin.component.html'
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.css']
 })
 
 export class AdminComponent implements OnInit {
