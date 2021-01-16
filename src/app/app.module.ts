@@ -14,8 +14,13 @@ import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component"
 import {RecipeCreatorComponent} from './recipe-creator/recipe-creator.component';
 import {AuthService} from "./service/auth.service";
 import {RouterModule} from "@angular/router";
-import {ListedRecipeService} from "./service/listed-recipe.service";
+import {RecipeService} from "./service/recipe.service";
+import {IngredientService} from "./service/ingredient.service";
 import {NgbCarouselConfig, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {RecipeIngredientService} from "./service/recipe-ingredient.service";
+import {ReviewCreateComponent} from "./review-create/review-create.component";
+import {ReportUserComponent} from "./report-user/report-user.component";
+import {ReportService} from "./service/report.service";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -38,6 +43,8 @@ export class XhrInterceptor implements HttpInterceptor {
     AdminComponent,
     RecipeDetailsComponent,
     RecipeCreatorComponent,
+    ReviewCreateComponent,
+    ReportUserComponent
   ],
   imports: [
     BrowserModule,
@@ -48,8 +55,11 @@ export class XhrInterceptor implements HttpInterceptor {
     NgbModule,
   ],
   providers: [
-    ListedRecipeService,
+    RecipeService,
+    RecipeIngredientService,
+    IngredientService,
     AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
+    ReportService,
     NgbCarouselConfig
   ],
   bootstrap: [AppComponent]

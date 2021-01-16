@@ -5,7 +5,7 @@ import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -48,7 +48,25 @@ public class UserController {
 
       throw new HttpNotFoundError();
     } catch (Exception e) {
+      throw new HttpNotFoundError(e);
+    }
+  }
+
+  @GetMapping("/ban/{id}")
+  public ResponseEntity<Boolean> banUser(@PathVariable Long id) {
+    try {
+      Optional<User> foundUser = userService.findUserById(id);
+
+      if (foundUser.isPresent()){
+        User user = foundUser.get();
+        user.setRole(Role.BANNED);
+        userService.save(user);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+      }
+
       throw new HttpNotFoundError();
+    } catch (Exception e) {
+      throw new HttpNotFoundError(e);
     }
   }
 
@@ -62,7 +80,7 @@ public class UserController {
       }
       return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     } catch (Exception e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 
@@ -73,13 +91,13 @@ public class UserController {
       if (mappedUser.getRole() == null) mappedUser.setRole(Role.USER);
 
       mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
-      userService.save(mappedUser);
+      User savedUser = userService.save(mappedUser);
 
-      return new ResponseEntity<>(mappedUser, HttpStatus.CREATED);
+      return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
-      throw new HttpConflictError();
+      throw new HttpConflictError(e);
     } catch (DataAccessException e) {
-      throw new HttpInternalServerError();
+      throw new HttpInternalServerError(e);
     }
   }
 }

@@ -6,7 +6,7 @@ import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.serverError.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RecipeFinderApplication.class})
 class UserControllerTests {
@@ -50,11 +52,42 @@ class UserControllerTests {
   }
 
   @Test
-  void getUser_whenResourceNonExistent_thenReturnsNotFound() {
+  void banUser_whenResourceNonExistent_thenReturnsNotFound() {
     // arrange
     long input = 5000;
     Mockito.when(userService.findUserById(input)).thenReturn(Optional.empty());
 
+    try {
+      // act
+      userController.banUser(input);
+    } catch (Exception e) {
+      // assert
+      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+    }
+    verify(userService, times(1)).findUserById(input);
+  }
+
+  @Test
+  void banUser_whenResourceExists_thenReturnsTrue() {
+    // arrange
+    long input = 0;
+    Optional<User> expectedOptional = Optional.of(new User("a", "b", Role.USER));
+    Mockito.when(userService.findUserById(input)).thenReturn(expectedOptional);
+
+    // act
+    ResponseEntity<Boolean> result = userController.banUser(input);
+
+    // assert
+    assertThat(result.getBody()).isTrue();
+    verify(userService, times(1)).findUserById(input);
+  }
+
+
+  @Test
+  void getUser_whenResourceNonExistent_thenReturnsNotFound() {
+    // arrange
+    long input = 5000;
+    Mockito.when(userService.findUserById(input)).thenReturn(Optional.empty());
 
     try {
       // act
@@ -181,17 +214,19 @@ class UserControllerTests {
   }
 
   @Test
-  void createUser_whenUserIsSaved_thenReturnsOKNewUser() {
+  void createUser_whenUserIsSaved_thenReturnsNewUser() {
     // arrange
     User user = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
+    Mockito.when(userService.save(user)).thenReturn(user);
 
     // act
     ResponseEntity<User> result = userController.createUser(userDto);
+    User resultUser = result.getBody();
 
     // assert
-    assertThat(result.getBody()).isInstanceOf(User.class);
+    assertThat(resultUser).isInstanceOf(User.class);
 
     verify(userService, times(1)).save(user);
     verify(modelMapper, times(1)).map(userDto, User.class);
@@ -204,12 +239,15 @@ class UserControllerTests {
     User userForSaving = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", null);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
+    Mockito.when(userService.save(user)).thenReturn(user);
 
     // act
     ResponseEntity<User> result = userController.createUser(userDto);
+    User resultUser = result.getBody();
+    Role resultUserRole = resultUser.getRole();
 
     // assert
-    assertThat(result.getBody().getRole()).isEqualTo(Role.USER);
+    assertThat(resultUserRole).isEqualTo(Role.USER);
 
     verify(modelMapper, times(1)).map(userDto, User.class);
   }

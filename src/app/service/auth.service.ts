@@ -9,7 +9,22 @@ export class AuthService {
   authenticated = false;
   role = 'USER';
 
+  private userId: bigint = undefined;
+
   constructor(private http: HttpClient) {
+  }
+
+  get isAdmin(): boolean {
+    return this.role == 'ADMIN';
+
+  }
+
+  get username(): string {
+    let token: string = sessionStorage.getItem('token');
+    if (token != '') {
+      return atob(token).split(':')[0]
+    }
+    return '';
   }
 
   authenticate(credentials, callback) {
@@ -56,16 +71,33 @@ export class AuthService {
       })).subscribe();
   }
 
-  get isAdmin(): boolean {
-    return this.role == 'ADMIN';
+  getUserId(): bigint {
+    let token: string = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    let url = 'http://localhost:8080/session/login';
 
+    this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
+      response => {
+        if (response['name']) {
+          console.log("retrieved user id: " + response['principal']['user']['id']);
+          this.userId = response['principal']['user']['id'];
+        }
+      },
+      (error) => {
+        alert("Er ging iets mis, probeer het later nog eens")
+      }
+    );
+    console.log("member: " + this.userId);
+    return this.userId;
   }
 
-  get username(): string {
-    let token: string = sessionStorage.getItem('token');
-    if (token != '') {
-      return atob(token).split(':')[0]
-    }
-    return '';
+  public getPrincipal(): Observable<Object> {
+    let url = 'http://localhost:8080/session/login';
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + sessionStorage.getItem('token')
+    });
+    return this.http.get<Observable<Object>>(url, {headers: headers});
   }
 }

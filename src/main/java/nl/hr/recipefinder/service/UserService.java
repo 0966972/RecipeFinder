@@ -30,7 +30,9 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public void save(User user) {
-    userRepository.save(user);
+  public User save(User user) {
+    return userRepository.save(user);
   }
+
+  public User update(User user) { return userRepository.save(user); }
 }

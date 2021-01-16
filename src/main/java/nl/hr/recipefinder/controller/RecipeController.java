@@ -2,17 +2,23 @@ package nl.hr.recipefinder.controller;
 
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.StepDto;
 import nl.hr.recipefinder.model.entity.Recipe;
-import nl.hr.recipefinder.model.entity.Step;
+import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
+import nl.hr.recipefinder.service.SessionService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,44 +29,88 @@ public class RecipeController {
 
   private final RecipeService recipeService;
   final ModelMapper modelMapper;
+  private final SessionService sessionService;
 
   @Autowired
-  public RecipeController(RecipeService recipeService, ModelMapper modelMapper) {
+  public RecipeController(
+    RecipeService recipeService,
+    ModelMapper modelMapper,
+    SessionService sessionService
+  ) {
     this.recipeService = recipeService;
     this.modelMapper = modelMapper;
+    this.sessionService = sessionService;
   }
-
 
   @GetMapping()
-  public List<ListedRecipeDto> getRecipes() {
+  public ResponseEntity<List<ListedRecipeDto>> getRecipes() {
     List<Recipe> recipes = recipeService.getRecipes();
-
-    return recipes.stream()
-      .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
-      .collect(Collectors.toList());
+    try {
+      return new ResponseEntity<>(recipes.stream()
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
+        .collect(Collectors.toList()), HttpStatus.OK);
+    } catch (Exception e) {
+      throw new HttpInternalServerError(e);
+    }
   }
 
+  @PostMapping(value = {"/search/", "/search/{searchInput}"})
+  public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@PathVariable(required = false) String searchInput, @RequestBody String[] ingredients) {
+    List<Recipe> recipes;
+    if (searchInput != null) {
+      recipes = recipeService.findRecipesByNameOrDescription(searchInput);
+    } else {
+      recipes = recipeService.getRecipes();
+    }
+    try {
 
-  @GetMapping("/search/{searchInput}")
-  public List<ListedRecipeDto> searchRecipes(@PathVariable String searchInput) {
-    List<Recipe> recipes = recipeService.findRecipesByNameAndDescription(searchInput, searchInput);
+      ArrayList<Recipe> foundRecipes = new ArrayList<>();
+      for (Recipe recipe : recipes) {
+        boolean match = true;
+        for (String ingredient : ingredients) {
+          if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+            match = false;
+            break;
+          }
+        }
 
-    return recipes.stream()
-      .map((it) -> modelMapper.map(it, ListedRecipeDto.class))
-      .collect(Collectors.toList());
+        if (match)
+          foundRecipes.add(recipe);
+      }
+
+      return new ResponseEntity<>(foundRecipes.stream()
+        .map(it -> modelMapper.map(it, ListedRecipeDto.class))
+        .collect(Collectors.toList()), HttpStatus.OK);
+    } catch (Exception e) {
+      throw new HttpInternalServerError(e);
+    }
   }
 
   @GetMapping("/{id}")
-  public RecipeDto Recipe(@PathVariable("id") Long id) {
+  public ResponseEntity<RecipeDto> getRecipe(@PathVariable("id") Long id) {
     Optional<Recipe> recipe = recipeService.findById(id);
-    if (recipe.isPresent()) return modelMapper.map(recipe.get(), RecipeDto.class);
-    else throw new HttpNotFoundError();
+
+    if(!recipe.isPresent()){
+      throw new HttpNotFoundError();
+    }
+
+    RecipeDto recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
+
+    return new ResponseEntity<>(recipeDto, HttpStatus.OK);
   }
 
   @PostMapping()
-  public boolean createRecipe(@RequestBody RecipeDto recipedto) {
-    Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
-    recipeService.save(mappedRecipe);
-    return true;
+  public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
+    try {
+      User user = sessionService.getAuthenticatedUser();
+      Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
+      mappedRecipe.user = user;
+      mappedRecipe.setIngredients(List.of());
+      Recipe savedRecipe = recipeService.save(mappedRecipe);
+
+      return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
+    } catch (DataIntegrityViolationException e) {
+      throw new HttpConflictError(e);
+    }
   }
 }

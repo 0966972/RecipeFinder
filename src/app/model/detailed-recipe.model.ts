@@ -1,5 +1,8 @@
 import {Mappable} from "./mappable.model";
 import {Step} from "./step.model";
+import {RecipeIngredient} from "./recipe-ingredient.model";
+import {Review} from "./review.model";
+import {User} from "./user.model";
 
 export class DetailedRecipe implements Mappable {
   public id: bigint;
@@ -8,10 +11,14 @@ export class DetailedRecipe implements Mappable {
   public instructions: string;
   public steps: Step[];
   public servings: number = 0;
+
+  public preparationTime: number = 0;
   public duration: number = 0;
-  public ingredients: string[][];
-  public pictures: string[][];
-  public creator: string;
+  public ingredients: RecipeIngredient[];
+  public pictures: any[];
+  public user: User;
+  public reviews: Review[];
+
 
   map(input: any): this {
     Object.assign(this, input);

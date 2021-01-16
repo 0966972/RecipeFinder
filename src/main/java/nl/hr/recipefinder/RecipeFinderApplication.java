@@ -14,6 +14,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class RecipeFinderApplication {
 
   public static void main(String[] args) {
+
+    SpringApplication app = new SpringApplication();
+    app.setAdditionalProfiles("live");
     SpringApplication.run(RecipeFinderApplication.class, args);
   }
 }

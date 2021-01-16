@@ -7,6 +7,8 @@ import {RegisterComponent} from "./register/register.component";
 import {AdminComponent} from "./admin/admin.component";
 import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component";
 import {RecipeCreatorComponent} from "./recipe-creator/recipe-creator.component";
+import {ReviewCreateComponent} from "./review-create/review-create.component";
+import {ReportUserComponent} from "./report-user/report-user.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -16,10 +18,15 @@ const routes: Routes = [
   {path: 'admin', component: AdminComponent},
   {
     path: 'recipe', children: [
-      {path: ':id', component: RecipeDetailsComponent}
+      {
+        path: ':id', component: RecipeDetailsComponent, children: [
+          {path: 'review-create', component: ReviewCreateComponent}
+        ]
+      }
     ]
   },
   {path: 'recipe-creator', component: RecipeCreatorComponent},
+  {path: 'report-user', component: ReportUserComponent},
   {path: '**', redirectTo: ''}
 ];
 

@@ -1,39 +1,44 @@
 package nl.hr.recipefinder.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Recipe extends BaseEntity {
   private String name;
   @Column(columnDefinition = "TEXT")
   private String description;
+  private Integer preparationTime;
   @Column(columnDefinition = "TEXT")
   private String instructions;
   private Integer servings;
 
-  @ManyToMany(cascade = {CascadeType.ALL})
-  @JoinTable(
-    name = "Recipe_Ingredient",
-    joinColumns = {@JoinColumn(name = "recipe_id")},
-    inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
-  )
-  List<Ingredient> ingredients = new ArrayList<>();
+  @OneToMany(mappedBy = "recipe")
+  private List<RecipeIngredient> ingredients;
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "recipe_id")
-
   private List<Picture> pictures = new ArrayList<>();
-  
+
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "step_id")
   public List<Step> steps = new ArrayList<>();
+
+  @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+  List<Review> reviews;
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id", nullable = true)
+  public User user;
 }
