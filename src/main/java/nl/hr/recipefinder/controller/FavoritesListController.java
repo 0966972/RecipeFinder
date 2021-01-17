@@ -99,8 +99,13 @@ public class FavoritesListController {
   }
 
   @GetMapping("/favorites")
-  public ResponseEntity<List<FavoritesList>> getAll() {
+  public ResponseEntity<List<FavoritesListResponseDto>> getAll() {
     List<FavoritesList> favoritesLists = favoritesListService.findAll();
-    return new ResponseEntity<>(favoritesLists, HttpStatus.OK);
+    List<FavoritesListResponseDto> favoritesListsDtos = new ArrayList<>();
+    for(FavoritesList favoritesList : favoritesLists) {
+      favoritesListsDtos.add(modelMapper.map(favoritesList, FavoritesListResponseDto.class));
+    }
+
+    return new ResponseEntity<>(favoritesListsDtos, HttpStatus.OK);
   }
 }
