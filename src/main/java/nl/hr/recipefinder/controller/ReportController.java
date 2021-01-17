@@ -4,7 +4,9 @@ import nl.hr.recipefinder.model.dto.ReportRequestDto;
 import nl.hr.recipefinder.model.dto.ReportResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.Report;
+import nl.hr.recipefinder.model.entity.ReportKey;
 import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
@@ -52,13 +54,6 @@ public class ReportController {
     return new ResponseEntity<>(reports, HttpStatus.OK);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<ReportResponseDto> getSingleReport(@PathVariable Long id) {
-    Optional<Report> foundReport = reportService.findById(id);
-    if (foundReport.isEmpty()) throw new HttpNotFoundError();
-    return ResponseEntity.ok(modelMapper.map(foundReport.get(), ReportResponseDto.class));
-  }
-
   @PostMapping()
   public ResponseEntity<ReportResponseDto> createReport(@RequestBody ReportRequestDto reportRequestDto) {
     try {
@@ -68,7 +63,18 @@ public class ReportController {
       Optional<Recipe> foundRecipe = recipeService.findById(reportRequestDto.getReportedRecipeId());
       if (foundRecipe.isEmpty()) throw new HttpNotFoundError();
 
-      Report report = reportService.save(new Report(foundReporter.get(), reportRequestDto.getMessage(), foundRecipe.get().getUser(), foundRecipe.get()));
+      ReportKey id =  new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
+      Optional<Report> existingReport = reportService.findById(id);
+
+      if (existingReport.isPresent()) throw new HttpBadRequestError("You have already reported the user");
+
+      Report report = reportService.save(
+        new Report(
+         id,
+          null, null, reportRequestDto.getMessage(),
+          foundReporter.get(), foundRecipe.get().getUser(), foundRecipe.get()
+        )
+      );
       return new ResponseEntity<>(modelMapper.map(report, ReportResponseDto.class), HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
       throw new HttpConflictError(e);
