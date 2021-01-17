@@ -19,6 +19,11 @@ body {
   font-family: Roboto;
 }
 
+.scoreFilterButton {
+  background: none;
+  border: none;
+}
+
 h3,
 h5 {
   font-family: Pacifico;
