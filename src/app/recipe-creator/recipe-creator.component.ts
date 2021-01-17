@@ -49,6 +49,16 @@ export class RecipeCreatorComponent implements OnInit {
     });
   }
 
+  removeStep(i: number){
+    for(let j = 0; j < this.recipe.steps.length; j++){
+      if(this.recipe.steps[j].number > this.recipe.steps[i].number){
+        this.recipe.steps[j].number = this.recipe.steps[j].number - 1;
+      }
+    }
+
+    this.recipe.steps.splice(i, 1);
+  }
+
   get showPictures() : boolean {
     if (!this.showingPictures){
       this.showingPictures = true;
