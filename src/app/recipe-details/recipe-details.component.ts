@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../model/detailed-recipe.model";
@@ -8,6 +8,9 @@ import {Review} from "../model/review.model";
 import {AuthService} from "../service/auth.service";
 import {filter} from "rxjs/operators";
 import {User} from "../model/user.model";
+import {FavoritesListService} from "../service/favorites-list.service";
+import {FavoritesList} from "../model/favorites-list.model";
+import {Recipe} from "../model/recipe.model";
 
 @Component({
   selector: 'recipe-details',
@@ -23,6 +26,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private favoritesListService: FavoritesListService,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
@@ -106,8 +110,25 @@ export class RecipeDetailsComponent implements OnInit {
     );
   }
 
+  showFavoritesList = false;
+  favoritesList: FavoritesList[];
+  toggleFavoriteLists(){
+    if(!this.showFavoritesList){
+      this.favoritesListService.getAll().subscribe(val => this.favoritesList = val);
+    }
+    this.showFavoritesList = !this.showFavoritesList;
+  }
+
   rememberRouteAndGotoLogin(){
     this.router.navigate(['/login', {previous: '/recipe/' + this.routeId}])
+  }
+
+  addToFavoritesList(listId){
+    let token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.favoritesListService.addToList(this.recipe.id, listId, headers)
   }
 
   createStubRecipe(): DetailedRecipe {

@@ -52,7 +52,7 @@ public class FavoritesListController {
   }
 
   @PatchMapping("/user/{userId}/favorites/{favoritesListId}")
-  public ResponseEntity<FavoritesListResponseDto> addFavorite(@RequestBody RecipeDto recipeDto, @PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
+  public ResponseEntity<FavoritesListResponseDto> addFavorite(@RequestBody Long recipeId, @PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     try {
       User activeUser = sessionService.getAuthenticatedUser();
 
@@ -61,7 +61,7 @@ public class FavoritesListController {
       }
 
       Optional<FavoritesList> foundFavoritesList = favoritesListService.findById(favoritesListId);
-      Optional<Recipe> foundRecipe = recipeService.findById(recipeDto.getId());
+      Optional<Recipe> foundRecipe = recipeService.findById(recipeId);
       if (foundFavoritesList.isEmpty() || foundRecipe.isEmpty()) {
         throw new HttpNotFoundError();
       }

@@ -17,10 +17,18 @@
           </div>
         </ng-template>
       </ngb-carousel>
-    <div *ngIf="isLoggedIn && !isRecipeCreator" id="reportRow" class="row">
-      <div class="col-9"></div>
-      <div class="col-3">
-        <button class="btn btn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
+    <div id="reportRow" class="row">
+      <div class="offset-9 col-3">
+        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
+        <div class="pull-right">
+          <button *ngIf="!showFavoritesList" class="btn btn-danger" (click)="(toggleFavoriteLists())"><i class="fa fa-heart"></i></button>
+          <button *ngIf="showFavoritesList" class="btn btn-secondary" (click)="(toggleFavoriteLists())"><i class="fa fa-times"></i></button>
+          <div *ngIf="showFavoritesList">
+          <ul *ngFor="let list of favoritesList;">
+            <li>{{list.name}} <button class="btn btn-success" (click)="(addToFavoritesList(list.id))"><i class="fa fa-plus"></i></button></li>
+          </ul>
+          </div>
+        </div>
       </div>
     </div>
     <div id="ingredientsAndStepsRow" class="row">
