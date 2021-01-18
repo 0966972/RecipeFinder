@@ -56,7 +56,7 @@ export class ReviewCreateComponent implements OnInit {
   }
 
   scoreSelected(i) {
-    this.review.score = i;
+    this.review.score = i + 1;
     this.score = []
     for (let j = 0; j < 5; j++)
       this.score.push(j <= i);

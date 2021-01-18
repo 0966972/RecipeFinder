@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
     }
 
     scoreSelected(i) {
-        this.scoreFilterNum = i;
+        this.scoreFilterNum = i + 1;
         this.scoreFilter = []
         for (let j = 0; j < 5; j++)
             this.scoreFilter.push(j <= i);
