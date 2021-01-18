@@ -128,7 +128,17 @@ export class RecipeDetailsComponent implements OnInit {
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    this.favoritesListService.addToList(this.recipe.id, listId, headers)
+    this.favoritesListService.addToList(this.recipe.id, listId, headers).subscribe(val => this.setCheck(listId))
+  }
+
+  setCheck(id){
+    let button = document.getElementById("list"+id);
+    button.classList.remove("btn-success");
+    button.classList.add("btn-primary");
+
+    let icon = document.getElementById("list"+id+"icon");
+    icon.classList.remove("fa-plus");
+    icon.classList.add("fa-check");
   }
 
   createStubRecipe(): DetailedRecipe {

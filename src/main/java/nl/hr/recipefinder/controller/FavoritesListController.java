@@ -55,7 +55,7 @@ public class FavoritesListController {
     return new ResponseEntity<>(favoritesListDto, HttpStatus.OK);
   }
 
-  @PatchMapping("/user/{userId}/favorites/{favoritesListId}")
+  @PostMapping("/user/{userId}/favorites/{favoritesListId}")
   public ResponseEntity<FavoritesListResponseDto> addFavorite(@RequestBody Long recipeId, @PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     try {
       User activeUser = sessionService.getAuthenticatedUser();

@@ -3,24 +3,29 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {FavoritesList} from "../model/favorites-list.model";
 import {Recipe} from "../model/recipe.model";
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesListService {
 
+  private authService: AuthService;
   private readonly favoriteListsUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _authService: AuthService) {
     this.favoriteListsUrl = 'http://localhost:8080/user';
+    this.authService = _authService;
   }
 
   public getAll(): Observable<FavoritesList[]> {
-    return this.http.get<FavoritesList[]>(this.favoriteListsUrl+"/2/favorites");
+    let userId = this.authService.getUserId();
+    return this.http.get<FavoritesList[]>(this.favoriteListsUrl+"/"+userId+"/favorites");
   }
 
-  public addToList(recipeId: bigint, listId: bigint, headers) {
-    let url = this.favoriteListsUrl + "/2/favorites/" + listId;
-    return this.http.patch(url, recipeId, {headers: headers});
+  public addToList(recipeId: bigint, listId: bigint, headers) : Observable<FavoritesList> {
+    let userId = this.authService.getUserId();
+    let url = this.favoriteListsUrl + "/"+userId+"/favorites/" + listId;
+    return this.http.post<FavoritesList>(url, recipeId, {headers: headers});
   }
 }
