@@ -24,7 +24,6 @@ public class FavoritesList extends BaseEntity {
   @JoinColumn(name = "user_id")
   public User user;
 
-  @OneToMany()
-  @JoinColumn(name = "recipe_id")
-  private List<Recipe> recipes = new ArrayList<>();
+  @OneToMany(mappedBy = "favoritesList")
+  private List<FavoritesListRecipe> recipes = new ArrayList<>();
 }

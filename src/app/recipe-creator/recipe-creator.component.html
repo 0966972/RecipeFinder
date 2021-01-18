@@ -34,9 +34,10 @@
       <br>
       <button type="button" (click)="addStep()">Stap toevoegen</button>
       <section *ngFor="let step of recipe.steps; let i = index;">
+        <br>
+        <br>
         <label>Stap {{step.number}}</label>
-        <br>
-        <br>
+        <button class="btn btn-danger btn-sm" (click)="removeStep(i)">Verwijder</button>
         <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
       </section>
       <br>
