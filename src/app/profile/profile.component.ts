@@ -3,6 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 
+
+
 @Component({
   selector: 'profile',
   templateUrl: './profile.component.html',
@@ -13,6 +15,7 @@ export class ProfileComponent implements OnInit {
 
   model: any = {};
   loading: any;
+  favorites: any
 
   user = {
     id: 0,
@@ -23,7 +26,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+
   ) {
   }
 
@@ -41,6 +45,7 @@ export class ProfileComponent implements OnInit {
           this.user.username = response['name'];
           this.user.id = response['principal']['user']['id'];
           this.user.role = response['principal']['user']['role'];
+          this.http.get('http://localhost:8080/user/'+this.user.id+'/favorites').subscribe(Response => this.favorites = Response);
         },
         error => {
           if (error.status == 401)
@@ -53,4 +58,15 @@ export class ProfileComponent implements OnInit {
       alert('U dient ingelogd te zijn om uw profiel te bekijken.');
     }
   }
+
+  openRecipe(id: number) {
+    console.log(this.user.id);
+    console.log(id);
+    console.log(this.router.navigate(['user/' + this.user.id + '/favorites/' + id]))
+    this.router.navigate(['user/' + this.user.id + '/favorites/' + id])
+
+
+  }
+
+
 }
