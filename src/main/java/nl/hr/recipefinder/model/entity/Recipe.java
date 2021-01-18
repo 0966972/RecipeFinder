@@ -38,6 +38,9 @@ public class Recipe extends BaseEntity {
   @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
   List<Review> reviews;
 
+  @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY)
+  private List<FavoritesListRecipe> favoritesLists;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = true)
   public User user;
