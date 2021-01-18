@@ -8,7 +8,7 @@
   <h2> Hier een overzicht van uw favorite lijsten</h2>
   <div *ngFor="let favorites of favorites" (click)="openRecipe(favorites.id)" class="row">
 
-      <button><h2>&#8226; {{favorites.name}}</h2></button>
+      <button class="btn btn-primary">{{favorites.name}}</button>
 
   </div>
 </div>
