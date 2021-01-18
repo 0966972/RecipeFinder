@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.hr.recipefinder.model.entity.ReportKey;
 
 
 @Getter
@@ -11,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportResponseDto {
-  private long id;
+  private ReportKey id;
   private ReportResponseUserDto reportingUser;
   private String message;
   private ReportResponseUserDto reportedUser;

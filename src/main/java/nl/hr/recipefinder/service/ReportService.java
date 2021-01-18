@@ -1,6 +1,7 @@
 package nl.hr.recipefinder.service;
 
 import nl.hr.recipefinder.model.entity.Report;
+import nl.hr.recipefinder.model.entity.ReportKey;
 import nl.hr.recipefinder.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ReportService {
     this.reportRepository = reportRepository;
   }
 
-  public Optional<Report> findById(Long id) {
+  public Optional<Report> findById(ReportKey id) {
     return reportRepository.findById(id);
   }
 

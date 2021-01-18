@@ -96,9 +96,6 @@ export class ReportUserComponent implements OnInit {
 
   displayHttpError(status: any) {
     switch (status) {
-      case 400:
-        alert("400: Vul een bericht in.")
-        break;
       default:
         alert("Er ging iets mis, probeer het later nog eens.")
         break;

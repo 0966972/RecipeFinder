@@ -8,6 +8,7 @@ import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -27,6 +28,6 @@ public class FavoritesListResponseDto {
 
   public UserResponseDto user;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<RecipeDto> recipes;
 }

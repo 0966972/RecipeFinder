@@ -27,6 +27,11 @@
 
 }
 
+.reviewButton {
+  background: none;
+  border: none;
+}
+
 .cont {
   position: relative;
   width: 1140px;

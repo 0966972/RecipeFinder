@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.FavoritesListRequestDto;
 import nl.hr.recipefinder.model.dto.FavoritesListResponseDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.entity.FavoritesList;
-import nl.hr.recipefinder.model.entity.Recipe;
-import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.entity.*;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpUnauthorizedException;
+import nl.hr.recipefinder.service.FavoritesListRecipeService;
 import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.SessionService;
@@ -32,23 +31,28 @@ import java.util.Optional;
 public class FavoritesListController {
   private final SessionService sessionService;
   private final FavoritesListService favoritesListService;
+  private final FavoritesListRecipeService favoritesListRecipeService;
   private final RecipeService recipeService;
   private final ModelMapper modelMapper;
 
 
   @GetMapping("/user/{userId}/favorites")
-  public ResponseEntity<List<FavoritesList>> getAllByUser(@PathVariable Long userId) {
+  public ResponseEntity<List<FavoritesListResponseDto>> getAllByUser(@PathVariable Long userId) {
     List<FavoritesList> favoritesLists = favoritesListService.findAllByUserId(userId);
-    return new ResponseEntity<>(favoritesLists, HttpStatus.OK);
+
+    return getListResponseEntity(favoritesLists);
   }
 
   @GetMapping("/user/{userId}/favorites/{favoritesListId}")
-  public ResponseEntity<FavoritesList> getSingleById(@PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
+  public ResponseEntity<FavoritesListResponseDto> getSingleById(@PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     Optional<FavoritesList> favoritesList = favoritesListService.findById(favoritesListId);
 
     if (favoritesList.isEmpty()) throw new HttpNotFoundError();
 
-    return new ResponseEntity<>(favoritesList.get(), HttpStatus.OK);
+    FavoritesListResponseDto favoritesListDto = modelMapper.map(favoritesList.get(), FavoritesListResponseDto.class);
+    favoritesListDto.setRecipes(findRelatedRecipesOnDto(favoritesListDto));
+
+    return new ResponseEntity<>(favoritesListDto, HttpStatus.OK);
   }
 
   @PatchMapping("/user/{userId}/favorites/{favoritesListId}")
@@ -66,10 +70,15 @@ public class FavoritesListController {
         throw new HttpNotFoundError();
       }
 
+      FavoritesListRecipe mappedFavoriteRecipe = modelMapper.map(foundRecipe.get(), FavoritesListRecipe.class);
+      mappedFavoriteRecipe.setId(new FavoritesListRecipeKey(favoritesListId, foundRecipe.get().getId()));
+      favoritesListRecipeService.save(mappedFavoriteRecipe);
+
       FavoritesList favoritesList = foundFavoritesList.get();
-      favoritesList.getRecipes().add(foundRecipe.get());
       FavoritesList savedFavoritesList = favoritesListService.save(favoritesList);
       FavoritesListResponseDto favoritesListResponseDto = modelMapper.map(savedFavoritesList, FavoritesListResponseDto.class);
+
+      favoritesListResponseDto.setRecipes(findRelatedRecipesOnDto(favoritesListResponseDto));
 
       return new ResponseEntity<>(favoritesListResponseDto, HttpStatus.OK);
     } catch (ConstraintViolationException e) {
@@ -99,8 +108,30 @@ public class FavoritesListController {
   }
 
   @GetMapping("/favorites")
-  public ResponseEntity<List<FavoritesList>> getAll() {
+  public ResponseEntity<List<FavoritesListResponseDto>> getAll() {
     List<FavoritesList> favoritesLists = favoritesListService.findAll();
-    return new ResponseEntity<>(favoritesLists, HttpStatus.OK);
+
+    return getListResponseEntity(favoritesLists);
+  }
+
+  private ResponseEntity<List<FavoritesListResponseDto>> getListResponseEntity(List<FavoritesList> favoritesLists) {
+    List<FavoritesListResponseDto> favoritesListsDtos = new ArrayList<>();
+    for(FavoritesList favoritesList : favoritesLists){
+      favoritesListsDtos.add(modelMapper.map(favoritesList, FavoritesListResponseDto.class));
+    }
+    for(FavoritesListResponseDto list : favoritesListsDtos){
+      list.setRecipes(findRelatedRecipesOnDto(list));
+    }
+
+    return new ResponseEntity<>(favoritesListsDtos, HttpStatus.OK);
+  }
+
+  public List<RecipeDto> findRelatedRecipesOnDto(FavoritesListResponseDto favoritesListDto){
+    List<RecipeDto> recipesFoundByRelation = new ArrayList<>();
+    for(RecipeDto recipe : favoritesListDto.getRecipes()){
+      Optional<Recipe> foundRelatedRecipe = recipeService.findById(recipe.getId());
+      foundRelatedRecipe.ifPresent(value -> recipesFoundByRelation.add(modelMapper.map(value, RecipeDto.class)));
+    }
+    return recipesFoundByRelation;
   }
 }
