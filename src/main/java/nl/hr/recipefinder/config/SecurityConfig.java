@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers(HttpMethod.GET, "/picture/**").permitAll()
       // recipe
       .antMatchers(HttpMethod.GET, "/recipe/**").permitAll()
-      .antMatchers(HttpMethod.POST, "/recipe/search/**").permitAll()
+      .antMatchers(HttpMethod.POST, "/recipe/search").permitAll()
       .antMatchers(HttpMethod.POST, "/recipe/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       // recipeIngredient
       .antMatchers(HttpMethod.POST, "/recipeIngredient").hasAnyRole(Role.ADMIN.name(), Role.USER.name())

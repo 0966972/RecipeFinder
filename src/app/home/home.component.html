@@ -1,9 +1,6 @@
 <body>
 <div class="container">
   <h5 style="margin-top: 100px;">Filter Recepten</h5>
-  <!-- <div class="col-6">-->
-  <!-- <input class="form-control" placeholder="Ingredienten">-->
-  <!-- </div>-->
   <div class="col-6">
     <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput"
            (keyup)="searchInputChanged()">
@@ -20,6 +17,14 @@
     </section>
     <button type="button" (click)="addIngredient()">Add Filter</button>
 
+    <br/>
+    <button *ngFor="let selected of scoreFilter;let i=index;" (click)="scoreSelected(i)" class="fa fa-star scoreFilterButton" [ngClass]="{'selectedStar' : selected,'unselectedStar' : !selected}"></button>
+    <style>
+      .selectedStar {color: gold}
+      .unselectedStar {color: gray}
+    </style>
+    <button *ngIf="!doFilterScore" type="button" (click)="showScoreFilter(true)">Filter by score</button>
+    <button *ngIf="doFilterScore" type="button" (click)="showScoreFilter(false)">Remove score filter</button>
 
   </div>
   <hr/>
