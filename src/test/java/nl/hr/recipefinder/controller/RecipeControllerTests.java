@@ -111,7 +111,7 @@ public class RecipeControllerTests {
   void createRecipe_whenRecipeCreated_then201IsReceived(){
     // arrange
     Recipe recipe = new Recipe("Tasty Chicken", "Very tasty chicken", 25,
-      "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
+      "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
     RecipeDto recipeDto = new RecipeDto(1, "Tasty Chicken", "Very tasty chicken", 25,
       "Boil the chicken" ,2 , new UserResponseDto(), List.of(), List.of(), List.of(), List.of());
     Mockito.when(sessionService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));

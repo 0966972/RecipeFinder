@@ -59,6 +59,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
       // admin
       .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
+      // favoritesList
+      .antMatchers(HttpMethod.GET, "/user/{id}/favorites").permitAll()
+      .antMatchers(HttpMethod.GET, "/user/{id}/favorites/{id}").permitAll()
+      .antMatchers(HttpMethod.POST, "/user/{id}/favorites").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
+      .antMatchers(HttpMethod.PATCH, "/user/{id}/favorites/{id}").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
+      .antMatchers(HttpMethod.GET, "/favorites").permitAll()
       // ingredient
       .antMatchers(HttpMethod.GET, "/ingredient/**").permitAll()
       .antMatchers(HttpMethod.POST, "/ingredient").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
