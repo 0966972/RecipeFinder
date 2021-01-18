@@ -21,6 +21,10 @@ export class FavoritesComponent implements OnInit {
   ) {
 
   }
+  openRecipe(id: number) {
+    this.router.navigate(['recipe/' + id])
+  }
+
 
   showFavorite() {
     let url = 'http://localhost:8080/user/' + this.userId + '/favorites/' + this.favoriteId;
