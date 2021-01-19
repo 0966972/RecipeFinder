@@ -7,8 +7,8 @@ import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.Report;
 import nl.hr.recipefinder.model.entity.ReportKey;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpForbiddenException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
 import nl.hr.recipefinder.service.RecipeService;
@@ -54,7 +54,8 @@ public class ReportController {
       ReportKey id =  new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
       Optional<Report> existingReport = reportService.findById(id);
 
-      if (existingReport.isPresent()) throw new HttpBadRequestException("You have already reported the user");
+      if (existingReport.isPresent())
+         throw new HttpForbiddenException("You have already reported the user");
 
       Report report = reportService.save(
         new Report(
