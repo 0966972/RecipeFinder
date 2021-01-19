@@ -46,16 +46,10 @@
     <div class="col-9">
       <h5>{{ recipe.name }}</h5>
       <p>{{ recipe.description }}<br/>
-        {{ recipe.preparationTime }} min<br/></p>
+        {{ recipe.preparationTime }} min | {{recipe.reviewCount}} reviews | Voor {{recipe.servings}} personen <br/>
 
-      <!--      <p>{{ recipe.pictures[0]| json}}</p>-->
-      <!-- Simon Besseling | Voor {{ recipe.servings }} personen | 18 Ingredienten<br/>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gray;"></i>-->
-
+      <i *ngFor="let i of [].constructor(recipe.averageScore);" class="fa fa-star" style="color:#ffd700;"></i>
+      <i *ngFor="let i of [].constructor(5-recipe.averageScore);" class="fa fa-star" style="color:gray;"></i><br/></p>
     </div>
     <hr/>
   </div>
