@@ -11,3 +11,15 @@
 * Once started, by default the front- and backend will be available at:
     * http://localhost:4200/ for Angular
     * http://localhost:8080/ for Spring Application
+
+**Admin Credentials**
+* To view certain features, authentication as an admin user is required. Use the following credentials: 
+    * username: "admin" 
+    * password: "admin"
+
+**API Documentation and Design**
+* Once the application is running, the API documentation can be found at the following endpoint:
+    * http://localhost:8080/swagger-ui.html
+    * Note: to access this endpoint, login credentials of a user with the admin role is required. Use the default admin user. 
+* The API design can be found in the following directory:
+    * /documentation/api-design
