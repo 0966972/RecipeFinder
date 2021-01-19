@@ -53,7 +53,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/ban/{id}")
+    @Transactional
+    @PatchMapping("/ban/{id}")
     public ResponseEntity<Boolean> banUser(@PathVariable Long id) {
         try {
             Optional<User> foundUser = userService.findUserById(id);

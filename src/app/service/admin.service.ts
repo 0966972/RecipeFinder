@@ -23,7 +23,7 @@ export class AdminService {
   }
 
   public banUser(user: User): Observable<User> {
-    return this.http.get<User>(this.usersUrl + '/ban/' + user.id, {headers: this.headers});
+    return this.http.patch<User>(this.usersUrl + '/ban/' + user.id, {},{headers: this.headers});
   }
 
   public acceptIngredient(ingredient: AdminIngredient): Observable<AdminIngredient> {
