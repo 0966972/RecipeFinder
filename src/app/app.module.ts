@@ -21,6 +21,7 @@ import {RecipeIngredientService} from "./service/recipe-ingredient.service";
 import {ReviewCreateComponent} from "./review-create/review-create.component";
 import {ReportUserComponent} from "./report-user/report-user.component";
 import {ReportService} from "./service/report.service";
+import { FavoritesComponent } from './favorites/favorites.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -44,7 +45,8 @@ export class XhrInterceptor implements HttpInterceptor {
     RecipeDetailsComponent,
     RecipeCreatorComponent,
     ReviewCreateComponent,
-    ReportUserComponent
+    ReportUserComponent,
+    FavoritesComponent
   ],
   imports: [
     BrowserModule,

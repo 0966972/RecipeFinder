@@ -1,12 +1,16 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.UserRequestDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
+import nl.hr.recipefinder.model.entity.FavoritesList;
+import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
+import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +26,16 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/user")
 public class UserController {
 
   private final UserService userService;
+  private final FavoritesListService favoritesListService;
   private final ModelMapper modelMapper;
   private final PasswordEncoder passwordEncoder;
-
-  @Autowired
-  public UserController(UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
-    this.userService = userService;
-    this.modelMapper = modelMapper;
-    this.passwordEncoder = passwordEncoder;
-  }
 
   @GetMapping("/{id}")
   public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
@@ -92,7 +91,8 @@ public class UserController {
 
       mappedUser.setPassword(passwordEncoder.encode(mappedUser.getPassword()));
       User savedUser = userService.save(mappedUser);
-
+      FavoritesList defaultFavoritesList = new FavoritesList(mappedUser.getUsername()+"'s favorieten", "Een lijst van mijn favoriete recepten.", savedUser, new ArrayList<>());
+      favoritesListService.save(defaultFavoritesList);
       return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
       throw new HttpConflictError(e);

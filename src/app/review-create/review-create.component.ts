@@ -13,8 +13,7 @@ import {AuthService} from "../service/auth.service";
 
 export class ReviewCreateComponent implements OnInit {
   routeId: number;
-  minScore = 0;
-  maxScore = 5;
+  score=[true,false,false,false,false]
   review: Review;
   showingPictures = false;
 
@@ -26,7 +25,7 @@ export class ReviewCreateComponent implements OnInit {
   ) {
     this.review = new Review(
       null,
-      null,
+      1,
       null,
       null,
       []
@@ -35,7 +34,6 @@ export class ReviewCreateComponent implements OnInit {
 
   public showTitleError = false;
   public showMessageError = false;
-  public showScoreError = false;
 
   get isLoggedIn(): boolean {
     return this.authService.authenticated;
@@ -55,6 +53,13 @@ export class ReviewCreateComponent implements OnInit {
     console.log(this.route.parent.url.subscribe(urlSegment => {
       this.routeId = parseInt(urlSegment[0]['path']);
     }));
+  }
+
+  scoreSelected(i) {
+    this.review.score = i;
+    this.score = []
+    for (let j = 0; j < 5; j++)
+      this.score.push(j <= i);
   }
 
   addPicture(event) {
@@ -97,21 +102,11 @@ export class ReviewCreateComponent implements OnInit {
       this.showMessageError = false;
     }
 
-    if (this.validateScore(this.review.score)){
-      this.showScoreError = true;
-      return false;
-    }else{
-      this.showScoreError = false;
-    }
     return true;
   }
 
   validateString(string: string) {
     return !string || !string.trim() || string == '';
-  }
-
-  validateScore(score: number) {
-    return score == null || score < this.minScore || score > this.maxScore;
   }
 
   sendHttpRequest() {

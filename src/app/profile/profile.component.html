@@ -1,10 +1,15 @@
 <body>
-<div class="panel">
-  <h1>RecipeFinder</h1>
-  <h2>Deze pagina is een PLACEHOLDER.</h2>
-  <p></p>
+<div class="container">
+  <h1 style="margin-top: 100px">RecipeFinder</h1>
   <h2>Hallo, {{user.username}}!</h2>
   <h2>U bent gebruiker #{{user.id}},</h2>
   <h2>en uw rol is {{user.role}}.</h2>
+  <br>
+  <h2> Hier een overzicht van uw favorite lijsten</h2>
+  <div *ngFor="let favorites of favorites" (click)="openRecipe(favorites.id)" class="row">
+
+      <button class="btn btn-primary">{{favorites.name}}</button>
+
+  </div>
 </div>
 </body>

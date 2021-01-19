@@ -9,6 +9,7 @@ import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component"
 import {RecipeCreatorComponent} from "./recipe-creator/recipe-creator.component";
 import {ReviewCreateComponent} from "./review-create/review-create.component";
 import {ReportUserComponent} from "./report-user/report-user.component";
+import {FavoritesComponent} from "./favorites/favorites.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
       }
     ]
   },
+  {path: 'user/:id1/favorites/:id2', component: FavoritesComponent},
   {path: 'recipe-creator', component: RecipeCreatorComponent},
   {path: 'report-user', component: ReportUserComponent},
   {path: '**', redirectTo: ''}

@@ -49,6 +49,22 @@ export class RecipeCreatorComponent implements OnInit {
     });
   }
 
+  removeStep(i: number){
+    for(let j = i; j < this.recipe.steps.length; j++){
+      this.recipe.steps[j].number = this.recipe.steps[j].number - 1;
+    }
+
+    this.recipe.steps.splice(i, 1);
+  }
+
+  removeEmptySteps(){
+    for(let i = this.recipe.steps.length - 1; i >= 0; i--){
+      if(this.recipe.steps[i].details == ''){
+        this.removeStep(i);
+      }
+    }
+  }
+
   get showPictures() : boolean {
     if (!this.showingPictures){
       this.showingPictures = true;
@@ -140,7 +156,8 @@ export class RecipeCreatorComponent implements OnInit {
   }
 
 
-  submitButtonPressed() {
+  submitButtonPressed(){
+    this.removeEmptySteps();
     let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
