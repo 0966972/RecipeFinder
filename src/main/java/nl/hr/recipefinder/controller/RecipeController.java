@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.dto.SearchInputDto;
@@ -10,14 +11,14 @@ import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.service.RecipeService;
-import nl.hr.recipefinder.service.SessionService;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,25 +26,14 @@ import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
         allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/recipe")
 public class RecipeController {
-
     private final RecipeService recipeService;
-    final ModelMapper modelMapper;
-    private final SessionService sessionService;
-
-    @Autowired
-    public RecipeController(
-            RecipeService recipeService,
-            ModelMapper modelMapper,
-            SessionService sessionService
-    ) {
-        this.recipeService = recipeService;
-        this.modelMapper = modelMapper;
-        this.sessionService = sessionService;
-    }
+    private final ModelMapper modelMapper;
+    private final AuthenticationService authenticationService;
 
     @GetMapping()
     public ResponseEntity<List<ListedRecipeDto>> getRecipes() {
@@ -57,6 +47,7 @@ public class RecipeController {
         }
     }
 
+    @Transactional
     @PostMapping(value = "/search")
     public ResponseEntity<List<ListedRecipeDto>> searchRecipes(@RequestBody SearchInputDto searchInput) {
         List<Recipe> recipes;
@@ -114,7 +105,7 @@ public class RecipeController {
     @PostMapping()
     public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
         try {
-            User user = sessionService.getAuthenticatedUser();
+            User user = authenticationService.getAuthenticatedUser();
             Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
             mappedRecipe.user = user;
             mappedRecipe.setIngredients(List.of());
