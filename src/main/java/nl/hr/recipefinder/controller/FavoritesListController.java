@@ -11,10 +11,11 @@ import nl.hr.recipefinder.model.httpexception.clienterror.HttpUnauthorizedExcept
 import nl.hr.recipefinder.service.FavoritesListRecipeService;
 import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.RecipeService;
-import nl.hr.recipefinder.service.SessionService;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
@@ -29,12 +30,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping()
 public class FavoritesListController {
-  private final SessionService sessionService;
+  private final AuthenticationService authenticationService;
   private final FavoritesListService favoritesListService;
   private final FavoritesListRecipeService favoritesListRecipeService;
   private final RecipeService recipeService;
   private final ModelMapper modelMapper;
-
 
   @GetMapping("/user/{userId}/favorites")
   public ResponseEntity<List<FavoritesListResponseDto>> getAllByUser(@PathVariable Long userId) {
@@ -55,10 +55,11 @@ public class FavoritesListController {
     return new ResponseEntity<>(favoritesListDto, HttpStatus.OK);
   }
 
+  @Transactional
   @PostMapping("/user/{userId}/favorites/{favoritesListId}")
   public ResponseEntity<FavoritesListResponseDto> addFavorite(@RequestBody Long recipeId, @PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     try {
-      User activeUser = sessionService.getAuthenticatedUser();
+      User activeUser = authenticationService.getAuthenticatedUser();
 
       if (!activeUser.getId().equals(userId)) {
         throw new HttpUnauthorizedException();
@@ -86,10 +87,11 @@ public class FavoritesListController {
     }
   }
 
+  @Transactional
   @PostMapping("/user/{userId}/favorites")
   public ResponseEntity<FavoritesListResponseDto> createFavoritesList(@RequestBody FavoritesListRequestDto favoritesListDto, @PathVariable("userId") Long userId) {
     try {
-      User activeUser = sessionService.getAuthenticatedUser();
+      User activeUser = authenticationService.getAuthenticatedUser();
 
       if (!activeUser.getId().equals(userId)) {
         throw new HttpUnauthorizedException();

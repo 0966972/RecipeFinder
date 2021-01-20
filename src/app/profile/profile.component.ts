@@ -2,8 +2,8 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-
-
+import {FavoritesListService} from "../service/favorites-list.service";
+import {favorite} from "../model/favorite.model";
 
 @Component({
   selector: 'profile',
@@ -15,7 +15,8 @@ export class ProfileComponent implements OnInit {
 
   model: any = {};
   loading: any;
-  favorites: any
+  favorites: any;
+  favorite: favorite;
 
   user = {
     id: 0,
@@ -23,16 +24,20 @@ export class ProfileComponent implements OnInit {
     role: '',
   }
 
+  addList: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-
+    private favoritesListService: FavoritesListService,
   ) {
+    this.favorite = new favorite(
+    )
   }
 
   ngOnInit() {
-    let url = 'http://localhost:8080/session/login';
+    let url = 'http://localhost:8080/auth/login';
     let token: string = sessionStorage.getItem('token');
     if (token != null && token != '') {
       let headers: HttpHeaders = new HttpHeaders({
@@ -64,9 +69,21 @@ export class ProfileComponent implements OnInit {
     console.log(id);
     console.log(this.router.navigate(['user/' + this.user.id + '/favorites/' + id]))
     this.router.navigate(['user/' + this.user.id + '/favorites/' + id])
-
-
   }
-
+  addFavorite(){
+    this.addList=true;
+  }
+  submitReview() {
+    let url = 'http://localhost:8080/user/' + this.user.id + '/favorites';
+    let token: string = '' + sessionStorage.getItem('token');
+    let body = this.favorite
+    const headers = new HttpHeaders({
+      authorization: 'Basic ' + token
+    });
+    this.http.post<Observable<favorite>>(url, body, {headers: headers}).subscribe()
+    this.favorite.name = '';
+    this.addList = false;
+    this.ngOnInit();
+  }
 
 }

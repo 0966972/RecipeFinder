@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.RecipeIngredientDto;
 import nl.hr.recipefinder.model.entity.RecipeIngredient;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
@@ -11,27 +12,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/recipeIngredient")
 public class RecipeIngredientController {
 
   private final RecipeIngredientService recipeIngredientService;
-  final ModelMapper modelMapper;
+  private final ModelMapper modelMapper;
 
-  @Autowired
-  public RecipeIngredientController(
-    RecipeIngredientService recipeIngredientService,
-    ModelMapper modelMapper
-  ) {
-    this.recipeIngredientService = recipeIngredientService;
-    this.modelMapper = modelMapper;
-  }
-
+  @Transactional
   @PostMapping()
   public ResponseEntity<List<RecipeIngredient>> createIngredients(@RequestBody List<RecipeIngredientDto> recipeIngredients) {
     try {

@@ -7,16 +7,12 @@ import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.RecipeService;
-import nl.hr.recipefinder.service.SessionService;
-import org.junit.jupiter.api.BeforeEach;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +42,7 @@ public class RecipeControllerUnitTests {
   RecipeService recipeService;
 
   @MockBean
-  SessionService sessionService;
+  AuthenticationService authenticationService;
 
   @MockBean
   ModelMapper modelMapper;
@@ -114,7 +110,7 @@ public class RecipeControllerUnitTests {
       "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
     RecipeDto recipeDto = new RecipeDto(1, "Tasty Chicken", "Very tasty chicken", 25,
       "Boil the chicken" ,2 , new UserResponseDto(), List.of(), List.of(), List.of(), List.of());
-    Mockito.when(sessionService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));
+    Mockito.when(authenticationService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));
     Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
 
     // act
@@ -122,7 +118,7 @@ public class RecipeControllerUnitTests {
 
     //assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    verify(sessionService, times(1)).getAuthenticatedUser();
+    verify(authenticationService, times(1)).getAuthenticatedUser();
     verify(modelMapper, times(1)).map(recipeDto, Recipe.class);
   }
 }

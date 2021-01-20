@@ -16,10 +16,9 @@ import java.security.Principal;
 @RestController
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
-@RequestMapping("/session")
-public class SessionController {
+@RequestMapping("/auth")
+public class AuthenticationController {
 
-  @Transactional
   @GetMapping("/login")
   public Principal user(Principal user) {
     return user;

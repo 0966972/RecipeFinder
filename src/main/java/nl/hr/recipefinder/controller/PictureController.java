@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.PictureDto;
 import nl.hr.recipefinder.model.entity.Picture;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
@@ -16,22 +17,13 @@ import java.util.Optional;
 
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/picture")
 public class PictureController {
-
-
   private final PictureService pictureService;
-
-  final ModelMapper modelMapper;
-
-  @Autowired
-  public PictureController(PictureService pictureService, ModelMapper modelMapper) {
-    this.pictureService = pictureService;
-    this.modelMapper = modelMapper;
-  }
-
+  private final ModelMapper modelMapper;
 
   @GetMapping()
   public List<PictureDto> downloadFiles() {
