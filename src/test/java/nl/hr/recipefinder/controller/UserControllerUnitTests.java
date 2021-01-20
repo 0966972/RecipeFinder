@@ -31,10 +31,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@ActiveProfiles("test")
+@ActiveProfiles("unit-tests")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RecipeFinderApplication.class})
-class UserControllerTests {
+class UserControllerUnitTests {
 
   @Autowired
   @InjectMocks
@@ -212,44 +212,4 @@ class UserControllerTests {
     verify(userService, times(1)).save(duplicateUser);
     verify(modelMapper, times(1)).map(userDto, User.class);
   }
-
-  @Test
-  void createUser_whenUserIsSaved_thenReturnsNewUser() {
-    // arrange
-    User user = new User("a", "a", Role.USER);
-    UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
-    Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
-    Mockito.when(userService.save(user)).thenReturn(user);
-
-    // act
-    ResponseEntity<User> result = userController.createUser(userDto);
-    User resultUser = result.getBody();
-
-    // assert
-    assertThat(resultUser).isInstanceOf(User.class);
-
-    verify(userService, times(1)).save(user);
-    verify(modelMapper, times(1)).map(userDto, User.class);
-  }
-
-  @Test
-  void createUser_whenNoUserRoleIsProvided_thenSetsRole() {
-    // arrange
-    User user = new User("a", "a", null);
-    User userForSaving = new User("a", "a", Role.USER);
-    UserRequestDto userDto = new UserRequestDto("a", "a", null);
-    Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(user);
-    Mockito.when(userService.save(user)).thenReturn(user);
-
-    // act
-    ResponseEntity<User> result = userController.createUser(userDto);
-    User resultUser = result.getBody();
-    Role resultUserRole = resultUser.getRole();
-
-    // assert
-    assertThat(resultUserRole).isEqualTo(Role.USER);
-
-    verify(modelMapper, times(1)).map(userDto, User.class);
-  }
-
 }

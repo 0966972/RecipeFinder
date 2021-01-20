@@ -34,10 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ActiveProfiles("test")
+@ActiveProfiles("unit-tests")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RecipeFinderApplication.class})
-public class RecipeControllerTests {
+public class RecipeControllerUnitTests {
 
   @Autowired
   RecipeController recipeController;
