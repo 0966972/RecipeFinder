@@ -18,10 +18,17 @@
     <button type="button" (click)="addIngredient()">Add Filter</button>
 
     <br/>
-    <button *ngFor="let selected of scoreFilter;let i=index;" (click)="scoreSelected(i)" class="fa fa-star scoreFilterButton" [ngClass]="{'selectedStar' : selected,'unselectedStar' : !selected}"></button>
+    <button *ngFor="let selected of scoreFilter;let i=index;" (click)="scoreSelected(i)"
+            class="fa fa-star scoreFilterButton"
+            [ngClass]="{'selectedStar' : selected,'unselectedStar' : !selected}"></button>
     <style>
-      .selectedStar {color: gold}
-      .unselectedStar {color: gray}
+      .selectedStar {
+        color: gold
+      }
+
+      .unselectedStar {
+        color: gray
+      }
     </style>
     <button *ngIf="!doFilterScore" type="button" (click)="showScoreFilter(true)">Filter by score</button>
     <button *ngIf="doFilterScore" type="button" (click)="showScoreFilter(false)">Remove score filter</button>
@@ -45,16 +52,16 @@
 
     <div class="col-9">
       <h5>{{ recipe.name }}</h5>
-      <p>{{ recipe.description }}<br/>
-        {{ recipe.preparationTime }} min<br/></p>
+      {{ recipe.description }}<br/>
+      {{ recipe.preparationTime }} min | Voor {{recipe.servings}} personen <br/>
 
-      <!--      <p>{{ recipe.pictures[0]| json}}</p>-->
-      <!-- Simon Besseling | Voor {{ recipe.servings }} personen | 18 Ingredienten<br/>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gold;"></i>-->
-      <!--<i class="fa fa-star" style="color:gray;"></i>-->
+      <i *ngFor="let i of [].constructor(recipe.averageScore);" class="fa fa-star" style="color:#ffd700;"></i>
+      <i *ngFor="let i of [].constructor(5-recipe.averageScore);" class="fa fa-star" style="color:gray;"></i>
+      {{recipe.reviewCount}}
+      <a *ngIf="recipe.reviewCount==1">review</a>
+      <a *ngIf="recipe.reviewCount!=1">reviews</a>
+      <br/>
+
 
     </div>
     <hr/>

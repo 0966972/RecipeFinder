@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.recipeService.findAll().subscribe(data => {
-            this.recipes = data
+            this.updateRecipes(data)
         });
     }
 
@@ -87,7 +87,18 @@ export class HomeComponent implements OnInit {
 
     searchInputChanged() {
         this.recipeService.search(this.searchInput, this.filterIngredients, this.scoreFilterNum).subscribe(data => {
-            this.recipes = data;
+            this.updateRecipes(data)
         });
+    }
+
+    private updateRecipes(recipes: ListedRecipe[]) {
+        recipes.forEach(recipe => {
+            recipe.reviewCount = recipe.reviews.length
+            let total = 0
+            recipe.reviews.forEach(review => total += review.score)
+            recipe.averageScore = Math.floor(total / recipe.reviewCount)
+            if (isNaN(recipe.averageScore)) recipe.averageScore = 0
+        })
+        this.recipes = recipes;
     }
 }
