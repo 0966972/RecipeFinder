@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.ReportRequestDto;
 import nl.hr.recipefinder.model.dto.ReportResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
@@ -21,32 +22,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping("/report")
 public class ReportController {
-
   private final ReportService reportService;
   private final UserService userService;
   private final RecipeService recipeService;
   private final ModelMapper modelMapper;
-
-  @Autowired
-  public ReportController(
-    ReportService reportService,
-    UserService userService,
-    RecipeService recipeService,
-    ModelMapper modelMapper
-  ) {
-    this.reportService = reportService;
-    this.userService = userService;
-    this.recipeService = recipeService;
-    this.modelMapper = modelMapper;
-  }
 
   @GetMapping()
   public ResponseEntity<List<Report>> getAllReports() {
@@ -54,14 +43,14 @@ public class ReportController {
     return new ResponseEntity<>(reports, HttpStatus.OK);
   }
 
+  @Transactional
   @PostMapping()
   public ResponseEntity<ReportResponseDto> createReport(@RequestBody ReportRequestDto reportRequestDto) {
     try {
       Optional<User> foundReporter = userService.findUserById(reportRequestDto.getReportingUserId());
-      if (foundReporter.isEmpty()) throw new HttpNotFoundError();
-
       Optional<Recipe> foundRecipe = recipeService.findById(reportRequestDto.getReportedRecipeId());
-      if (foundRecipe.isEmpty()) throw new HttpNotFoundError();
+
+      if (foundRecipe.isEmpty() || foundReporter.isEmpty()) throw new HttpNotFoundError();
 
       ReportKey id =  new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
       Optional<Report> existingReport = reportService.findById(id);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SessionService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 
   private final UserRepository userRepository;
 

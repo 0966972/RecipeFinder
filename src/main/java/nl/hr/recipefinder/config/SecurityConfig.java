@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.security.Role;
-import nl.hr.recipefinder.service.SessionService;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,13 +25,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final SessionService sessionService;
+  private final AuthenticationService authenticationService;
 
   @Bean
   protected AuthenticationProvider authenticationProvider(PasswordEncoder encoder) {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
     provider.setPasswordEncoder(encoder);
-    provider.setUserDetailsService(sessionService);
+    provider.setUserDetailsService(authenticationService);
 
     return provider;
   }

@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    let url = 'http://localhost:8080/session/login';
+    let url = 'http://localhost:8080/auth/login';
     let token: string = sessionStorage.getItem('token');
     if (token != null && token != '') {
       let headers: HttpHeaders = new HttpHeaders({

@@ -19,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -52,7 +53,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/ban/{id}")
+    @Transactional
+    @PatchMapping("/ban/{id}")
     public ResponseEntity<Boolean> banUser(@PathVariable Long id) {
         try {
             Optional<User> foundUser = userService.findUserById(id);
@@ -88,6 +90,7 @@ public class UserController {
         }
     }
 
+    @Transactional
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody UserRequestDto userRequestDto) {
         User mappedUser = modelMapper.map(userRequestDto, User.class);

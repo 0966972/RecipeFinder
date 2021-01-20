@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.controller;
 
+import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.ReviewDto;
 import nl.hr.recipefinder.model.dto.ReviewResponseDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
@@ -7,9 +8,8 @@ import nl.hr.recipefinder.model.entity.Review;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
 import nl.hr.recipefinder.service.ReviewService;
-import nl.hr.recipefinder.service.SessionService;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin(origins = "localhost:4200",
   allowedHeaders = {"x-auth-token", "x-requested-with", "x-xsrf-token", "authorization", "content-type", "accept"})
 @RequestMapping()
 public class ReviewController {
-
   private final ReviewService reviewService;
-  private final SessionService sessionService;
+  private final AuthenticationService authenticationService;
   private final ModelMapper modelMapper;
-
-  @Autowired
-  public ReviewController(ReviewService reviewService, SessionService sessionService, ModelMapper modelMapper) {
-    this.reviewService = reviewService;
-    this.sessionService = sessionService;
-    this.modelMapper = modelMapper;
-  }
 
   @GetMapping("/recipe/{recipeId}/review")
   public ResponseEntity<List<ReviewResponseDto>> getReviewsForOneRecipe(@PathVariable("recipeId") Long recipeId){
@@ -45,7 +38,7 @@ public class ReviewController {
   @PostMapping("/recipe/{recipeId}/review")
   public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewDto reviewDto, @PathVariable("recipeId") Long recipeId){
     try{
-      User currentUser = sessionService.getAuthenticatedUser();
+      User currentUser = authenticationService.getAuthenticatedUser();
 
       Review mappedReview = modelMapper.map(reviewDto, Review.class);
       mappedReview.setUser(currentUser);
