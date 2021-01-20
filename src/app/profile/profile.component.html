@@ -2,14 +2,21 @@
 <div class="container">
   <h1 style="margin-top: 100px">RecipeFinder</h1>
   <h2>Hallo, {{user.username}}!</h2>
-  <h2>U bent gebruiker #{{user.id}},</h2>
-  <h2>en uw rol is {{user.role}}.</h2>
   <br>
   <h2> Hier een overzicht van uw favorite lijsten</h2>
   <div *ngFor="let favorites of favorites" (click)="openRecipe(favorites.id)" class="row">
-
       <button class="btn btn-primary">{{favorites.name}}</button>
-
   </div>
+  <div class="row" *ngIf="addList == false" (click)="addFavorite()">
+    <button class="btn btn-dark">Maak nieuwe lijst <i class="fa fa-plus"></i></button>
+  </div>
+  <form *ngIf="addList == true" role="form" (submit)="submitReview()">
+    <div class="form-group">
+      <input placeholder="Naam van nieuwe favorite lijst" type="text" class="form-control" id="reviewTitle" name="title" [(ngModel)]="favorite.name"/>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+      <button id="submit-button" type="submit" class="btn btn-dark">Opslaan</button>
+    </div>
+  </form>
 </div>
 </body>
