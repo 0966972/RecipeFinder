@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     picture: ''
     searchInput: '' = ''
     doFilterScore = false
-    scoreFilterNum = 1
+    scoreFilterNum = null
     scoreFilter = []
     filterIngredients: Ingredient[] = []
     ingredientOptions: any[] = []
