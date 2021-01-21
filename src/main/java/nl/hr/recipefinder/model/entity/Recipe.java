@@ -18,7 +18,7 @@ import java.util.List;
 public class Recipe extends BaseEntity {
   private String name;
   @Column(columnDefinition = "TEXT")
-  private String description;
+  public String description;
   private Integer preparationTime;
   @Column(columnDefinition = "TEXT")
   private String instructions;
