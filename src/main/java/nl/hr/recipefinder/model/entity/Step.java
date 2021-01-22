@@ -19,7 +19,6 @@ public class Step extends BaseEntity {
   public Integer number;
   public String details;
 
-  @JsonIgnore
   @ManyToOne(fetch = FetchType.LAZY)
   private Recipe recipe;
 }
