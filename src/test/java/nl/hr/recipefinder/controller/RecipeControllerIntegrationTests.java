@@ -62,6 +62,6 @@ public class RecipeControllerIntegrationTests {
       .andExpect(status().isCreated());
 
     List<Recipe> recipes = recipeService.findRecipesByNameOrDescription(description);
-    assertThat(recipes).anyMatch(element -> element.description.equals(description));
+    assertThat(recipes).anyMatch(element -> element.getDescription().equals(description));
   }
 }

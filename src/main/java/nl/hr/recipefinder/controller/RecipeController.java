@@ -38,13 +38,10 @@ public class RecipeController {
     @GetMapping()
     public ResponseEntity<List<ListedRecipeDto>> getRecipes() {
         List<Recipe> recipes = recipeService.getRecipes();
-        try {
-            return new ResponseEntity<>(recipes.stream()
-                    .map(it -> modelMapper.map(it, ListedRecipeDto.class))
-                    .collect(Collectors.toList()), HttpStatus.OK);
-        } catch (Exception e) {
-            throw new HttpInternalServerException(e);
-        }
+
+        return new ResponseEntity<>(recipes.stream()
+                .map(it -> modelMapper.map(it, ListedRecipeDto.class))
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @Transactional
@@ -56,37 +53,12 @@ public class RecipeController {
         } else {
             recipes = recipeService.getRecipes();
         }
-        try {
 
-            ArrayList<Recipe> foundRecipes = new ArrayList<>();
-            for (Recipe recipe : recipes) {
-                boolean match = true;
-                for (String ingredient : searchInput.getIngredients()) {
-                    if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
-                        match = false;
-                        break;
-                    }
-                }
+        List<Recipe> foundRecipes = recipeService.findMatches(searchInput, recipes);
 
-                if (searchInput.getMinimumScore().isPresent()) {
-                    OptionalDouble optionalAverageScore = recipe.getReviews().stream().mapToInt(Review::getScore).average();
-                    if (optionalAverageScore.isPresent()) {
-                        if (optionalAverageScore.getAsDouble() < searchInput.getMinimumScore().getAsInt())
-                            match = false;
-                    } else match = false;
-                }
-
-
-                if (match)
-                    foundRecipes.add(recipe);
-            }
-
-            return new ResponseEntity<>(foundRecipes.stream()
-                    .map(it -> modelMapper.map(it, ListedRecipeDto.class))
-                    .collect(Collectors.toList()), HttpStatus.OK);
-        } catch (Exception e) {
-            throw new HttpInternalServerException(e);
-        }
+        return new ResponseEntity<>(foundRecipes.stream()
+                .map(it -> modelMapper.map(it, ListedRecipeDto.class))
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -103,15 +75,15 @@ public class RecipeController {
     }
 
     @PostMapping()
-    public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDto recipedto) {
+    public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeDto recipedto) {
         try {
             User user = authenticationService.getAuthenticatedUser();
             Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
-            mappedRecipe.user = user;
+            mappedRecipe.setUser(user);
             mappedRecipe.setIngredients(List.of());
             Recipe savedRecipe = recipeService.save(mappedRecipe);
 
-            return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
+            return new ResponseEntity<>(modelMapper.map(savedRecipe, RecipeDto.class), HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
             throw new HttpConflictException(e);
         }

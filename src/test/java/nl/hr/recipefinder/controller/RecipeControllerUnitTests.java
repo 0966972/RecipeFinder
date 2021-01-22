@@ -114,7 +114,7 @@ public class RecipeControllerUnitTests {
     Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
 
     // act
-    ResponseEntity<Recipe> response = recipeController.createRecipe(recipeDto);
+    ResponseEntity<RecipeDto> response = recipeController.createRecipe(recipeDto);
 
     //assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
