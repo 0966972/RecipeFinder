@@ -1,5 +1,6 @@
 package nl.hr.recipefinder.service;
 
+import nl.hr.recipefinder.model.dto.PictureDto;
 import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
@@ -20,21 +22,16 @@ public class IngredientService {
     return ingredientRepository.save(ingredient);
   }
 
-  public List<Ingredient> findOrCreateIngredients(List<Ingredient> ingredientsToCreate) {
-    ArrayList<Ingredient> finalIngredients = new ArrayList<>();
-    for (Ingredient ingredientToCreate : ingredientsToCreate) {
-      Optional<Ingredient> existingIngredient = ingredientRepository.findByName(ingredientToCreate.getName());
+  public List<Ingredient> findOrCreateIngredients(List<Ingredient> ingredients) {
+    return ingredients.stream()
+      .map(ingredient -> ingredientRepository.findByName(ingredient.getName())
+        .orElseGet( () -> saveNewIngredient(ingredient)))
+      .collect(Collectors.toList());
+  }
 
-      if (existingIngredient.isPresent()) {
-        finalIngredients.add(existingIngredient.get());
-        continue;
-      }
-
-      ingredientToCreate.setAcceptedState(Ingredient.State.PENDING);
-      finalIngredients.add(ingredientRepository.save(ingredientToCreate));
-    }
-
-    return finalIngredients;
+  private Ingredient saveNewIngredient(Ingredient ingredient){
+    ingredient.setAcceptedState(Ingredient.State.PENDING);
+    return ingredientRepository.save(ingredient);
   }
 
   public List<Ingredient> getIngredientsBySate(Ingredient.State state) {
