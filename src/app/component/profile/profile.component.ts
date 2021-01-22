@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {FavoritesListService} from "../../service/favorites-list/favorites-list.service";
 import {favorite} from "../../model/favorite.model";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'profile',
@@ -12,7 +13,7 @@ import {favorite} from "../../model/favorite.model";
 })
 
 export class ProfileComponent implements OnInit {
-
+  private readonly baseUrl = environment.apiUrl
   model: any = {};
   loading: any;
   favorites: any;
@@ -37,7 +38,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    let url = 'http://localhost:8080/auth/login';
+    let url = this.baseUrl+'/auth/login';
     let token: string = sessionStorage.getItem('token');
     if (token != null && token != '') {
       let headers: HttpHeaders = new HttpHeaders({
@@ -50,7 +51,7 @@ export class ProfileComponent implements OnInit {
           this.user.username = response['name'];
           this.user.id = response['principal']['user']['id'];
           this.user.role = response['principal']['user']['role'];
-          this.http.get('http://localhost:8080/user/'+this.user.id+'/favorites').subscribe(Response => this.favorites = Response);
+          this.http.get(this.baseUrl+'/user/'+this.user.id+'/favorites').subscribe(Response => this.favorites = Response);
         },
         error => {
           if (error.status == 401)
@@ -74,7 +75,7 @@ export class ProfileComponent implements OnInit {
     this.addList=true;
   }
   submitReview() {
-    let url = 'http://localhost:8080/user/' + this.user.id + '/favorites';
+    let url = this.baseUrl+'/user/' + this.user.id + '/favorites';
     let token: string = '' + sessionStorage.getItem('token');
     let body = this.favorite
     const headers = new HttpHeaders({

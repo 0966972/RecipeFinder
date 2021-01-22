@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-favorites',
@@ -9,6 +10,7 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
+  private readonly baseUrl = environment.apiUrl
   userId: bigint;
   favoriteId: bigint;
   favorites: any;
@@ -27,7 +29,7 @@ export class FavoritesComponent implements OnInit {
 
 
   showFavorite() {
-    let url = 'http://localhost:8080/user/' + this.userId + '/favorites/' + this.favoriteId;
+    let url = this.baseUrl+'/user/' + this.userId + '/favorites/' + this.favoriteId;
     console.log(url)
     this.http.get(url).subscribe((response) => this.favorites = response);
   }

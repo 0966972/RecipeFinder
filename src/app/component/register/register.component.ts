@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'register',
@@ -10,7 +11,7 @@ import {Observable} from "rxjs";
 })
 
 export class RegisterComponent implements OnInit {
-
+  private readonly baseUrl = environment.apiUrl
   credentials = {username: '', password: ''};
   loading: any;
 
@@ -25,7 +26,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    let url = 'http://localhost:8080/user';
+    let url = this.baseUrl+'/user';
     let token: string = '' + sessionStorage.getItem('token');
     let body
     const headers = new HttpHeaders({

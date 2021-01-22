@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {Report} from "../../model/report.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable()
 export class ReportService {
-
-  private reportUrl: string = 'http://localhost:8080/report/';
+  private readonly baseUrl = environment.apiUrl
+  private readonly reportUrl = this.baseUrl+'/report/';
   private readonly headers: any;
 
   constructor(private http: HttpClient) {

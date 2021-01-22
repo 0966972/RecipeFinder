@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {finalize} from "rxjs/operators";
 import {Observable} from "rxjs";
+import {environment} from "../../../environments/environment";
 
 @Injectable()
 export class AuthService {
-
+  private readonly baseUrl = environment.apiUrl
   authenticated = false;
   role = 'USER';
 
@@ -32,7 +33,7 @@ export class AuthService {
       authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
     } : {});
 
-    let url = 'http://localhost:8080/auth/login';
+    let url = this.baseUrl+'/auth/login';
     this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
       response => {
         if (response['name']) {
@@ -62,7 +63,7 @@ export class AuthService {
       authorization: 'Basic ' + sessionStorage.getItem('token')
     });
 
-    this.http.get('http://localhost:8080/auth/logout', {headers: headers}).pipe(
+    this.http.get(this.baseUrl+'/auth/logout', {headers: headers}).pipe(
       finalize(() => {
         this.authenticated = false;
         this.role = 'USER';
@@ -76,7 +77,7 @@ export class AuthService {
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    let url = 'http://localhost:8080/auth/login';
+    let url = this.baseUrl+'/auth/login';
 
     this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
       response => {
@@ -94,7 +95,7 @@ export class AuthService {
   }
 
   public getPrincipal(): Observable<Object> {
-    let url = 'http://localhost:8080/auth/login';
+    let url = this.baseUrl+'/auth/login';
     const headers = new HttpHeaders({
       authorization: 'Basic ' + sessionStorage.getItem('token')
     });

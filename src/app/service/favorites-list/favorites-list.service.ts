@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {FavoritesList} from "../../model/favorites-list.model";
 import {Recipe} from "../../model/recipe.model";
 import { AuthService } from '../auth/auth.service';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ import { AuthService } from '../auth/auth.service';
 export class FavoritesListService {
 
   private authService: AuthService;
-  private readonly favoriteListsUrl: string;
+  private readonly baseUrl = environment.apiUrl
+  private readonly favoriteListsUrl = this.baseUrl+'/user'
 
   constructor(private http: HttpClient, private _authService: AuthService) {
-    this.favoriteListsUrl = 'http://localhost:8080/user';
     this.authService = _authService;
   }
 

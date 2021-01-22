@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../../model/review.model";
 import {Observable} from "rxjs";
 import {AuthService} from "../../service/auth/auth.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'review-create',
@@ -12,6 +13,7 @@ import {AuthService} from "../../service/auth/auth.service";
 })
 
 export class ReviewCreateComponent implements OnInit {
+  private readonly baseUrl = environment.apiUrl
   routeId: number;
   score=[true,false,false,false,false]
   review: Review;
@@ -110,7 +112,7 @@ export class ReviewCreateComponent implements OnInit {
   }
 
   sendHttpRequest() {
-    let url = 'http://localhost:8080/recipe/' + this.routeId + '/review';
+    let url = this.baseUrl+'/recipe/' + this.routeId + '/review';
     let token: string = '' + sessionStorage.getItem('token');
     let body = this.review
     const headers = new HttpHeaders({

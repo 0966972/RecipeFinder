@@ -3,20 +3,18 @@ import {Observable} from "rxjs/Observable";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AdminIngredient} from "../../model/admin-ingredient.model";
 import {User} from "../../model/user.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-
-  private readonly ingredientsUrl: string;
-  private readonly usersUrl: string;
+  private readonly baseUrl = environment.apiUrl
+  private readonly ingredientsUrl = this.baseUrl+'/admin/ingredients'
+  private readonly usersUrl = this.baseUrl+'/user'
   private readonly headers: any;
 
   constructor(private http: HttpClient) {
-    this.ingredientsUrl = 'http://localhost:8080/admin/ingredients';
-    this.usersUrl = 'http://localhost:8080/user';
-
     this.headers = new HttpHeaders({
       authorization: 'Basic ' + sessionStorage.getItem('token')
     });
