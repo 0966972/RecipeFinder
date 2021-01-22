@@ -4,9 +4,9 @@ import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.UserRequestDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +62,7 @@ class UserControllerUnitTests {
       userController.banUser(input);
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+      assertThat(e).isInstanceOf(HttpNotFoundException.class);
     }
     verify(userService, times(1)).findUserById(input);
   }
@@ -94,7 +94,7 @@ class UserControllerUnitTests {
       userController.getUser(input);
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+      assertThat(e).isInstanceOf(HttpNotFoundException.class);
     }
     verify(userService, times(1)).findUserById(input);
   }
@@ -172,7 +172,7 @@ class UserControllerUnitTests {
       userController.getUsers();
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpInternalServerError.class);
+      assertThat(e).isInstanceOf(HttpInternalServerException.class);
     }
     verifyNoInteractions(modelMapper);
   }
@@ -189,7 +189,7 @@ class UserControllerUnitTests {
       userController.createUser(userDto);
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpConflictError.class);
+      assertThat(e).isInstanceOf(HttpConflictException.class);
     }
     verify(userService, times(1)).save(duplicateUser);
     verify(modelMapper, times(1)).map(userDto, User.class);
@@ -201,13 +201,13 @@ class UserControllerUnitTests {
     User duplicateUser = new User("a", "a", Role.USER);
     UserRequestDto userDto = new UserRequestDto("a", "a", Role.USER);
     Mockito.when(modelMapper.map(userDto, User.class)).thenReturn(duplicateUser);
-    doThrow(HttpInternalServerError.class).when(userService).save(duplicateUser);
+    doThrow(HttpInternalServerException.class).when(userService).save(duplicateUser);
     try {
       // act
       userController.createUser(userDto);
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpInternalServerError.class);
+      assertThat(e).isInstanceOf(HttpInternalServerException.class);
     }
     verify(userService, times(1)).save(duplicateUser);
     verify(modelMapper, times(1)).map(userDto, User.class);

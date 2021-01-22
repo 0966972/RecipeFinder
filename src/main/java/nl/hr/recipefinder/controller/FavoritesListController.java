@@ -5,8 +5,8 @@ import nl.hr.recipefinder.model.dto.FavoritesListRequestDto;
 import nl.hr.recipefinder.model.dto.FavoritesListResponseDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.entity.*;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpUnauthorizedException;
 import nl.hr.recipefinder.service.FavoritesListRecipeService;
 import nl.hr.recipefinder.service.FavoritesListService;
@@ -47,7 +47,7 @@ public class FavoritesListController {
   public ResponseEntity<FavoritesListResponseDto> getSingleById(@PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     Optional<FavoritesList> favoritesList = favoritesListService.findById(favoritesListId);
 
-    if (favoritesList.isEmpty()) throw new HttpNotFoundError();
+    if (favoritesList.isEmpty()) throw new HttpNotFoundException();
 
     FavoritesListResponseDto favoritesListDto = modelMapper.map(favoritesList.get(), FavoritesListResponseDto.class);
     favoritesListDto.setRecipes(findRelatedRecipesOnDto(favoritesListDto));
@@ -68,7 +68,7 @@ public class FavoritesListController {
       Optional<FavoritesList> foundFavoritesList = favoritesListService.findById(favoritesListId);
       Optional<Recipe> foundRecipe = recipeService.findById(recipeId);
       if (foundFavoritesList.isEmpty() || foundRecipe.isEmpty()) {
-        throw new HttpNotFoundError();
+        throw new HttpNotFoundException();
       }
 
       FavoritesListRecipe mappedFavoriteRecipe = modelMapper.map(foundRecipe.get(), FavoritesListRecipe.class);
@@ -83,7 +83,7 @@ public class FavoritesListController {
 
       return new ResponseEntity<>(favoritesListResponseDto, HttpStatus.OK);
     } catch (ConstraintViolationException e) {
-      throw new HttpBadRequestError(e);
+      throw new HttpBadRequestException(e);
     }
   }
 
@@ -105,7 +105,7 @@ public class FavoritesListController {
 
       return new ResponseEntity<>(favoritesListResponseDto, HttpStatus.CREATED);
     } catch (ConstraintViolationException e) {
-      throw new HttpBadRequestError(e);
+      throw new HttpBadRequestException(e);
     }
   }
 

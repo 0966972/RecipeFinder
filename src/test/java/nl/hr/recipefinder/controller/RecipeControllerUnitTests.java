@@ -6,7 +6,7 @@ import nl.hr.recipefinder.model.dto.RecipeDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.AuthenticationService;
@@ -97,7 +97,7 @@ public class RecipeControllerUnitTests {
       recipeController.getRecipe(input);
     } catch (Exception e) {
       // assert
-      assertThat(e).isInstanceOf(HttpNotFoundError.class);
+      assertThat(e).isInstanceOf(HttpNotFoundException.class);
     }
 
     verify(recipeService, times(1)).findById(input);

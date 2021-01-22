@@ -3,10 +3,9 @@ package nl.hr.recipefinder.controller;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.RecipeIngredientDto;
 import nl.hr.recipefinder.model.entity.RecipeIngredient;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
 import nl.hr.recipefinder.service.RecipeIngredientService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ public class RecipeIngredientController {
 
       return new ResponseEntity<>(savedRecipeIngredients, HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
-      throw new HttpConflictError(e);
+      throw new HttpConflictException(e);
     }
   }
 }

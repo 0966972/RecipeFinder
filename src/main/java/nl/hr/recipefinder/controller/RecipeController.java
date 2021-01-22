@@ -7,9 +7,9 @@ import nl.hr.recipefinder.model.dto.SearchInputDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.Review;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
@@ -43,7 +43,7 @@ public class RecipeController {
                     .map(it -> modelMapper.map(it, ListedRecipeDto.class))
                     .collect(Collectors.toList()), HttpStatus.OK);
         } catch (Exception e) {
-            throw new HttpInternalServerError(e);
+            throw new HttpInternalServerException(e);
         }
     }
 
@@ -85,7 +85,7 @@ public class RecipeController {
                     .map(it -> modelMapper.map(it, ListedRecipeDto.class))
                     .collect(Collectors.toList()), HttpStatus.OK);
         } catch (Exception e) {
-            throw new HttpInternalServerError(e);
+            throw new HttpInternalServerException(e);
         }
     }
 
@@ -94,7 +94,7 @@ public class RecipeController {
         Optional<Recipe> recipe = recipeService.findById(id);
 
         if (!recipe.isPresent()) {
-            throw new HttpNotFoundError();
+            throw new HttpNotFoundException();
         }
 
         RecipeDto recipeDto = modelMapper.map(recipe.get(), RecipeDto.class);
@@ -113,7 +113,7 @@ public class RecipeController {
 
             return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            throw new HttpConflictError(e);
+            throw new HttpConflictException(e);
         }
     }
 }
