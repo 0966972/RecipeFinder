@@ -56,7 +56,7 @@ public class FavoritesListController {
   }
 
   @Transactional
-  @PostMapping("/user/{userId}/favorites/{favoritesListId}")
+  @PatchMapping("/user/{userId}/favorites/{favoritesListId}")
   public ResponseEntity<FavoritesListResponseDto> addFavorite(@RequestBody Long recipeId, @PathVariable("userId") Long userId, @PathVariable("favoritesListId") Long favoritesListId) {
     try {
       User activeUser = authenticationService.getAuthenticatedUser();
