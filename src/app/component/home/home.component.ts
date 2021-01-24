@@ -4,6 +4,8 @@ import {RecipeService} from '../../service/recipe/recipe.service';
 import {Router} from "@angular/router";
 import {Ingredient} from "../../model/ingredient.model";
 import {IngredientService} from "../../service/ingredient/ingredient.service";
+import {WarningResponse} from "../../model/warning-response.model";
+import {WarningService} from "../../service/warning/warning.service";
 
 @Component({
     selector: 'home',
@@ -12,6 +14,7 @@ import {IngredientService} from "../../service/ingredient/ingredient.service";
 })
 
 export class HomeComponent implements OnInit {
+    warnings: WarningResponse[];
 
     recipes: ListedRecipe[];
     picture: ''
@@ -25,6 +28,7 @@ export class HomeComponent implements OnInit {
     constructor(
         private recipeService: RecipeService,
         private ingredientService: IngredientService,
+        private warningService: WarningService,
         private router: Router,
     ) {
     }
@@ -33,6 +37,9 @@ export class HomeComponent implements OnInit {
         this.recipeService.findAll().subscribe(data => {
             this.updateRecipes(data)
         });
+        this.warningService.getWarningsForCurrentUser().subscribe(data => {
+            this.warnings = data
+        })
     }
 
     openRecipe(id: number) {

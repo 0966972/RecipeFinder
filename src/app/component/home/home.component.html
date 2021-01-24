@@ -1,6 +1,19 @@
 <body>
 <div class="container">
-  <h5 style="margin-top: 100px;">Filter Recepten</h5>
+
+  <hr style="margin-top: 100px;"/>
+  <div *ngFor="let warning of warnings" class="row">
+    <div class="col-9 warningRow">
+      <p>
+        <b>Je hebt een waarschuwing ontvangen van een administrator</b><br/>
+        {{ warning.message }}
+      </p>
+    </div>
+  </div>
+
+  <br/>
+
+  <h5>Filter Recepten</h5>
   <div class="col-6">
     <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput"
            (keyup)="searchInputChanged()">

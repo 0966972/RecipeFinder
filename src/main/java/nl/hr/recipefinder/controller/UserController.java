@@ -6,6 +6,7 @@ import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.FavoritesList;
 import nl.hr.recipefinder.model.entity.Report;
 import nl.hr.recipefinder.model.entity.User;
+import nl.hr.recipefinder.model.entity.Warning;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
@@ -13,6 +14,7 @@ import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.ReportService;
 import nl.hr.recipefinder.service.UserService;
+import nl.hr.recipefinder.service.WarningService;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -35,6 +37,7 @@ public class UserController {
 
     private final UserService userService;
     private final ReportService reportService;
+    private final WarningService warningService;
     private final FavoritesListService favoritesListService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
@@ -66,6 +69,9 @@ public class UserController {
 
                 Iterable<Report> reports = reportService.findAllByUserId(user.getId());
                 reportService.deleteAll(reports);
+
+                Iterable<Warning> warnings = warningService.findAllByUserId(user.getId());
+                warningService.deleteAll(warnings);
 
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }

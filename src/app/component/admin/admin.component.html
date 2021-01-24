@@ -7,9 +7,21 @@
       <p><b>{{ report.reportedUser.username }}</b></p>
       <p>{{ report.message }}</p>
       <p><b>Reported by {{ report.reportingUser.username }}</b></p>
-      <button type="button" class="btn btn-danger btn-sm" (click)="banReportedUser(report.reportedUser, i)">Verbannen
-      </button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banReportedUser(report.reportedUser, i)">Verbannen</button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="warnReportedUser(report.reportedUser, i)">Waarschuwen</button>
       <button type="button" (click)="viewRecipe(report.reportedRecipe, i)">View Page</button>
+    </div>
+    <hr/>
+  </div>
+  <br/>
+  <hr/>
+  <br/>
+  <h6>Gewaarschuwde Gebruikers</h6>
+  <div *ngFor="let warning of warnings; let i = index;" class="row">
+    <div class="col-9">
+      <p><b>{{ warning.warnedUser.username }}</b></p>
+      <p>{{ warning.message }}</p>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banWarnedUser(warning.warnedUser, i)">Verbannen</button>
     </div>
     <hr/>
   </div>

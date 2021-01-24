@@ -23,6 +23,8 @@ import {ReportUserComponent} from "./component/report-user/report-user.component
 import {ReportService} from "./service/report/report.service";
 import {FavoritesComponent} from './component/favorites/favorites.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
+import {WarnUserComponent} from "./warn-user/warn-user.component";
+import {WarningService} from "./service/warning.service";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -47,6 +49,7 @@ export class XhrInterceptor implements HttpInterceptor {
     RecipeCreatorComponent,
     ReviewCreateComponent,
     ReportUserComponent,
+    WarnUserComponent,
     FavoritesComponent
   ],
   imports: [
@@ -64,6 +67,7 @@ export class XhrInterceptor implements HttpInterceptor {
     IngredientService,
     AuthService, {provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
     ReportService,
+    WarningService,
     NgbCarouselConfig
   ],
   bootstrap: [AppComponent]

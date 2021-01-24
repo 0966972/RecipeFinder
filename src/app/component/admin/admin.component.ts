@@ -6,6 +6,8 @@ import {Report} from "../../model/report.model";
 import {Recipe} from "../../model/recipe.model";
 import {User} from "../../model/user.model";
 import {ReportService} from "../../service/report/report.service";
+import {WarningResponse} from "../../model/warning-response.model";
+import {WarningService} from "../../service/warning/warning.service";
 
 @Component({
   selector: 'admin',
@@ -18,11 +20,13 @@ export class AdminComponent implements OnInit {
   pendingIngredients: AdminIngredient[] = []
   rejectedIngredients: AdminIngredient[] = []
   reports: Report[] = []
+  warnings: WarningResponse[] = []
 
   constructor(
     private router: Router,
     private adminService: AdminService,
     private reportService: ReportService,
+    private warningService: WarningService,
   ) {
   }
 
@@ -32,6 +36,19 @@ export class AdminComponent implements OnInit {
       if (result)
         this.reports.splice(i, 1);
     });
+  }
+
+
+  banWarnedUser(warnedUser: User, i) {
+    this.adminService.banUser(warnedUser).subscribe(result => {
+      if (result)
+        this.warnings.splice(i, 1);
+    });
+  }
+
+
+  warnReportedUser(reportedUser: User, i) {
+    this.router.navigate(['warn-user/' + reportedUser.id])
   }
 
 
@@ -73,6 +90,9 @@ export class AdminComponent implements OnInit {
     });
     this.reportService.getReports().subscribe(data => {
       this.reports = data;
+    })
+    this.warningService.getWarnings().subscribe(data => {
+      this.warnings = data;
     })
   }
 }
