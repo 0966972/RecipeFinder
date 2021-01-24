@@ -10,20 +10,30 @@ import {WarningResponse} from "../../model/warning-response.model";
 export class WarningService {
 
     private warningUrl: string = 'http://localhost:8080/warning/';
-    private readonly headers: any;
 
     constructor(private http: HttpClient) {
-        this.headers = new HttpHeaders({
-            authorization: 'Basic ' + sessionStorage.getItem('token')
-        });
     }
 
     public warnUser(body: WarningRequest): Observable<Object> {
-        return this.http.post<Object>(this.warningUrl, body, {headers: this.headers});
+        const headers = new HttpHeaders({
+            authorization: 'Basic ' + sessionStorage.getItem('token')
+        });
+        return this.http.post<Object>(this.warningUrl, body, {headers: headers});
+    }
+
+    public getWarningsForCurrentUser(): Observable<WarningResponse[]> {
+        const headers = new HttpHeaders({
+            authorization: 'Basic ' + sessionStorage.getItem('token')
+        });
+        const url = this.warningUrl + 'currentUser'
+        return this.http.get<WarningResponse[]>(url, {headers: headers});
     }
 
     public getWarnings(): Observable<WarningResponse[]> {
-        return this.http.get<WarningResponse[]>(this.warningUrl, {headers: this.headers});
+        const headers = new HttpHeaders({
+            authorization: 'Basic ' + sessionStorage.getItem('token')
+        });
+        return this.http.get<WarningResponse[]>(this.warningUrl, {headers: headers});
     }
 
 }

@@ -87,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/user/ban/**").hasRole(Role.ADMIN.name())
       .antMatchers("/user/**").permitAll()
       // warning
-      .antMatchers(HttpMethod.GET, "/warning/{userId}").permitAll()
+      .antMatchers(HttpMethod.GET, "/warning/currentUser").permitAll()
       .antMatchers(HttpMethod.GET, "/warning").hasRole(Role.ADMIN.name())
       .antMatchers(HttpMethod.POST, "/warning").hasRole(Role.ADMIN.name())
       // other

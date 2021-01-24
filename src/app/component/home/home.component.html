@@ -1,5 +1,16 @@
 <body>
 <div class="container">
+
+  <div *ngFor="let warning of warnings" class="row">
+    <div class="col-9 warningRow"]>
+      <h5>You got a warning from an administrator</h5>
+      <p>{{ warning.message }}</p>
+    </div>
+    <hr/>
+  </div>
+
+  <br/>
+
   <h5 style="margin-top: 100px;">Filter Recepten</h5>
   <div class="col-6">
     <input class="form-control" placeholder="Naam & beschrijving" [(ngModel)]="searchInput"

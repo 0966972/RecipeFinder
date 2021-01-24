@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WarningResponseDto {
-  private Long id;
   private String message;
   private WarningResponseUserDto warnedUser;
 }

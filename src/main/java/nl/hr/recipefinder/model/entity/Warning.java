@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
@@ -21,5 +22,6 @@ public class Warning extends BaseEntity {
   private String message;
 
   @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "warned_user_id")
   private User warnedUser;
 }
