@@ -49,7 +49,7 @@ public class WarningController {
         List<Warning> warnings = warningService.findAllByUserId(currentUserId);
 
         List<WarningResponseDto> mappedWarnings = warnings.stream()
-                .map(it -> modelMapper.map(warnings, WarningResponseDto.class))
+                .map(it -> modelMapper.map(it, WarningResponseDto.class))
                 .collect(Collectors.toList());
         return new ResponseEntity<>(mappedWarnings, HttpStatus.OK);
     }
