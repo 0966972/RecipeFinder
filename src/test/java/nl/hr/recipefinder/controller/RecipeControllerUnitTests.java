@@ -3,6 +3,7 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
+import nl.hr.recipefinder.model.dto.RecipeResponseDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
@@ -114,7 +115,7 @@ public class RecipeControllerUnitTests {
     Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
 
     // act
-    ResponseEntity<RecipeDto> response = recipeController.createRecipe(recipeDto);
+    ResponseEntity<RecipeResponseDto> response = recipeController.createRecipe(recipeDto);
 
     //assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);

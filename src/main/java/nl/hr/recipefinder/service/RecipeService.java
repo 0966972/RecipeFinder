@@ -33,33 +33,36 @@ public class RecipeService {
     return recipeRepository.findById(id);
   }
 
-  public Recipe save(Recipe recipe)
-  {
+  public Recipe save(Recipe recipe) {
     return recipeRepository.save(recipe);
   }
 
-  public List<Recipe> findMatches(SearchInputDto searchInput, List<Recipe> recipes){
+  public List<Recipe> findMatches(SearchInputDto searchInput, List<Recipe> recipes) {
     ArrayList<Recipe> foundRecipes = new ArrayList<>();
     for (Recipe recipe : recipes) {
-      boolean match = true;
-      for (String ingredient : searchInput.getIngredients()) {
-        if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
-          match = false;
-          break;
-        }
-      }
-
-      if (searchInput.getMinimumScore().isPresent()) {
-        OptionalDouble optionalAverageScore = recipe.getReviews().stream().mapToInt(Review::getScore).average();
-        if (optionalAverageScore.isPresent()) {
-          if (optionalAverageScore.getAsDouble() < searchInput.getMinimumScore().getAsInt())
-            match = false;
-        } else match = false;
-      }
-
-      if (match)
+      if (checkIfRecipeHasAllSearchedIngredients(searchInput, recipe) && checkIfRecipeScoreIsAboveSearchedScore(searchInput, recipe)) {
         foundRecipes.add(recipe);
+      }
     }
     return foundRecipes;
   }
+
+  private boolean checkIfRecipeHasAllSearchedIngredients(SearchInputDto searchInput, Recipe recipe) {
+    for (String ingredient : searchInput.getIngredients()) {
+      if (recipe.getIngredients().stream().noneMatch(it -> it.getIngredient().getName().equalsIgnoreCase(ingredient))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean checkIfRecipeScoreIsAboveSearchedScore(SearchInputDto searchInput, Recipe recipe) {
+    if (searchInput.getMinimumScore().isEmpty()) return true;
+
+    OptionalDouble averageScore = recipe.getReviews().stream().mapToInt(Review::getScore).average();
+    if (averageScore.isEmpty()) return false;
+
+    return averageScore.getAsDouble() >= searchInput.getMinimumScore().getAsInt();
+  }
+
 }
