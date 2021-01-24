@@ -10,6 +10,7 @@ import {RecipeCreatorComponent} from "./component/recipe-creator/recipe-creator.
 import {ReviewCreateComponent} from "./component/review-create/review-create.component";
 import {ReportUserComponent} from "./component/report-user/report-user.component";
 import {FavoritesComponent} from "./component/favorites/favorites.component";
+import {WarnUserComponent} from "./component/warn-user/warn-user.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -29,6 +30,11 @@ const routes: Routes = [
   {path: 'user/:id1/favorites/:id2', component: FavoritesComponent},
   {path: 'recipe-creator', component: RecipeCreatorComponent},
   {path: 'report-user', component: ReportUserComponent},
+  {
+    path: 'warn-user', children: [
+      {path: ':id', component: WarnUserComponent}
+    ]
+  },
   {path: '**', redirectTo: ''}
 ];
 

@@ -7,8 +7,8 @@
       <p><b>{{ report.reportedUser.username }}</b></p>
       <p>{{ report.message }}</p>
       <p><b>Reported by {{ report.reportingUser.username }}</b></p>
-      <button type="button" class="btn btn-danger btn-sm" (click)="banReportedUser(report.reportedUser, i)">Verbannen
-      </button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banReportedUser(report.reportedUser, i)">Verbannen</button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="warnReportedUser(report.reportedUser, i)">Waarschuwen</button>
       <button type="button" (click)="viewRecipe(report.reportedRecipe, i)">View Page</button>
     </div>
     <hr/>

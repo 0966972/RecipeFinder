@@ -35,6 +35,11 @@ export class AdminComponent implements OnInit {
   }
 
 
+  warnReportedUser(reportedUser: User, i) {
+    this.router.navigate(['warn-user/' + reportedUser.id])
+  }
+
+
   viewRecipe(recipe: Recipe, i) {
     this.router.navigate(['recipe/' + recipe.id])
   }
