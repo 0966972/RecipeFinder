@@ -3,11 +3,13 @@ package nl.hr.recipefinder.controller;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.WarningRequestDto;
 import nl.hr.recipefinder.model.dto.WarningResponseDto;
+import nl.hr.recipefinder.model.entity.Report;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.entity.Warning;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
 import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
+import nl.hr.recipefinder.service.ReportService;
 import nl.hr.recipefinder.service.UserService;
 import nl.hr.recipefinder.service.WarningService;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,7 @@ import java.util.Optional;
 @RequestMapping("/warning")
 public class WarningController {
     private final WarningService warningService;
+    private final ReportService reportService;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
@@ -38,6 +41,8 @@ public class WarningController {
 
             if (warnedUser.isEmpty()) throw new HttpNotFoundError();
 
+            Iterable<Report> reports = reportService.findAllByUserId(warnedUser.get().getId());
+            reportService.deleteAll(reports);
 
             Warning warning = warningService.save(
                     new Warning(warningRequestDto.getMessage(), warnedUser.get())
