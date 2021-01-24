@@ -115,6 +115,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   showFavoritesList = false;
   favoritesList: FavoritesList[];
+
   toggleFavoriteLists(){
     if(!this.showFavoritesList){
       this.favoritesListService.getAll().subscribe(val => this.favoritesList = val);

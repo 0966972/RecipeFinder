@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  openRecipe(id: number) {
+  openList(id: number) {
     console.log(this.user.id);
     console.log(id);
     console.log(this.router.navigate(['user/' + this.user.id + '/favorites/' + id]))
@@ -74,17 +74,17 @@ export class ProfileComponent implements OnInit {
   addFavorite(){
     this.addList=true;
   }
-  submitReview() {
+  submitFavorite() {
     let url = this.baseUrl+'/user/' + this.user.id + '/favorites';
     let token: string = '' + sessionStorage.getItem('token');
     let body = this.favorite
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    this.http.post<Observable<favorite>>(url, body, {headers: headers}).subscribe()
-    this.favorite.name = '';
-    this.addList = false;
-    this.ngOnInit();
+    this.http.post<Observable<favorite>>(url, body, {headers: headers}).subscribe(() => {
+      this.favorite.name = '';
+      this.addList = false;
+      this.ngOnInit();
+    })
   }
-
 }
