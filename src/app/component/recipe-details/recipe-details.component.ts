@@ -64,6 +64,8 @@ export class RecipeDetailsComponent implements OnInit {
           this.router.navigate(['']);
       }
     });
+
+
   }
 
   ngOnInit() {
@@ -73,6 +75,11 @@ export class RecipeDetailsComponent implements OnInit {
     });
 
     this.showRecipe();
+    if (this.isLoggedIn){
+      this.favoritesListService.getAll().subscribe(list => {
+        this.favoritesList = list
+      });
+    }
   }
 
   get isLoggedIn(): boolean {
@@ -113,12 +120,17 @@ export class RecipeDetailsComponent implements OnInit {
     );
   }
 
+  get showingFavoritesList() : boolean {
+    return this.showFavoritesList;
+  }
   showFavoritesList = false;
   favoritesList: FavoritesList[];
 
   toggleFavoriteLists(){
     if(!this.showFavoritesList){
-      this.favoritesListService.getAll().subscribe(val => this.favoritesList = val);
+      this.favoritesListService.getAll().subscribe(list => {
+          this.favoritesList = list
+      });
     }
     this.showFavoritesList = !this.showFavoritesList;
   }
