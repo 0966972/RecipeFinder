@@ -11,11 +11,11 @@
     </datalist>
 
     <section *ngFor="let ingredient of filterIngredients; let i = index;">
-      <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Remove Filter</button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Verwijder filter</button>
       <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)"
              list="ingredientName" name="ingredientName_{{i}}" required/>
     </section>
-    <button type="button" (click)="addIngredient()">Add Filter</button>
+    <button type="button" class="btn btn-secondary" (click)="addIngredient()">Filter toevoegen</button>
 
     <br/>
     <button *ngFor="let selected of scoreFilter;let i=index;" (click)="scoreSelected(i)"
@@ -30,8 +30,8 @@
         color: gray
       }
     </style>
-    <button *ngIf="!doFilterScore" type="button" (click)="showScoreFilter(true)">Filter by score</button>
-    <button *ngIf="doFilterScore" type="button" (click)="showScoreFilter(false)">Remove score filter</button>
+    <button *ngIf="!doFilterScore" class="btn btn-secondary" type="button" (click)="showScoreFilter(true)">Filteren op score</button>
+    <button *ngIf="doFilterScore"  class="btn btn-danger btn-sm" type="button" (click)="showScoreFilter(false)">Verwijder filter</button>
 
   </div>
   <hr/>

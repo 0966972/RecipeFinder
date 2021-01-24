@@ -5,7 +5,7 @@
   <br>
   <h2> Hier een overzicht van uw favorite lijsten</h2>
   <div *ngFor="let favorites of favorites" (click)="openList(favorites.id)" class="row">
-      <button class="btn btn-primary">{{favorites.name}}</button>
+      <button class="btn btn-secondary">{{favorites.name}}</button>
   </div>
   <div class="row" *ngIf="!addList" (click)="addFavorite()">
     <button class="btn btn-dark">Maak nieuwe lijst <i class="fa fa-plus"></i></button>
