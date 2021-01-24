@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) {
-    assert auth != null;
     auth.authenticationProvider(authenticationProvider(passwordEncoder()));
   }
 
@@ -87,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/user/ban/**").hasRole(Role.ADMIN.name())
       .antMatchers("/user/**").permitAll()
       // other
+      .antMatchers(HttpMethod.GET, "/auth/login").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       .antMatchers("/swagger-ui/**", "/h2-console/**").hasRole(Role.ADMIN.name())
       .anyRequest().authenticated()
       .and()

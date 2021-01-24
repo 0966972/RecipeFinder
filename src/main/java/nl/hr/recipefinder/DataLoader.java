@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * Created by maartendegoede on 07/12/2020.
  * Copyright © 2020 Maarten de Goede. All rights reserved.
  */
-@Profile("live")
+@Profile({"live", "test"})
 @Component
 public class DataLoader implements ApplicationRunner {
   private final UserService userService;
@@ -53,6 +53,7 @@ public class DataLoader implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) {
+
 //    User admin = new User();
 //    admin.setUsername("admin");
 //    admin.setPassword(passwordEncoder.encode("admin"));

@@ -33,7 +33,7 @@ public class Recipe extends BaseEntity {
 
   @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "step_id")
-  public List<Step> steps = new ArrayList<>();
+  private List<Step> steps = new ArrayList<>();
 
   @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
   List<Review> reviews;
@@ -43,5 +43,5 @@ public class Recipe extends BaseEntity {
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", nullable = true)
-  public User user;
+  private User user;
 }

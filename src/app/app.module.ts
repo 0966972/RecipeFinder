@@ -4,24 +4,25 @@ import {AppRoutingModule} from './app-routing.module';
 import {FormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 
-import {HomeComponent} from './home/home.component';
+import {HomeComponent} from './component/home/home.component';
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
-import {ProfileComponent} from './profile/profile.component';
-import {RegisterComponent} from "./register/register.component";
-import {AdminComponent} from "./admin/admin.component";
-import {RecipeDetailsComponent} from "./recipe-details/recipe-details.component";
-import {RecipeCreatorComponent} from './recipe-creator/recipe-creator.component';
-import {AuthService} from "./service/auth.service";
+import {LoginComponent} from './component/login/login.component';
+import {ProfileComponent} from './component/profile/profile.component';
+import {RegisterComponent} from "./component/register/register.component";
+import {AdminComponent} from "./component/admin/admin.component";
+import {RecipeDetailsComponent} from "./component/recipe-details/recipe-details.component";
+import {RecipeCreatorComponent} from './component/recipe-creator/recipe-creator.component';
+import {AuthService} from "./service/auth/auth.service";
 import {RouterModule} from "@angular/router";
-import {RecipeService} from "./service/recipe.service";
-import {IngredientService} from "./service/ingredient.service";
+import {RecipeService} from "./service/recipe/recipe.service";
+import {IngredientService} from "./service/ingredient/ingredient.service";
 import {NgbCarouselConfig, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {RecipeIngredientService} from "./service/recipe-ingredient.service";
-import {ReviewCreateComponent} from "./review-create/review-create.component";
-import {ReportUserComponent} from "./report-user/report-user.component";
-import {ReportService} from "./service/report.service";
-import { FavoritesComponent } from './favorites/favorites.component';
+import {RecipeIngredientService} from "./service/recipe-ingredient/recipe-ingredient.service";
+import {ReviewCreateComponent} from "./component/review-create/review-create.component";
+import {ReportUserComponent} from "./component/report-user/report-user.component";
+import {ReportService} from "./service/report/report.service";
+import {FavoritesComponent} from './component/favorites/favorites.component';
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -55,6 +56,7 @@ export class XhrInterceptor implements HttpInterceptor {
     HttpClientModule,
     RouterModule,
     NgbModule,
+    ClipboardModule
   ],
   providers: [
     RecipeService,

@@ -2,10 +2,10 @@ package nl.hr.recipefinder.controller;
 
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.IngredientDto;
+import nl.hr.recipefinder.model.dto.IngredientResponseDto;
 import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.service.IngredientService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +23,14 @@ public class IngredientController {
 
   @Transactional
   @PostMapping()
-  public List<Ingredient> createIngredients(@RequestBody List<IngredientDto> ingredientDtos) {
+  public List<IngredientResponseDto> createIngredients(@RequestBody List<IngredientDto> ingredientDtos) {
     List<Ingredient> mappedIngredients = ingredientDtos.stream()
       .map(it -> new Ingredient(it.getName(), Ingredient.State.PENDING, List.of()))
       .collect(Collectors.toList());
 
-    return ingredientService.findOrCreateIngredients(mappedIngredients);
+    return ingredientService.findOrCreateIngredients(mappedIngredients).stream()
+      .map(it -> modelMapper.map(it, IngredientResponseDto.class))
+      .collect(Collectors.toList());
   }
 
   @GetMapping("/search/{searchInput}")

@@ -1,0 +1,33 @@
+<body>
+<div class="container" *ngIf="readyToShowContent">
+  <h1 style="margin-top: 100px;"  >{{favorites.name}}</h1>
+  <div id="shareRow" class="row">
+    <div class="offset-9 col-3">
+      <button *ngIf="!showCopiedMessage" type="button" class="btn btn-secondary"(click)="(shareableLink())"><div>Deel deze lijst</div></button>
+      <button disabled *ngIf="showCopiedMessage" type="button" class="btn btn-secondary"(click)="(shareableLink())" ><div>Link gekopieerd naar clipboard</div></button>
+    </div>
+  </div>
+  <div *ngFor="let recipe of favorites.recipes;" (click)="openRecipe(recipe.id)" class="row">
+    <div>
+      <ul *ngIf="recipe.pictures?.length == 0">
+        <img src="../../../assets/image/image-not-found.jpg" width="150px" height="100px">
+      </ul>
+
+      <div *ngFor="let pictures of recipe.pictures; let i = index;">
+        <ul *ngIf="pictures.thumbnail == true">
+          <img [src]="'data:image/jpeg;base64,'+pictures.content" width="150px" height="100px"/>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="col-9">
+      <h5>{{ recipe.name }}</h5>
+      <p>{{ recipe.description }}<br/>
+      <p>{{ recipe.preparationTime }} min<br/>
+    </div>
+  </div>
+</div>
+</body>
+
+
