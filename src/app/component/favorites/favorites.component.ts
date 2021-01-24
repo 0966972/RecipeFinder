@@ -3,6 +3,7 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+import {Clipboard} from "@angular/cdk/clipboard";
 
 @Component({
   selector: 'app-favorites',
@@ -11,22 +12,28 @@ import {environment} from "../../../environments/environment";
 })
 export class FavoritesComponent implements OnInit {
   private readonly baseUrl = environment.apiUrl
+  private showCopiedMessage: boolean = false;
+
   userId: bigint;
   favoriteId: bigint;
   favorites: any;
   private routeSub: Subscription;
 
   constructor(
+    private clipboard: Clipboard,
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
+    private http: HttpClient
   ) {
-
   }
+
   openRecipe(id: number) {
     this.router.navigate(['recipe/' + id])
   }
 
+  get readyToShowContent() : boolean {
+    return this.favorites != undefined || this.favorites != null
+  }
 
   showFavorite() {
     let url = this.baseUrl+'/user/' + this.userId + '/favorites/' + this.favoriteId;
@@ -34,13 +41,23 @@ export class FavoritesComponent implements OnInit {
     this.http.get(url).subscribe((response) => this.favorites = response);
   }
 
-    ngOnInit() {
-      this.routeSub = this.route.params.subscribe(params => {
-        this.userId = params['id1'];
-        this.favoriteId = params['id2'];
-        console.log(this.userId);
-        console.log(this.favoriteId);
-        this.showFavorite();
-      });
-    }
+  ngOnInit() {
+    this.routeSub = this.route.params.subscribe(params => {
+      this.userId = params['id1'];
+      this.favoriteId = params['id2'];
+      console.log(this.userId);
+      console.log(this.favoriteId);
+      this.showFavorite();
+    });
   }
+
+  shareableLink() {
+    this.clipboard.copy("http://localhost:4200"+this.router.url)
+    this.showCopiedMessage = true
+    setTimeout(() => {
+      this.showCopiedMessage = false
+    }, 2000)
+  }
+
+}
+

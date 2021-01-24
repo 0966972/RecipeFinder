@@ -53,7 +53,10 @@ export class AuthService {
       (error) => {
         this.authenticated = false;
         sessionStorage.setItem('token', '')
-        alert("Deze combinatie van gebruikersnaam en wachtwoord is ongeldig.")
+        if (error.status == 403)
+          alert("Je bent verbannen en kunt daarom niet inloggen")
+        else
+          alert("Deze combinatie van gebruikersnaam en wachtwoord is ongeldig.")
       }
     );
   }

@@ -21,7 +21,8 @@ import {RecipeIngredientService} from "./service/recipe-ingredient/recipe-ingred
 import {ReviewCreateComponent} from "./component/review-create/review-create.component";
 import {ReportUserComponent} from "./component/report-user/report-user.component";
 import {ReportService} from "./service/report/report.service";
-import { FavoritesComponent } from './component/favorites/favorites.component';
+import {FavoritesComponent} from './component/favorites/favorites.component';
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -55,6 +56,7 @@ export class XhrInterceptor implements HttpInterceptor {
     HttpClientModule,
     RouterModule,
     NgbModule,
+    ClipboardModule
   ],
   providers: [
     RecipeService,

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {AuthService} from "./service/auth/auth.service";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs";
-import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -16,12 +14,6 @@ export class AppComponent {
   constructor(private authService: AuthService, private http: HttpClient, private router: Router) {
   }
 
-  logout() {
-    this.authService.logout(() => {
-      this.router.navigate[''];
-    })
-  };
-
   get isLoggedIn(): boolean {
     return this.authService.authenticated;
   }
@@ -33,4 +25,10 @@ export class AppComponent {
   get isAdmin(): boolean {
     return this.authService.isAdmin;
   }
+
+  logout() {
+    this.authService.logout(() => {
+      this.router.navigate[''];
+    })
+  };
 }

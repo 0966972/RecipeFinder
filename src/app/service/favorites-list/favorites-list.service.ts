@@ -27,6 +27,6 @@ export class FavoritesListService {
   public addToList(recipeId: bigint, listId: bigint, headers) : Observable<FavoritesList> {
     let userId = this.authService.getUserId();
     let url = this.favoriteListsUrl + "/"+userId+"/favorites/" + listId;
-    return this.http.post<FavoritesList>(url, recipeId, {headers: headers});
+    return this.http.patch<FavoritesList>(url, recipeId, {headers: headers});
   }
 }

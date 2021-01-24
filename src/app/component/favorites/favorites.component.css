@@ -49,9 +49,3 @@ input {
 a {
   color: inherit;
 }
-
-button{
-  margin: 0 auto;
-  width: 300px;
-  top:50%;
-}
