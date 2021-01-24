@@ -11,8 +11,9 @@ import {Clipboard} from "@angular/cdk/clipboard";
   styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
+  private readonly webUrl = environment.webUrl
   private readonly baseUrl = environment.apiUrl
-  private showCopiedMessage: boolean = false;
+  public showCopiedMessage: boolean = false;
 
   userId: bigint;
   favoriteId: bigint;
@@ -52,7 +53,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   shareableLink() {
-    this.clipboard.copy("http://localhost:4200"+this.router.url)
+    this.clipboard.copy(this.webUrl+this.router.url)
     this.showCopiedMessage = true
     setTimeout(() => {
       this.showCopiedMessage = false
