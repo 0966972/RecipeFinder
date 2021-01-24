@@ -70,6 +70,9 @@ public class UserController {
                 Iterable<Report> reports = reportService.findAllByUserId(user.getId());
                 reportService.deleteAll(reports);
 
+                Iterable<Warning> warnings = warningService.findAllByUserId(user.getId());
+                warningService.deleteAll(warnings);
+
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }
 
