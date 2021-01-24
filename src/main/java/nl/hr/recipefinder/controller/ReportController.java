@@ -7,15 +7,14 @@ import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.Report;
 import nl.hr.recipefinder.model.entity.ReportKey;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
 import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.ReportService;
 import nl.hr.recipefinder.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -50,12 +49,12 @@ public class ReportController {
       Optional<User> foundReporter = userService.findUserById(reportRequestDto.getReportingUserId());
       Optional<Recipe> foundRecipe = recipeService.findById(reportRequestDto.getReportedRecipeId());
 
-      if (foundRecipe.isEmpty() || foundReporter.isEmpty()) throw new HttpNotFoundError();
+      if (foundRecipe.isEmpty() || foundReporter.isEmpty()) throw new HttpNotFoundException();
 
       ReportKey id =  new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
       Optional<Report> existingReport = reportService.findById(id);
 
-      if (existingReport.isPresent()) throw new HttpBadRequestError("You have already reported the user");
+      if (existingReport.isPresent()) throw new HttpBadRequestException("You have already reported the user");
 
       Report report = reportService.save(
         new Report(
@@ -66,9 +65,9 @@ public class ReportController {
       );
       return new ResponseEntity<>(modelMapper.map(report, ReportResponseDto.class), HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
-      throw new HttpConflictError(e);
+      throw new HttpConflictException(e);
     } catch (DataAccessException e) {
-      throw new HttpInternalServerError(e);
+      throw new HttpInternalServerException(e);
     }
   }
 }

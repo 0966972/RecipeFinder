@@ -6,7 +6,7 @@ import nl.hr.recipefinder.model.dto.ReviewResponseDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Review;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestException;
 import nl.hr.recipefinder.service.ReviewService;
 import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
@@ -49,7 +49,7 @@ public class ReviewController {
       return new ResponseEntity<>(reviewResponseDto, HttpStatus.CREATED);
     }
     catch (ConstraintViolationException e){
-      throw new HttpBadRequestError(e);
+      throw new HttpBadRequestException(e);
     }
   }
 

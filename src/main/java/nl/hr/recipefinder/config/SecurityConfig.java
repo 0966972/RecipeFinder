@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) {
-    assert auth != null;
     auth.authenticationProvider(authenticationProvider(passwordEncoder()));
   }
 

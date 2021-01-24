@@ -6,9 +6,9 @@ import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.FavoritesList;
 import nl.hr.recipefinder.model.entity.Report;
 import nl.hr.recipefinder.model.entity.User;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictError;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
-import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpConflictException;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
+import nl.hr.recipefinder.model.httpexception.servererror.HttpInternalServerException;
 import nl.hr.recipefinder.security.Role;
 import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.ReportService;
@@ -47,9 +47,9 @@ public class UserController {
             if (foundUser.isPresent())
                 return ResponseEntity.ok(modelMapper.map(foundUser.get(), UserResponseDto.class));
 
-            throw new HttpNotFoundError();
+            throw new HttpNotFoundException();
         } catch (Exception e) {
-            throw new HttpNotFoundError(e);
+            throw new HttpNotFoundException(e);
         }
     }
 
@@ -70,9 +70,9 @@ public class UserController {
                 return new ResponseEntity<>(true, HttpStatus.OK);
             }
 
-            throw new HttpNotFoundError();
+            throw new HttpNotFoundException();
         } catch (Exception e) {
-            throw new HttpNotFoundError(e);
+            throw new HttpNotFoundException(e);
         }
     }
 
@@ -86,7 +86,7 @@ public class UserController {
             }
             return new ResponseEntity<>(userDTOs, HttpStatus.OK);
         } catch (Exception e) {
-            throw new HttpInternalServerError(e);
+            throw new HttpInternalServerException(e);
         }
     }
 
@@ -103,9 +103,9 @@ public class UserController {
             favoritesListService.save(defaultFavoritesList);
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         } catch (DataIntegrityViolationException e) {
-            throw new HttpConflictError(e);
+            throw new HttpConflictException(e);
         } catch (DataAccessException e) {
-            throw new HttpInternalServerError(e);
+            throw new HttpInternalServerException(e);
         }
     }
 }

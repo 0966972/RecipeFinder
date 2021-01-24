@@ -3,17 +3,16 @@ package nl.hr.recipefinder.controller;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.PictureDto;
 import nl.hr.recipefinder.model.entity.Picture;
-import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundError;
+import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.service.PictureService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -28,18 +27,17 @@ public class PictureController {
   @GetMapping()
   public List<PictureDto> downloadFiles() {
     List<Picture> pictures = pictureService.getPictures();
-    List<PictureDto> pictureDtos = new ArrayList<>();
-    for (Picture picture : pictures) {
-      pictureDtos.add(modelMapper.map(picture, PictureDto.class));
-    }
-    return pictureDtos;
+
+    return pictures.stream()
+      .map(picture -> modelMapper.map(picture, PictureDto.class))
+      .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public PictureDto downloadFile(@PathVariable long id) {
     Optional<Picture> picture = pictureService.getPicture(id);
-    if (picture.isPresent()) return modelMapper.map(picture, PictureDto.class);
-    else throw new HttpNotFoundError();
+    return picture.map(p -> modelMapper.map(picture, PictureDto.class))
+      .orElseThrow(HttpNotFoundException::new);
   }
 
   @GetMapping("/{id}/show")
@@ -50,7 +48,7 @@ public class PictureController {
         ok()
         .contentType(MediaType.IMAGE_JPEG)
         .body(picture.get().getContent());
-    else throw new HttpNotFoundError();
+    else throw new HttpNotFoundException();
   }
 
 }
