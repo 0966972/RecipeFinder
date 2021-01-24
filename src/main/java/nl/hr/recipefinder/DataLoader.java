@@ -60,6 +60,13 @@ public class DataLoader implements ApplicationRunner {
     userService.save(admin);
 
 
+    User banned = new User();
+    banned.setUsername("banned");
+    banned.setPassword(passwordEncoder.encode(""));
+    banned.setRole(Role.BANNED);
+    userService.save(banned);
+
+
     List<Ingredient> ingredients = List.of(
       new Ingredient("Demi Créme Fraîche", Ingredient.State.ACCEPTED, List.of()),
       new Ingredient("Gemengde Paddenstoelen", Ingredient.State.ACCEPTED, List.of()),
