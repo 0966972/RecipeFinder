@@ -3,7 +3,6 @@ package nl.hr.recipefinder.controller;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.RecipeResponseDto;
 import nl.hr.recipefinder.model.dto.SearchInputDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
@@ -68,7 +67,7 @@ public class RecipeController {
   }
 
   @PostMapping()
-  public ResponseEntity<RecipeResponseDto> createRecipe(@RequestBody RecipeDto recipedto) {
+  public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeDto recipedto) {
     try {
       User user = authenticationService.getAuthenticatedUser();
       Recipe mappedRecipe = modelMapper.map(recipedto, Recipe.class);
@@ -76,7 +75,7 @@ public class RecipeController {
       mappedRecipe.setIngredients(List.of());
       Recipe savedRecipe = recipeService.save(mappedRecipe);
 
-      return new ResponseEntity<>(modelMapper.map(savedRecipe, RecipeResponseDto.class), HttpStatus.CREATED);
+      return new ResponseEntity<>(modelMapper.map(savedRecipe, RecipeDto.class), HttpStatus.CREATED);
     } catch (DataIntegrityViolationException e) {
       throw new HttpConflictException(e);
     }

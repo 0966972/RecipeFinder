@@ -3,14 +3,13 @@ package nl.hr.recipefinder.controller;
 import nl.hr.recipefinder.RecipeFinderApplication;
 import nl.hr.recipefinder.model.dto.ListedRecipeDto;
 import nl.hr.recipefinder.model.dto.RecipeDto;
-import nl.hr.recipefinder.model.dto.RecipeResponseDto;
 import nl.hr.recipefinder.model.dto.UserResponseDto;
 import nl.hr.recipefinder.model.entity.Recipe;
 import nl.hr.recipefinder.model.entity.User;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.security.Role;
-import nl.hr.recipefinder.service.RecipeService;
 import nl.hr.recipefinder.service.AuthenticationService;
+import nl.hr.recipefinder.service.RecipeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -105,17 +104,17 @@ public class RecipeControllerUnitTests {
   }
 
   @Test
-  void createRecipe_whenRecipeCreated_then201IsReceived(){
+  void createRecipe_whenRecipeCreated_then201IsReceived() {
     // arrange
     Recipe recipe = new Recipe("Tasty Chicken", "Very tasty chicken", 25,
-      "Boil the chicken" ,2 , List.of(), List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
+      "Boil the chicken", 2, List.of(), List.of(), List.of(), List.of(), List.of(), new User("a", "a", Role.USER));
     RecipeDto recipeDto = new RecipeDto(1, "Tasty Chicken", "Very tasty chicken", 25,
-      "Boil the chicken" ,2 , new UserResponseDto(), List.of(), List.of(), List.of(), List.of());
+      "Boil the chicken", 2, new UserResponseDto(), List.of(), List.of(), List.of(), List.of());
     Mockito.when(authenticationService.getAuthenticatedUser()).thenReturn(new User("a", "a", Role.USER));
     Mockito.when(modelMapper.map(recipeDto, Recipe.class)).thenReturn(recipe);
 
     // act
-    ResponseEntity<RecipeResponseDto> response = recipeController.createRecipe(recipeDto);
+    ResponseEntity<RecipeDto> response = recipeController.createRecipe(recipeDto);
 
     //assert
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
