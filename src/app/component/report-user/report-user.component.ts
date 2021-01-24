@@ -94,8 +94,11 @@ export class ReportUserComponent implements OnInit {
     }
   }
 
-  displayHttpError(status: any) {
+  displayHttpError(status: number) {
     switch (status) {
+      case 403:
+        alert("Je hebt deze gebruiker al gerapporteerd.")
+        break;
       default:
         alert("Er ging iets mis, probeer het later nog eens.")
         break;

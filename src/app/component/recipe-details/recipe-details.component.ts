@@ -4,13 +4,10 @@ import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {Observable, Subscription} from "rxjs";
 import {DetailedRecipe} from "../../model/detailed-recipe.model";
 import {NgbCarouselConfig} from "@ng-bootstrap/ng-bootstrap";
-import {Review} from "../../model/review.model";
 import {AuthService} from "../../service/auth/auth.service";
 import {filter} from "rxjs/operators";
-import {User} from "../../model/user.model";
 import {FavoritesListService} from "../../service/favorites-list/favorites-list.service";
 import {FavoritesList} from "../../model/favorites-list.model";
-import {Recipe} from "../../model/recipe.model";
 import {environment} from "../../../environments/environment";
 
 @Component({
@@ -23,6 +20,7 @@ export class RecipeDetailsComponent implements OnInit {
   private readonly baseUrl = environment.apiUrl
   routeId: bigint;
   recipe: DetailedRecipe;
+  isReportingAllowed: boolean;
 
   private routeSub: Subscription;
 
@@ -47,8 +45,7 @@ export class RecipeDetailsComponent implements OnInit {
     let url = this.baseUrl+'/recipe/' + this.routeId;
     this.http.get<Observable<DetailedRecipe>>(url).subscribe((response) => {
       this.recipe = new DetailedRecipe().map(response);
-
-
+      this.getIsReportingAllowed()
     }, error => {
       switch (error) {
         case 500:
@@ -66,6 +63,18 @@ export class RecipeDetailsComponent implements OnInit {
     });
 
 
+  }
+
+  getIsReportingAllowed() {
+    let url = this.baseUrl + '/report/allowed/' + this.recipe.user.id;
+    let headers: HttpHeaders = new HttpHeaders({
+      'Authorization': 'Basic ' + sessionStorage.getItem('token')
+    });
+
+    this.http.get<any>(url, {headers: headers}).subscribe((response) => {
+      this.isReportingAllowed = response
+    }, error => {
+    });
   }
 
   ngOnInit() {
@@ -88,10 +97,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   get isRecipeCreator(): boolean {
     let loggedInUser = this.authService.username;
-    if (loggedInUser != null && this.recipe.user != null && loggedInUser == this.recipe.user.username){
-      return true;
-    }
-    return false;
+    return loggedInUser != null && this.recipe.user != null && loggedInUser == this.recipe.user.username;
   }
 
   gotoReview(){
