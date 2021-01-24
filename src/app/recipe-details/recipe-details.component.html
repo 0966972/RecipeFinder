@@ -19,7 +19,7 @@
       </ngb-carousel>
     <div id="reportRow" class="row">
       <div class="offset-9 col-3">
-        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn btn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
+        <button *ngIf="isLoggedIn && !isRecipeCreator" class="btn bn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
         <div class="pull-right">
           <button *ngIf="!showFavoritesList" class="btn btn-danger" (click)="(toggleFavoriteLists())"><i class="fa fa-heart"></i></button>
           <button *ngIf="showFavoritesList" class="btn btn-secondary" (click)="(toggleFavoriteLists())"><i class="fa fa-times"></i></button>

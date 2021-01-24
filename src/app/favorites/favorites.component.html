@@ -1,6 +1,12 @@
 <body>
-<div class="container">
-  <h1 style="margin-top: 100px;">{{favorites.name}}</h1>
+<div class="container" *ngIf="readyToShowContent">
+  <h1 style="margin-top: 100px;"  >{{favorites.name}}</h1>
+  <div id="shareRow" class="row">
+    <div class="offset-9 col-3">
+      <button *ngIf="!showCopiedMessage" type="button" class="btn btn-secondary"(click)="(shareableLink())"><div>Deel deze lijst</div></button>
+      <button disabled *ngIf="showCopiedMessage" type="button" class="btn btn-secondary"(click)="(shareableLink())" ><div>Link gekopieerd naar clipboard</div></button>
+    </div>
+  </div>
   <div *ngFor="let recipe of favorites.recipes;" (click)="openRecipe(recipe.id)" class="row">
     <div>
       <ul *ngIf="recipe.pictures?.length == 0">
