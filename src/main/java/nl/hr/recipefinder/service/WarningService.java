@@ -21,6 +21,10 @@ public class WarningService {
         return warningRepository.findAll();
     }
 
+    public List<Warning> findAllByUserId(Long userId) {
+        return warningRepository.findAllByWarnedUserId(userId);
+    }
+
     public void deleteAll(Iterable<Warning> warnings) {
         warningRepository.deleteAll(warnings);
     }

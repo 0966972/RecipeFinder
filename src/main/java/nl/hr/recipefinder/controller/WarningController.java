@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +33,12 @@ public class WarningController {
     private final ReportService reportService;
     private final UserService userService;
     private final ModelMapper modelMapper;
+
+    @GetMapping()
+    public ResponseEntity<List<Warning>> getAllWarnings() {
+        List<Warning> warnings = warningService.findAll();
+        return new ResponseEntity<>(warnings, HttpStatus.OK);
+    }
 
     @Transactional
     @PostMapping()

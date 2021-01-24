@@ -13,6 +13,18 @@
     </div>
     <hr/>
   </div>
+  <br/>
+  <hr/>
+  <br/>
+  <h6>Gewaarschuwde Gebruikers</h6>
+  <div *ngFor="let warning of warnings; let i = index;" class="row">
+    <div class="col-9">
+      <p><b>{{ warning.warnedUser.username }}</b></p>
+      <p>{{ warning.message }}</p>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banWarnedUser(warning.warnedUser, i)">Verbannen</button>
+    </div>
+    <hr/>
+  </div>
   <h5 style="margin-top: 100px;">Ingrediënten</h5>
   <h6>Pending Acceptance</h6>
   <div *ngFor="let ingredient of pendingIngredients; let i = index;" class="row">
