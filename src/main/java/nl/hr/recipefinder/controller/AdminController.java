@@ -5,7 +5,6 @@ import nl.hr.recipefinder.model.dto.AdminIngredientDto;
 import nl.hr.recipefinder.model.entity.Ingredient;
 import nl.hr.recipefinder.service.IngredientService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 

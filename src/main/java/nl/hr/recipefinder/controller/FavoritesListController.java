@@ -8,10 +8,10 @@ import nl.hr.recipefinder.model.entity.*;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpBadRequestException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpNotFoundException;
 import nl.hr.recipefinder.model.httpexception.clienterror.HttpUnauthorizedException;
+import nl.hr.recipefinder.service.AuthenticationService;
 import nl.hr.recipefinder.service.FavoritesListRecipeService;
 import nl.hr.recipefinder.service.FavoritesListService;
 import nl.hr.recipefinder.service.RecipeService;
-import nl.hr.recipefinder.service.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,19 +118,19 @@ public class FavoritesListController {
 
   private ResponseEntity<List<FavoritesListResponseDto>> getListResponseEntity(List<FavoritesList> favoritesLists) {
     List<FavoritesListResponseDto> favoritesListsDtos = new ArrayList<>();
-    for(FavoritesList favoritesList : favoritesLists){
+    for (FavoritesList favoritesList : favoritesLists) {
       favoritesListsDtos.add(modelMapper.map(favoritesList, FavoritesListResponseDto.class));
     }
-    for(FavoritesListResponseDto list : favoritesListsDtos){
+    for (FavoritesListResponseDto list : favoritesListsDtos) {
       list.setRecipes(findRelatedRecipesOnDto(list));
     }
 
     return new ResponseEntity<>(favoritesListsDtos, HttpStatus.OK);
   }
 
-  public List<RecipeDto> findRelatedRecipesOnDto(FavoritesListResponseDto favoritesListDto){
+  public List<RecipeDto> findRelatedRecipesOnDto(FavoritesListResponseDto favoritesListDto) {
     List<RecipeDto> recipesFoundByRelation = new ArrayList<>();
-    for(RecipeDto recipe : favoritesListDto.getRecipes()){
+    for (RecipeDto recipe : favoritesListDto.getRecipes()) {
       Optional<Recipe> foundRelatedRecipe = recipeService.findById(recipe.getId());
       foundRelatedRecipe.ifPresent(value -> recipesFoundByRelation.add(modelMapper.map(value, RecipeDto.class)));
     }

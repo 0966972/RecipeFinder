@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class FavoritesListRecipeService {
   private final FavoritesListRecipeRepository favoritesListRecipeRepository;
 
-  public FavoritesListRecipe save(FavoritesListRecipe favoritesListRecipe){
+  public FavoritesListRecipe save(FavoritesListRecipe favoritesListRecipe) {
     return favoritesListRecipeRepository.save(favoritesListRecipe);
   }
 }

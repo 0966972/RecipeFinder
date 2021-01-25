@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface WarningRepository extends JpaRepository<Warning, Long> {
-    List<Warning> findAllByWarnedUserId(Long warnedUserId);
+  List<Warning> findAllByWarnedUserId(Long warnedUserId);
 }
 

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class IngredientResponseDto {
   public enum State {PENDING, ACCEPTED, REFUSED}
+
   private long id;
   private String name;
   private State acceptedState;

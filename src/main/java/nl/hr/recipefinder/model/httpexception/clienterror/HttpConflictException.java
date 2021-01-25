@@ -6,8 +6,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 // 409
 @ResponseStatus(code = HttpStatus.CONFLICT)
 public class HttpConflictException extends RuntimeException {
-  public HttpConflictException(){ super();}
-  public HttpConflictException(String message){ super(message);}
-  public HttpConflictException(Throwable cause){ super(cause);}
-  public HttpConflictException(String message, Throwable cause){ super(message, cause);}
+  public HttpConflictException() {
+    super();
+  }
+
+  public HttpConflictException(String message) {
+    super(message);
+  }
+
+  public HttpConflictException(Throwable cause) {
+    super(cause);
+  }
+
+  public HttpConflictException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

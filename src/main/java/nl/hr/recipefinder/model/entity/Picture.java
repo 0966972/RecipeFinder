@@ -1,7 +1,9 @@
 package nl.hr.recipefinder.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,10 +24,10 @@ public class Picture extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   private Recipe recipe;
 
-  public Picture(){}
+  public Picture() {
+  }
 
-  public Picture(String name, String type, byte[] content)
-  {
+  public Picture(String name, String type, byte[] content) {
     this.name = name;
     this.type = type;
     this.content = content;

@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminIngredientDto {
-    private long id;
-    private String name;
-    private String acceptedState;
+  private long id;
+  private String name;
+  private String acceptedState;
 }

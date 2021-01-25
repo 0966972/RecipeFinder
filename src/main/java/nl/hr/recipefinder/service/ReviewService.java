@@ -25,7 +25,9 @@ public class ReviewService {
     return reviewRepository.findById(id);
   }
 
-  public List<Review> findAllByRecipeId(Long recipeId) { return reviewRepository.findAllByRecipeId(recipeId); }
+  public List<Review> findAllByRecipeId(Long recipeId) {
+    return reviewRepository.findAllByRecipeId(recipeId);
+  }
 
   public List<Review> findAll() {
     return reviewRepository.findAll();

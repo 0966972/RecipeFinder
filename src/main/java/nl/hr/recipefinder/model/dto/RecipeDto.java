@@ -3,9 +3,8 @@ package nl.hr.recipefinder.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.hr.recipefinder.model.entity.*;
+import nl.hr.recipefinder.model.entity.Picture;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

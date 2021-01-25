@@ -63,15 +63,15 @@ public class ReportController {
 
       if (foundRecipe.isEmpty() || foundReporter.isEmpty()) throw new HttpNotFoundException();
 
-      ReportKey id =  new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
+      ReportKey id = new ReportKey(foundReporter.get().getId(), foundRecipe.get().getUser().getId());
       Optional<Report> existingReport = reportService.findById(id);
 
       if (existingReport.isPresent())
-         throw new HttpForbiddenException("You have already reported the user");
+        throw new HttpForbiddenException("You have already reported the user");
 
       Report report = reportService.save(
         new Report(
-         id,
+          id,
           null, null, reportRequestDto.getMessage(),
           foundReporter.get(), foundRecipe.get().getUser(), foundRecipe.get()
         )

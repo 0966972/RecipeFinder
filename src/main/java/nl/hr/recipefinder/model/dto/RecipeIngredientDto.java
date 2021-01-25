@@ -11,7 +11,7 @@ import nl.hr.recipefinder.model.entity.RecipeIngredientKey;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeIngredientDto {
-    private RecipeIngredientKey id;
-    private String measurement;
-    private String ingredientName;
+  private RecipeIngredientKey id;
+  private String measurement;
+  private String ingredientName;
 }

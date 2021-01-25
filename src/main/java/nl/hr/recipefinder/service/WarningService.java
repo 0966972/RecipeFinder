@@ -11,26 +11,26 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class WarningService {
-    private final WarningRepository warningRepository;
+  private final WarningRepository warningRepository;
 
-    public Optional<Warning> findById(Long id) {
-        return warningRepository.findById(id);
-    }
+  public Optional<Warning> findById(Long id) {
+    return warningRepository.findById(id);
+  }
 
-    public List<Warning> findAll() {
-        return warningRepository.findAll();
-    }
+  public List<Warning> findAll() {
+    return warningRepository.findAll();
+  }
 
-    public List<Warning> findAllByUserId(Long userId) {
-        return warningRepository.findAllByWarnedUserId(userId);
-    }
+  public List<Warning> findAllByUserId(Long userId) {
+    return warningRepository.findAllByWarnedUserId(userId);
+  }
 
-    public void deleteAll(Iterable<Warning> warnings) {
-        warningRepository.deleteAll(warnings);
-    }
+  public void deleteAll(Iterable<Warning> warnings) {
+    warningRepository.deleteAll(warnings);
+  }
 
-    public Warning save(Warning warning) {
-        return warningRepository.save(warning);
-    }
+  public Warning save(Warning warning) {
+    return warningRepository.save(warning);
+  }
 
 }
