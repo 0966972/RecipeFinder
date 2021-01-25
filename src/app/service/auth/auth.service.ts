@@ -28,12 +28,34 @@ export class AuthService {
     return '';
   }
 
+  register(credentials, callback) {
+    let url = this.baseUrl + '/user';
+
+    this.http.post<Observable<Object>>(url, credentials).subscribe(() => {
+        this.authenticated = true;
+        this.role = 'USER';
+
+        sessionStorage.setItem('token', btoa(credentials.username + ':' + credentials.password));
+        sessionStorage.setItem('role', 'user');
+
+        return callback && callback();
+      },
+      (error) => {
+        this.authenticated = false;
+        sessionStorage.setItem('token', '')
+        if (error.status == 409)
+          alert("Een gebruiker met deze naam bestaat al.")
+        else alert("Er ging iets mis, probeer het later nog eens.")
+      }
+    );
+  }
+
   authenticate(credentials, callback) {
     const headers = new HttpHeaders(credentials ? {
       authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
     } : {});
 
-    let url = this.baseUrl+'/auth/login';
+    let url = this.baseUrl + '/auth/login';
     this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
       response => {
         if (response['name']) {
@@ -66,7 +88,7 @@ export class AuthService {
       authorization: 'Basic ' + sessionStorage.getItem('token')
     });
 
-    this.http.get(this.baseUrl+'/auth/logout', {headers: headers}).pipe(
+    this.http.get(this.baseUrl + '/auth/logout', {headers: headers}).pipe(
       finalize(() => {
         this.authenticated = false;
         this.role = 'USER';
@@ -80,7 +102,7 @@ export class AuthService {
     const headers = new HttpHeaders({
       authorization: 'Basic ' + token
     });
-    let url = this.baseUrl+'/auth/login';
+    let url = this.baseUrl + '/auth/login';
 
     this.http.get<Observable<Object>>(url, {headers: headers}).subscribe(
       response => {
@@ -98,7 +120,7 @@ export class AuthService {
   }
 
   public getPrincipal(): Observable<Object> {
-    let url = this.baseUrl+'/auth/login';
+    let url = this.baseUrl + '/auth/login';
     const headers = new HttpHeaders({
       authorization: 'Basic ' + sessionStorage.getItem('token')
     });
