@@ -11,31 +11,31 @@ import java.util.Optional;
 
 @Service
 public class ReportService {
-    private final ReportRepository reportRepository;
+  private final ReportRepository reportRepository;
 
-    @Autowired
-    public ReportService(ReportRepository reportRepository) {
-        this.reportRepository = reportRepository;
-    }
+  @Autowired
+  public ReportService(ReportRepository reportRepository) {
+    this.reportRepository = reportRepository;
+  }
 
-    public Optional<Report> findById(ReportKey id) {
-        return reportRepository.findById(id);
-    }
+  public Optional<Report> findById(ReportKey id) {
+    return reportRepository.findById(id);
+  }
 
-    public List<Report> findAllByUserId(Long userId) {
-        return reportRepository.findAllByReportedUserId(userId);
-    }
+  public List<Report> findAllByUserId(Long userId) {
+    return reportRepository.findAllByReportedUserId(userId);
+  }
 
-    public List<Report> findAll() {
-        return reportRepository.findAll();
-    }
+  public List<Report> findAll() {
+    return reportRepository.findAll();
+  }
 
-    public void deleteAll(Iterable<Report> reports) {
-        reportRepository.deleteAll(reports);
-    }
+  public void deleteAll(Iterable<Report> reports) {
+    reportRepository.deleteAll(reports);
+  }
 
-    public Report save(Report report) {
-        return reportRepository.save(report);
-    }
+  public Report save(Report report) {
+    return reportRepository.save(report);
+  }
 
 }

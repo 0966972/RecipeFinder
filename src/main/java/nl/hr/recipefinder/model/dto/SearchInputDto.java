@@ -12,7 +12,7 @@ import java.util.OptionalInt;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchInputDto {
-    private String searchInput;
-    private String[] ingredients;
-    private OptionalInt minimumScore;
+  private String searchInput;
+  private String[] ingredients;
+  private OptionalInt minimumScore;
 }

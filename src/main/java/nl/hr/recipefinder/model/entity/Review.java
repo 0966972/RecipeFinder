@@ -19,7 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review extends BaseEntity {
-  @Max(5) @Min(0)
+  @Max(5)
+  @Min(0)
   private Integer score;
 
   @Size(min = 1, max = 500)
@@ -33,10 +34,10 @@ public class Review extends BaseEntity {
 
   @JsonIgnore
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name="recipe_id", nullable = false)
+  @JoinColumn(name = "recipe_id", nullable = false)
   private Recipe recipe;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name="user_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 }

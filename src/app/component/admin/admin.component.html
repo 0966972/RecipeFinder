@@ -1,0 +1,48 @@
+<body>
+<div class="container">
+  <h5 style="margin-top: 100px;">Gebruikers</h5>
+  <h6>Gerapporteerde Gebruikers</h6>
+  <div *ngFor="let report of reports; let i = index;" class="row">
+    <div class="col-9">
+      <p><b>{{ report.reportedUser.username }}</b></p>
+      <p>{{ report.message }}</p>
+      <p><b>Reported by {{ report.reportingUser.username }}</b></p>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banReportedUser(report.reportedUser, i)">Verbannen</button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="warnReportedUser(report.reportedUser, i)">Waarschuwen</button>
+      <button type="button" (click)="viewRecipe(report.reportedRecipe, i)">View Page</button>
+    </div>
+    <hr/>
+  </div>
+  <br/>
+  <hr/>
+  <br/>
+  <h6>Gewaarschuwde Gebruikers</h6>
+  <div *ngFor="let warning of warnings; let i = index;" class="row">
+    <div class="col-9">
+      <p><b>{{ warning.warnedUser.username }}</b></p>
+      <p>{{ warning.message }}</p>
+      <button type="button" class="btn btn-danger btn-sm" (click)="banWarnedUser(warning.warnedUser, i)">Verbannen</button>
+    </div>
+    <hr/>
+  </div>
+  <h5 style="margin-top: 100px;">Ingrediënten</h5>
+  <h6>Pending Acceptance</h6>
+  <div *ngFor="let ingredient of pendingIngredients; let i = index;" class="row">
+    <div class="col-9">
+      <p>{{ ingredient.name }}</p>
+      <button type="button" (click)="acceptPendingIngredient(ingredient, i)">Accept</button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="rejectPendingIngedient(ingredient, i)">Deny</button>
+    </div>
+    <hr/>
+  </div>
+  <h6 style="margin-top: 100px;">Rejected</h6>
+  <div *ngFor="let ingredient of rejectedIngredients; let i = index;" class="row">
+    <div class="col-9">
+      <p>{{ ingredient.name }}</p>
+      <button type="button" (click)="acceptRejectedIngredient(ingredient, i)">Accept</button>
+    </div>
+    <hr/>
+  </div>
+  <hr/>
+</div>
+</body>

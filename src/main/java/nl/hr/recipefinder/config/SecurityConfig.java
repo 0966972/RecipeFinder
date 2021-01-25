@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import nl.hr.recipefinder.security.Role;
-import nl.hr.recipefinder.service.SessionService;
+import nl.hr.recipefinder.service.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,20 +25,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final SessionService sessionService;
+  private final AuthenticationService authenticationService;
 
   @Bean
   protected AuthenticationProvider authenticationProvider(PasswordEncoder encoder) {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
     provider.setPasswordEncoder(encoder);
-    provider.setUserDetailsService(sessionService);
+    provider.setUserDetailsService(authenticationService);
 
     return provider;
   }
 
   @Override
   protected void configure(AuthenticationManagerBuilder auth) {
-    assert auth != null;
     auth.authenticationProvider(authenticationProvider(passwordEncoder()));
   }
 
@@ -77,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // recipeIngredient
       .antMatchers(HttpMethod.POST, "/recipeIngredient").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       // report
+      .antMatchers(HttpMethod.GET, "/report/allowed/{targetUserId}").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       .antMatchers(HttpMethod.GET, "/report/**").hasRole(Role.ADMIN.name())
       .antMatchers(HttpMethod.POST, "/report").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       // review
@@ -86,7 +86,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // user
       .antMatchers("/user/ban/**").hasRole(Role.ADMIN.name())
       .antMatchers("/user/**").permitAll()
+      // warning
+      .antMatchers(HttpMethod.GET, "/warning/currentUser").permitAll()
+      .antMatchers(HttpMethod.GET, "/warning").hasRole(Role.ADMIN.name())
+      .antMatchers(HttpMethod.POST, "/warning").hasRole(Role.ADMIN.name())
       // other
+      .antMatchers(HttpMethod.GET, "/auth/login").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
       .antMatchers("/swagger-ui/**", "/h2-console/**").hasRole(Role.ADMIN.name())
       .anyRequest().authenticated()
       .and()

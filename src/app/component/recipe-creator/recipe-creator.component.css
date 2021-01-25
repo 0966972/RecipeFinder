@@ -1,0 +1,180 @@
+@font-face {
+  font-family: Pacifico;
+  src: url('src/assets/font/Pacifico-Regular.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('src/assets/font/Roboto-Regular.ttf') format("truetype");
+}
+
+* {
+  font-family: Roboto;
+}
+
+html,
+body {
+
+}
+
+.container {
+  padding-top: 80px;
+}
+
+.cont {
+  position: relative;
+  width: 1140px;
+}
+
+#step {
+  margin-top: 10px;
+}
+
+#step-nr {
+  margin-top: 10px;
+}
+
+#step-button {
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+#step-add-button {
+  margin-top: 10px;
+}
+
+.container_recipevalues {
+  background-color: white;
+}
+
+#title, h1, h3, h5 {
+  font-family: Pacifico;
+}
+
+.row {
+  margin-left: 5px;
+}
+
+input {
+  box-sizing: border-box
+}
+
+.formfields {
+  width: 100%;
+  margin: 8px 0;
+  padding: 16px 20px;
+  border-radius: 5px;
+  border: 0px solid gray;
+}
+
+label {
+  float: left;
+}
+
+input {
+  float: right;
+  width: 100%;
+}
+
+.container_recipevalues {
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  width: 80%;
+  margin: auto;
+}
+
+.top-text-block {
+  padding: 10px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: inherit;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.bottom-text-block {
+  padding: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.7);
+  color: inherit;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+h1 {
+  font-size: 56px;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h3 {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h5 {
+  font-family: Pacifico;
+  padding-top: 20px;
+}
+
+h6 {
+  font-family: Pacifico;
+  padding-right: 3px;
+}
+
+img {
+  margin-bottom: 10px;;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+
+li {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#saveButton{
+  margin-top: 10px;
+}
+
+.errorMessage{
+  font-color: red;
+}
+
+#picturesContainer{
+  margin-top: 15px;
+}
+
+#pictureRow{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#showHidePictures {
+  margin-bottom: 10px;
+}
+
+#removePicture{
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#thumbnailPicture{
+  margin-top: 10px;
+  margin-left: 10px;
+}
