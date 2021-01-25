@@ -23,8 +23,8 @@ import {ReportUserComponent} from "./component/report-user/report-user.component
 import {ReportService} from "./service/report/report.service";
 import {FavoritesComponent} from './component/favorites/favorites.component';
 import {ClipboardModule} from "@angular/cdk/clipboard";
-import {WarnUserComponent} from "./warn-user/warn-user.component";
-import {WarningService} from "./service/warning.service";
+import {WarningService} from "./service/warning/warning.service";
+import {WarnUserComponent} from "./component/warn-user/warn-user.component";
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
