@@ -81,5 +81,4 @@ node/
 
 
 # Other
-*.mv.db
 *.trace.db

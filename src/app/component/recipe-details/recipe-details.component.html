@@ -22,20 +22,26 @@
         <button *ngIf="!isRecipeCreator && isReportingAllowed" class="btn btn-secondary" (click)="(gotoReport())">Rapporteer gebruiker</button>
         <div class="pull-right">
           <button *ngIf="!showingFavoritesList" class="btn btn-danger" (click)="(toggleFavoriteLists())"><i class="fa fa-heart"></i></button>
-          <div *ngIf="showingFavoritesList">
-            <button class="btn btn-secondary" (click)="(toggleFavoriteLists())"><i class="fa fa-times"></i></button>
-            <ul *ngFor="let list of favoritesList;">
-              <li class="row">
-                <div class="col-8">{{list.name}}</div>
-                <button id="list{{list.id}}" class="btn btn-success col-2" (click)="(addToFavoritesList(list.id))">
-                  <i id="list{{list.id}}icon" class="fa fa-plus"></i>
-                </button>
-              </li>
-            </ul>
-          </div>
+          <button *ngIf="showingFavoritesList" class="btn btn-secondary" (click)="(toggleFavoriteLists())"><i class="fa fa-times"></i></button>
+
         </div>
       </div>
     </div>
+
+
+      <div *ngIf="showingFavoritesList" class="row">
+        <div class="offset-9 col-3">
+        <ul *ngFor="let list of favoritesList;">
+          <li class="row">
+            <div class="col-8">{{list.name}}</div>
+            <button id="list{{list.id}}" class="btn btn-success" (click)="(addToFavoritesList(list.id))">
+              <i id="list{{list.id}}icon" class="fa fa-plus"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div id="ingredientsAndStepsRow" class="row">
       <div class="col-3">
         <h5>Ingredienten</h5>

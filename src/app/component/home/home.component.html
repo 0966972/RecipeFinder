@@ -49,7 +49,7 @@
   </div>
   <hr/>
 
-  <div *ngFor="let recipe of recipes" (click)="openRecipe(recipe.id)" class="row">
+  <div *ngFor="let recipe of recipes" (click)="openRecipe(recipe.id)" class="row" style="cursor: pointer">
     <div>
       <ul *ngIf="recipe.pictures?.length == 0">
         <img src="../../../assets/image/image-not-found.jpg" width="150px" height="100px">
