@@ -67,10 +67,10 @@ public class UserController {
                 user.setRole(Role.BANNED);
                 userService.save(user);
 
-                Iterable<Report> reports = reportService.findAllByUserId(user.getId());
+                Iterable<Report> reports = reportService.findAllByUserId(id);
                 reportService.deleteAll(reports);
 
-                Iterable<Warning> warnings = warningService.findAllByUserId(user.getId());
+                Iterable<Warning> warnings = warningService.findAllByUserId(id);
                 warningService.deleteAll(warnings);
 
                 return new ResponseEntity<>(true, HttpStatus.OK);
