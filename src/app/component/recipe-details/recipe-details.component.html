@@ -29,18 +29,23 @@
     </div>
 
 
-      <div *ngIf="showingFavoritesList" class="row">
-        <div class="offset-9 col-3">
+<!--      <div *ngIf="showingFavoritesList">-->
+<!--        <div class="offset-9 col-3">-->
+      <ng-container *ngIf="showingFavoritesList">
         <ul *ngFor="let list of favoritesList;">
           <li class="row">
-            <div class="col-8">{{list.name}}</div>
+            <div class="offset-9 col-3">{{list.name}}
+            <div class="pull-right">
             <button id="list{{list.id}}" class="btn btn-success" (click)="(addToFavoritesList(list.id))">
               <i id="list{{list.id}}icon" class="fa fa-plus"></i>
             </button>
+            </div>
+            </div>
           </li>
         </ul>
-      </div>
-    </div>
+      </ng-container>
+<!--      </div>-->
+<!--    </div>-->
 
     <div id="ingredientsAndStepsRow" class="row">
       <div class="col-3">
