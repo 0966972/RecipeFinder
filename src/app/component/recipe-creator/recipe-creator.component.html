@@ -1,107 +1,123 @@
 <body>
-<h1>Add Recipe</h1>
-<form name="CreateRipe" (ngSubmit)="f.form.valid && submitButtonPressed()" #f="ngForm" novalidate>
+<div class="container">
+  <div class="cont">
+    <h1>Nieuw recept</h1>
+    <form name="CreateRipe" (ngSubmit)="f.form.valid && submitButtonPressed()" #f="ngForm" novalidate>
 
-  <div class="">
-    <div class="formfields">
-      <label for="name">Titel</label>
-      <input type="text" name="Name" [(ngModel)]="recipe.name" #name="ngModel" required/>
-      <div *ngIf="f.submitted && !name.valid">Titel is een vereist veld</div>
-      <br>
-      <br>
-      <label for="description">Beschrijving</label>
-      <input type="text" name="Name" [(ngModel)]="recipe.description" #description="ngModel" required/>
-      <div *ngIf="f.submitted && !description.valid">Beschrijving is een vereist veld</div>
-      <br>
-      <br>
+      <div class="">
+        <div class="formfields">
+          <label for="name"><h5>Titel</h5></label>
+          <input placeholder="Titel" class="form-control" type="text" name="Name" id="name" [(ngModel)]="recipe.name"
+                 #name="ngModel" required/>
+          <div *ngIf="f.submitted && !name.valid">Titel is een vereist veld</div>
 
-      <label for="preparationTime">Bereidingstijd in minuten</label>
-      <input type="number" name="Name" [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel" required/>
-      <div *ngIf="f.submitted && !preparationTime.valid">Bereidingstijd is een vereist veld</div>
-      <br>
-      <br>
 
-      <label for="instructions">Instructies</label>
-      <input type="text" name="instructions" [(ngModel)]="recipe.instructions" #instructions="ngModel" required/>
-      <div *ngIf="f.submitted && !instructions.valid">Instructies is een vereist veld</div>
-      <br>
-      <label>Stappen:</label>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <button type="button" (click)="addStep()">Stap toevoegen</button>
-      <section *ngFor="let step of recipe.steps; let i = index;">
-        <br>
-        <br>
-        <label>Stap {{step.number}}</label>
-        <button class="btn btn-danger btn-sm" (click)="removeStep(i)">Verwijder</button>
-        <input type="text" [(ngModel)]="step.details" name="step_{{i}}"/>
-      </section>
-      <br>
-      <br>
-      <label>Serveringen:</label>
-      <input type="number" name="Name" [(ngModel)]="recipe.servings" #servings="ngModel" required/>
-      <div *ngIf="f.submitted && !servings.valid">Serveringen is vereist</div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <section *ngFor="let ingredient of ingredients; let i = index;">
-        <button type="button" class="btn btn-danger btn-sm" (click)="removeIngredient(i)">Verwijder</button>
-        <input placeholder="Ingredient" type="text" [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)"
-               list="ingredientName" name="ingredientName_{{i}}" required/>
-        <input placeholder="Measurement" type="text" [(ngModel)]="recipe.ingredients[i].measurement"
-               name="ingredientMeasurement_{{i}}" required/>
-      </section>
+          <label for="description"><h5>Beschrijving</h5></label>
+          <textarea placeholder="Beschrijving" name="message" class="form-control" id="description" rows="3"
+                    [(ngModel)]="recipe.description"
+                    #description="ngModel" required></textarea>
+          <div *ngIf="f.submitted && !description.valid">Beschrijving is een vereist veld</div>
 
-      <button type="button" (click)="addIngredient()">Voeg ingredient toe</button>
-      <br>
-      <br>
-      <br>
-      <h5>Upload een JPG of PNG afbeelding</h5>
-      <button *ngIf="!showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">
-        Toon afbeeldingen
-      </button>
-      <button *ngIf="showingPictures && recipe.pictures.length > 0" (click)="showPictures" class="btn btn-secondary">
-        Verberg afbeeldingen
-      </button>
 
-      <section *ngFor="let picture of recipe.dummy; let i = index;">
-        <input type="file" (change)="handleUpload0($event)"/>
-        <br>
+          <label for="preparationTime"><h5>Bereidingstijd in minuten</h5></label>
+          <input placeholder="Bereidingstijd" class="form-control" type="number" name="Name" id="preparationTime"
+                 [(ngModel)]="recipe.preparationTime" #preparationTime="ngModel" required/>
+          <div *ngIf="f.submitted && !preparationTime.valid">Bereidingstijd is een vereist veld</div>
 
-        <section *ngFor="let picture of recipe.pictures; let index = index;">
-          <div class="col-6">
-            <img *ngIf="showingPictures && i == index" id="picture-preview"
-                 src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding" height="150px">
-            <button *ngIf="i == index && picture.thumbnail == false" type="button" class="btn btn-danger btn-sm"
-                    (click)="setThumbnail(i)">Thumbnail afbeelding
-            </button>
-            <button *ngIf="i == index && picture.thumbnail == true" type="button" class="btn btn-success btn-sm"
-                    (click)="setThumbnail(i)">Thumbnail afbeelding
-            </button>
-            <button *ngIf="i == index" type="button" class="btn btn-danger btn-sm" (click)="removePicture(i)">Verwijder
-              afbeelding
-            </button>
+          <label for="instructions"><h5>Bereidingswijze</h5></label>
+          <textarea placeholder="Bereidingswijze" name="message" class="form-control" id="instructions" rows="5"
+                    [(ngModel)]="recipe.instructions"
+                    #instructions="ngModel" required></textarea>
+          <div *ngIf="f.submitted && !instructions.valid">Bereidingswijze is een vereist veld</div>
+
+
+          <h5>Stappen</h5>
+          <section *ngFor="let step of recipe.steps; let i = index;">
+            <div class="row">
+              <input class="col-11 form-control" id="step" placeholder="Stap {{step.number}}" type="text"
+                     [(ngModel)]="step.details"
+                     name="step_{{i}}"/>
+              <button class="btn btn-danger" (click)="removeStep(i)" id="step-button"><i class="fa fa-times"></i>
+              </button>
+            </div>
+          </section>
+          <div class="row">
+            <button class="btn-secondary" type="button" id="step-add-button" (click)="addStep()"><i
+              class="fa fa-plus"></i></button>
           </div>
-        </section>
 
-      </section>
-      <br>
-      <br>
-      <br>
-      <button class="btn btn-secondary" [disabled]="loading">Recept opslaan</button>
+          <h5>Ingredienten</h5>
+          <section *ngFor="let ingredient of ingredients; let i = index;">
+            <div class="row">
+              <input placeholder="Ingredient" id="step" class="form-control col-9" type="text"
+                     [(ngModel)]="ingredient.name" (keyup)="findIngredient(i)"
+                     list="ingredientName" name="ingredientName_{{i}}" required/>
+              <input placeholder="Hoeveelheid" id="step" class="form-control col-2" type="text"
+                     [(ngModel)]="recipe.ingredients[i].measurement"
+                     name="ingredientMeasurement_{{i}}" required/>
+              <button type="button" class="btn btn-danger" (click)="removeIngredient(i)" id="step-button"><i
+                class="fa fa-times"></i></button>
+            </div>
+          </section>
+          <div class="row">
+            <button type="button" class="btn-secondary" id="step-add-button" (click)="addIngredient()"><i
+              class="fa fa-plus"></i></button>
+          </div>
+
+          <h5>Serveringen</h5>
+          <input class="form-control" placeholder="Aantal personen" type="number" name="Name"
+                 [(ngModel)]="recipe.servings" #servings="ngModel"
+                 required/>
+          <div *ngIf="f.submitted && !servings.valid">Serveringen is vereist</div>
+
+          <br>
+          <div id="picturesContainer">
+            <h5>Upload een JPG of PNG afbeelding</h5>
+            <div id="showHidePictures">
+              <button *ngIf="!showingPictures && recipe.pictures.length > 0" (click)="showPictures"
+                      class="btn btn-secondary">
+                Toon afbeeldingen
+              </button>
+              <button *ngIf="showingPictures && recipe.pictures.length > 0" (click)="showPictures"
+                      class="btn btn-secondary">
+                Verberg afbeeldingen
+              </button>
+            </div>
+            <section *ngFor="let picture of recipe.dummy; let i = index;">
+              <input id="pickFile" type="file" (change)="handleUpload0($event)"/>
+
+              <section *ngFor="let picture of recipe.pictures; let index = index;">
+
+                <div id="pictureRow">
+                  <img *ngIf="showingPictures && i == index" id="picture-preview"
+                       src="data:{{picture.type}};base64,{{picture.content}}" alt="Afbeelding" height="150px">
+                  <button *ngIf="i == index && picture.thumbnail == false" id="thumbnailPicture" type="button"
+                          class="btn btn-danger btn-sm col-2"
+                          (click)="setThumbnail(i)">Maak thumbnail
+                  </button>
+                  <button *ngIf="i == index && picture.thumbnail == true" id="thumbnailPicture" type="button"
+                          class="btn btn-success btn-sm col-2"
+                          (click)="setThumbnail(i)">Thumbnail
+                  </button>
+                  <button *ngIf="i == index" type="button" id="removePicture" class="btn btn-danger btn-sm col-1"
+                          (click)="removePicture(i)">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </section>
+
+            </section>
+          </div>
+          <button class="btn btn-secondary" id="saveButton" [disabled]="loading">Recept opslaan</button>
+
+          <datalist id="ingredientName">
+            <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
+          </datalist>
 
 
-      <datalist id="ingredientName">
-        <option *ngFor="let option of ingredientOptions" [value]="option.name">{{option.name}}</option>
-      </datalist>
-
-
-    </div>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
+</div>
 </body>

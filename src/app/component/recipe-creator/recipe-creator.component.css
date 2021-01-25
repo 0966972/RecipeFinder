@@ -14,8 +14,33 @@
 
 html,
 body {
-  height: 100vh;
+
+}
+
+.container {
   padding-top: 80px;
+}
+
+.cont {
+  position: relative;
+  width: 1140px;
+}
+
+#step {
+  margin-top: 10px;
+}
+
+#step-nr {
+  margin-top: 10px;
+}
+
+#step-button {
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+#step-add-button {
+  margin-top: 10px;
 }
 
 .container_recipevalues {
@@ -24,6 +49,10 @@ body {
 
 #title, h1, h3, h5 {
   font-family: Pacifico;
+}
+
+.row {
+  margin-left: 5px;
 }
 
 input {
@@ -55,11 +84,6 @@ input {
   margin: auto;
 }
 
-.cont {
-  position: relative;
-  width: 1140px;
-}
-
 .top-text-block {
   padding: 10px;
   position: absolute;
@@ -83,15 +107,12 @@ input {
   width: 100%;
 }
 
-.navbar {
-  box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .2);
-}
-
 a {
   color: inherit;
 }
 
 h1 {
+  font-size: 56px;
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -104,8 +125,13 @@ h3 {
 }
 
 h5 {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-family: Pacifico;
+  padding-top: 20px;
+}
+
+h6 {
+  font-family: Pacifico;
+  padding-right: 3px;
 }
 
 img {
@@ -120,4 +146,35 @@ ul {
 li {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+#saveButton{
+  margin-top: 10px;
+}
+
+.errorMessage{
+  font-color: red;
+}
+
+#picturesContainer{
+  margin-top: 15px;
+}
+
+#pictureRow{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#showHidePictures {
+  margin-bottom: 10px;
+}
+
+#removePicture{
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#thumbnailPicture{
+  margin-top: 10px;
+  margin-left: 10px;
 }
